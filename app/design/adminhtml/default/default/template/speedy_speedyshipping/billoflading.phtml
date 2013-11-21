@@ -1,0 +1,67 @@
+
+<?php if ($this->_isSpeedyCarrier) : ?>
+    <div class="entry-edit box-left">
+
+        <?php if ($this->_hasBOL): ?>
+            <div class="entry-edit-head">
+                <h4><?php echo $this->getHeaderText() ?></h4>
+            </div>
+            <fieldset>
+
+                <?php echo $this->getPrintButton() ?>
+                <?php echo $this->getCancelBolButton() ?>
+        </div>
+
+        </fieldset>
+
+        <div class="clear"></div>
+    <?php endif; ?>
+    <script>
+
+        //<![CDATA[
+        document.observe("dom:loaded", function() {
+
+
+            packaging.setCreateLabelUrl("<?php echo $this->getCreateLabelUrl(); ?>");
+
+
+            setTimeout(function() {
+                var elems = document.getElementsByClassName('SavePackagesBtn');
+                //packaging.labelCreatedCallback(response);
+
+                var magentoCallback = packaging.confirmPackagingCallback;
+                for (var i = 0; i < elems.length; i++) {
+
+                    packaging.setConfirmPackagingCallback(function() {
+                        new Ajax.Request("<?php echo $this->getCheckDateUrl(); ?>", {
+                            onSuccess: function(transport) {
+                                var response = transport.responseText;
+                                if (response.isJSON()) {
+                                    response = response.evalJSON();
+                                    if (response.error) {
+                                        //this.messages.show().innerHTML = response.message;
+                                       
+                                        var confirmBox = confirm(response.message);
+                                        
+                                        if(confirmBox == true){
+                                            magentoCallback();
+                                        }
+                                    } else if (response.ok) {
+                                        //this.labelCreatedCallback(response);
+                                        magentoCallback();
+                                    }
+                                }
+                            }
+                        });
+                    });
+                }
+            }, 1000)
+
+
+
+
+
+        });
+        //]]>
+    </script>
+<?php endif; ?>
