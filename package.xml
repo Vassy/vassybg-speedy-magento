@@ -3,7 +3,7 @@
     <name>Speedy_Shipping</name>
     <version>1.0.6</version>
     <stability>stable</stability>
-    <license>GNU General Public License (GPL)</license>
+    <license>Open Software License (OSL 3.0)</license>
     <channel>community</channel>
     <extends/>
     <summary>Initial release</summary>
