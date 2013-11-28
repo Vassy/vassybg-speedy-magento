@@ -2,7 +2,7 @@
 
 <?php $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable'); ?>
     <?php $output = null; ?>
-    <?php if ($this->_codAmount && !$isFixed && !$this->_isFreeMethod){
+    <?php if ($this->_codAmount && ($isFixed != 2) && !$this->_isFreeMethod){
         
     
         $output .='<p>'.$this->__('Speedy Payment method tax');
