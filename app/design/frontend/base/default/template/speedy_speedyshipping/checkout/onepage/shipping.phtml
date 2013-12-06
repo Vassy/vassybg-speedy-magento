@@ -22,7 +22,7 @@
                                 <input type="text" id="shipping:company" name="shipping[company]" value="<?php echo $this->escapeHtml($this->getAddress()->getCompany()) ?>" title="<?php echo $this->__('Company') ?>" class="input-text <?php echo $this->helper('customer/address')->getAttributeValidationClass('company') ?>" onchange="shipping.setSameAsBilling(false);" />
                             </div>
                         </div>
-                    </li>
+                   
                     <?php if (!$this->isCustomerLoggedIn()): ?>
                         <div class="field">
                             <label for="billing:email" class="required"><em>*</em><?php echo $this->__('Email Address') ?></label>
@@ -104,7 +104,7 @@
                                 <div id="shipping:speedy_normal_address">    
 
                                 <?php endif; ?>
-                                </li>
+                                
                                 <li class="wide">
                                     <div class="field">
 
@@ -233,13 +233,13 @@
                             <?php else: ?>
                                 <li class="no-display"><input type="hidden" name="shipping[save_in_address_book]" value="1" /></li>
                             <?php endif; ?>
-                            </ul>
+                            
                             </fieldset>
                             </li>
                             <li class="control" id="sameBillingBox">
                                 <input type="checkbox" name="shipping[same_as_billing]" id="shipping:same_as_billing" value="1"<?php if ($this->getAddress()->getSameAsBilling()): ?> checked="checked"<?php endif; ?> title="<?php echo $this->__('Use Billing Address') ?>" onclick="shipping.setSameAsBilling(this.checked)" class="checkbox" /><label for="shipping:same_as_billing"><?php echo $this->__('Use Billing Address') ?></label>
                             </li>
-                            </ul>
+                            
                             <div class="buttons-set" id="shipping-buttons-container">
                                 <p class="required"><?php echo $this->__('* Required Fields') ?></p>
                                 <p class="back-link"><a href="#" onclick="checkout.back();
@@ -249,6 +249,7 @@
                                     <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
                                 </span>
                             </div>
+                            </ul>
                             </form>
                             <script type="text/javascript">
                                     //<![CDATA[
