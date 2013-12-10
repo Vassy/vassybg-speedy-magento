@@ -98,8 +98,13 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 <?php if ($this->getIsShipping()): ?>
             var target = 'shipping';
 
+        if(isFirstPageLoad <=1){
+            var billingAddressId = $j('#order-billing_address_customer_address_id').val()
+            $j('#order-shipping_address_customer_address_id').val(billingAddressId);
+            isFirstPageLoad++;
+        }
 
-
+        
     <?php $reqData = Mage::app()->getRequest()->getPost('order'); ?>
 
     <?php $currentAction = Mage::app()->getRequest()->getActionName(); ?>
@@ -127,6 +132,12 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
         var isFullNomenclature = 0;
 
         var isShippingSameAsBilling = $j('#order-shipping_same_as_billing').is(':checked');
+        
+        $j('#order-shipping_same_as_billing').change(function(evt){
+            if(isFirstPageLoad == 0){
+                isFirstPageLoad = 2;
+            }
+        })
 
         var shouldAddressBeDisabled = $j('#order-' + target + '_address_customer_address_id').val();
         if (shouldAddressBeDisabled) {
@@ -215,6 +226,10 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
 
         $j('#order-' + target + '_address_customer_address_id').change(function(evt) {
+
+            if(this.id == 'order-billing_address_customer_address_id' && isFirstPageLoad == 0){
+                isFirstPageLoad = 1;
+            }
 
             checkIsOffice();
 

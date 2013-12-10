@@ -6,6 +6,8 @@ var shippingStreet;
 var shippingOffice;
 var shippingBlok;
 
+var isFirstPageLoad = 0;
+
 
 $j(document).ready(function(evt){
     
