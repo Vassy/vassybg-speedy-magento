@@ -82,12 +82,13 @@
                     <?php endif; ?>
                 </div>
             </li>
-
+            <li>
             <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
                 <div id="speedy_office_address">
                 <?php else: ?>
                     <div id="speedy_office_address" style="display: none">
                     <?php endif; ?>
+                  <ul>
                     <li class="wide" id="speedy_office_textbox">
                         <div class="field">
                             <label for=""></label>
@@ -105,19 +106,21 @@
                         </div>
                     </li>
 
-
+                        </ul>
 
 
                 </div>
+                </li>
 
-
+                <li>
                 <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
 
                     <div id="speedy_normal_address" style="display: none">
                     <?php else: ?>
                         <div id="speedy_normal_address">    
-
+                           
                         <?php endif; ?>
+                             <ul>
                         <li class="wide">
                             <div class="field">
 
@@ -195,7 +198,9 @@
                                 </div>
                             </div>
                         </li>
+                            </ul>
                     </div>
+                    </li>
                     <div class="field" style="display: none">
                         <label for="region_id" class="required"><em>*</em><?php echo $this->__('State/Province') ?></label>
                         <div class="input-box">

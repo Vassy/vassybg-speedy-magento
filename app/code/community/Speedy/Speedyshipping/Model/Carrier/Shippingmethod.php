@@ -1402,7 +1402,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
         $freeInterCityMethod = Mage::getStoreConfig('carriers/speedyshippingmodule/free_method_intercity');
 
 
-        if ($isFixed) {
+        if ($isFixed == 2) {
 
             $freeMethod = 'speedy_fixed_price';
         }

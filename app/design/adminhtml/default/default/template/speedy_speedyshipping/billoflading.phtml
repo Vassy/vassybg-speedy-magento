@@ -22,10 +22,12 @@
         document.observe("dom:loaded", function() {
 
 
-            packaging.setCreateLabelUrl("<?php echo $this->getCreateLabelUrl(); ?>");
+            
 
 
             setTimeout(function() {
+                
+                packaging.setCreateLabelUrl("<?php echo $this->getCreateLabelUrl(); ?>");
                 var elems = document.getElementsByClassName('SavePackagesBtn');
                 //packaging.labelCreatedCallback(response);
 

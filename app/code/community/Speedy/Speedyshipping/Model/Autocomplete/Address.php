@@ -105,15 +105,17 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
      */
     public function getOffices() {
         //Retrieve the currently selected site id from the request
-        $cityId = (int) $this->_request->getParam('cityid');
+        $cityId = (int) $this->_request->getParam('cityid', null);
         $officeName = $this->_request->getParam('term');
 
         $officeName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($officeName);
+       if($cityId){
         try {
             $offices = $this->_speedyEPS->listOffices($officeName, $cityId);
         } catch (Exception $e) {
             
         }
+       }
         if (isset($offices)) {
             $tpl = array();
 

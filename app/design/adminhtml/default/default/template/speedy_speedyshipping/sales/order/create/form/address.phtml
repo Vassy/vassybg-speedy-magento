@@ -116,8 +116,10 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
     <?php elseif (isset($reqData['shipping_address']['speedy_office_chooser']) 
             &&$reqData['shipping_address']['speedy_office_chooser'] == 1): ?>
                     
-                <?php if(!$reqData['shipping_address']['customer_address_id']): ?>
-                allowForcedOfficeChoice = 1;
+                <?php if(array_key_exists('customer_address_id',$reqData['shipping_address'])): ?>
+                        <?php if(!$reqData['shipping_address']['customer_address_id']): ?>
+                             allowForcedOfficeChoice = 1;
+                        <?php endif; ?>
                 
                 <?php endif; ?>
     <?php endif; ?>
@@ -190,7 +192,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
             }
         }
 
-      checkIsOffice();
+        checkIsOffice();
 
 
         var siteName = '';
@@ -276,6 +278,8 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
 
             var evtTarget = $j(evt.target);
+            
+        
 
             if (target == 'shipping') {
                 isFullNomenclature = shippingNomenclature;
@@ -286,7 +290,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_street_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -295,18 +299,18 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_street_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else if ($j('#' + baseFieldSelector + 'speedy_street_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != streetName) {
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_street_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -318,7 +322,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_quarter_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -327,18 +331,18 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_quarter_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else if ($j('#' + baseFieldSelector + 'speedy_quarter_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != quarterName) {
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_quarter_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -351,7 +355,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         $j('#' + baseFieldSelector + 'speedy_office_id').val('');
                         $j('#' + baseFieldSelector + 'speedy_street_name').val('')
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -361,25 +365,26 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         $j('#' + baseFieldSelector + 'speedy_office_id').val('');
                         $j('#' + baseFieldSelector + 'speedy_street_name').val('')
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else if ($j('#speedy_office_id').val() != '' && evtTarget.val() != officeName) {
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_office_id').val('');
                         $j('#' + baseFieldSelector + 'speedy_street_name').val('')
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
                 } else if (evtTarget.attr('id') != baseFieldSelector + 'city' && evtTarget.attr('id') != baseFieldSelector + 'speedy_office_chooser') {
+                    
                     evtTarget.val(evtTarget.val().toUpperCase())
-                    var event = {type: 'change', target: this}
+                    var event = {type: 'change', target: this, srcElement: evt.target}
                     order.changeAddressField(event)
                 }
             } else {
@@ -392,7 +397,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_street_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                       var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -401,18 +406,18 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_street_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else if ($j('#' + baseFieldSelector + 'speedy_street_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != streetName) {
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_street_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -424,7 +429,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_quarter_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -433,18 +438,18 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_quarter_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else if ($j('#' + baseFieldSelector + 'speedy_quarter_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != quarterName) {
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_quarter_id').val('');
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -457,7 +462,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         $j('#' + baseFieldSelector + 'speedy_office_id').val('');
                         $j('#' + baseFieldSelector + 'speedy_street_name').val('')
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -467,25 +472,25 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         $j('#' + baseFieldSelector + 'speedy_office_id').val('');
                         $j('#' + baseFieldSelector + 'speedy_street_name').val('')
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else if ($j('#speedy_office_id').val() != '' && evtTarget.val() != officeName) {
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_office_id').val('');
                         $j('#' + baseFieldSelector + 'speedy_street_name').val('')
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
-                        var event = {type: 'change', target: this}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
                 } else if (evtTarget.attr('id') != baseFieldSelector + 'city' && evtTarget.attr('id') != baseFieldSelector + 'speedy_office_chooser') {
                     evtTarget.val(evtTarget.val().toUpperCase())
-                    var event = {type: 'change', target: this}
+                    var event = {type: 'change', target: this, srcElement: evt.target}
                     order.changeAddressField(event)
                 }
             }
@@ -494,7 +499,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
         })
 
 
-        $j('#' + baseFieldSelector + 'city').change(function() {
+        $j('#' + baseFieldSelector + 'city').change(function(evt) {
 
             if (siteName != $j(this).val()) {
 
@@ -502,7 +507,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                 $j('#' + baseFieldSelector + 'speedy_site_id').val('')
                 $j('#' + baseFieldSelector + 'zip').val('')
                 updateForm(target);
-                var event = {type: 'change', target: this}
+                var event = {type: 'change', target: this, srcElement: evt.target}
                 order.changeAddressField(event)
             } else if ($j(this).val() == "") {
 
@@ -511,7 +516,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                 $j('#' + baseFieldSelector + 'speedy_site_id').val('')
                 $j('#' + baseFieldSelector + 'zip').val('')
                 // clearForm();
-                var event = {type: 'change', target: this}
+                var event = {type: 'change', target: this, srcElement: evt.target}
                 order.changeAddressField(event)
             } else {
                 updateForm(target, true);
@@ -620,7 +625,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
                 }
 
-               var event = {type: 'change', target: this}
+               var event = {type: 'change', target: this, srcElement: evt.target}
                     order.changeAddressField(event)
 
             });
@@ -688,7 +693,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     $j('#order-' + activeTarget + '_address_region').show().val(ui.item.region)
 
                     concatenateStreetAddress();
-                    var event = {type: 'change', target: this}
+                    var event = {type: 'change', target: this, srcElement: this}
                     order.changeAddressField(event)
                     $j('order-' + activeTarget + '_address_postcode').val(ui.item.post_code)
                     if (ui.item.is_full_nomenclature == 'NO') {
@@ -753,7 +758,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     // concatenateStreetAddress();
 
                     //do not delete this
-                    var event = {type: 'change', target: this}
+                    var event = {type: 'change', target: this, srcElement: this}
                     order.changeAddressField(event)
                     return false;
                 }}).focus(function() {
@@ -790,7 +795,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     concatenateStreetAddress();
                     quarterName = ui.item.label;
                     $j('#order-' + activeTarget + '_address_speedy_quarter_id').val(ui.item.value)
-                    var event = {type: 'change', target: this}
+                    var event = {type: 'change', target: this, srcElement: this}
                     order.changeAddressField(event)
                     return false;
                 }});
@@ -816,7 +821,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     concatenateStreetAddress();
                     streetName = ui.item.label;
                     $j('#order-' + activeTarget + '_address_speedy_street_id').val(ui.item.value)
-                    var event = {type: 'change', target: this}
+                    var event = {type: 'change', target: this, srcElement: this}
                     order.changeAddressField(event)
                     return false;
                 }});
@@ -845,7 +850,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     $j(this).val(ui.item.label);
                     concatenateStreetAddress();
                     // $j('#order-' + activeTarget + '_address_speedy_street_id').val(ui.item.value)
-                    var event = {type: 'change', target: this}
+                    var event = {type: 'change', target: this, srcElement: this}
                     order.changeAddressField(event)
                     return false;
                 }});

@@ -285,8 +285,9 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
                 }
             }
 
+            $errorString = '';
             if (count($errors) > 0) {
-                $errorString = '';
+                
                 foreach ($errors as $error) {
                     $errorString .= ' ' . $error['main_error'];
                     for ($i = 0; $i < count($error); $i++) {
@@ -297,10 +298,10 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
 
                 throw new Exception("Error while making remote call");
             }
-
+$successString = '';
             //If there are any error this section never get executed
             if (count($succeededOrders) > 0 && !$shouldFail) {
-                $successString = '';
+                
                 foreach ($succeededOrders as $order) {
                     $successString .= $order . '<br />';
                 }
@@ -1108,6 +1109,12 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
         $picking->setWeightDeclared($totalWeight);
         $picking->setContents('поръчка: ' . $this->_orderID);
         
+        if(Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays')){
+            $picking->setDeferredDeliveryWorkDays((int)Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays'));
+        }
+        
+        
+        
         if(Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing') && 
            strlen(Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing')) > 1){
             $picking->setPacking(Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing'));
@@ -1149,7 +1156,7 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
 
         if ($this->_orderData->getIsCod()) {
             $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable');
-            if ($isFixed) {
+            if ($isFixed == 2) {
 
                 $fixedPrice = Mage::getStoreConfig('carriers/speedyshippingmodule/fixedPrice');
                 if ($this->_isFreeShipping) {
@@ -1158,7 +1165,17 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
                     $taxCalculator = Mage::helper('tax');
                     $picking->setAmountCodBase($this->_codAmount + $this->_shippingAmount);
                 }
-            } else {
+            }else if($isFixed == 3){
+                if ($this->_isFreeShipping) {
+                    $picking->setAmountCodBase($this->_codAmount);
+                } else {
+                    $taxCalculator = Mage::helper('tax');
+                    $chargeAmount = Mage::getStoreConfig('carriers/speedyshippingmodule/handlingCharge');
+                    $chargeWithTaxApplied = $taxCalculator->getShippingPrice($chargeAmount, true);
+                    $picking->setAmountCodBase($this->_codAmount + $chargeWithTaxApplied);
+                }
+            } 
+            else {
                 $picking->setAmountCodBase($this->_codAmount);
             }
         } else {
@@ -1264,7 +1281,7 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
         //Is fixed prices enabled
         $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable');
 
-        if ($isFixed) {
+        if ($isFixed == 2) {
 
             $orderData->setPayerType(ParamCalculation::PAYER_TYPE_SENDER);
         } else if ($speedyData->getPayerType() == 0) {

@@ -28,7 +28,7 @@ showBoth=  null;
 
     <div style="width: 350px;position: relative">
         <label for="speed_exact_hour_enable"><?php echo $this->__("choose fixed hour") ?></label><br />
-        <?php if(!$isFixedPrice): ?>
+        <?php if($isFixedPrice != 2): ?>
         <p id="fixed_price_view"><?php echo $this->__("fixed hour extra charge") ?></p>
         <?php endif; ?>
         <input type="checkbox" disabled="disabled" name="speed_exact_hour_enable" class="input-box" id="speedy_exact_hour_enable" />
@@ -76,16 +76,19 @@ showBoth=  null;
                     price += priceWithTax;
                 }
                 if (excludeTax) {
-                    price += '/' + priceWithoutTax;
+                    price +=  priceWithoutTax;
                 }
                 if(showBoth){
-                    price +=  priceWithoutTax+'/'+priceWithTax;
+                    price +=  priceWithoutTax+' лв. (<?php echo $this->__("vat_included") ?> '+priceWithTax;
                 }
            }else{
                price = '0.00';
            }
+                if(showBoth){
+                price += ' лв.'+')'
+                }else{
                 price += ' лв.';
-                
+                }
                 $j('p#fixed_price_view').show().text('<?php echo $this->__("fixed hour extra charge") ?> '+' ' + price)
 
             } else {

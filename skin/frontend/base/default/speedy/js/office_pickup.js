@@ -151,12 +151,18 @@ $j('document').ready(function() {
                     price = priceWithoutTax;
                 }
                 else if (showBoth) {
-                    price = priceWithoutTax + '/' + priceWithTax;
+                     price +=  priceWithoutTax+' лв. (Вкл. данък: '+priceWithTax;
                 }
             } else {
                 price = '0.00';
             }
-            price += ' лв.';
+            
+             if(showBoth){
+                price += ' лв.'+')'
+                }else{
+                price += ' лв.';
+                }
+            
             $j('p#fixed_price_view').show().text('Надбавка "Фиксиран час":' + price)
 
         } else {
@@ -191,19 +197,23 @@ $j('document').ready(function() {
             var priceWithTax = $j(finalSelector).find('input:hidden.speedy_exacthour_allowed').val()
 
             var priceWithoutTax = $j(finalSelector).find('input:hidden.speedy_exacthour_withouttax').val()
-            var price = '0.00';
+            var price = '';
             if (!isFreeMethod.length) {
                 if (includeTax) {
                     price = priceWithTax;
                 }
                 else if (excludeTax) {
-                    price = '/' + priceWithoutTax;
+                    price +=  priceWithoutTax;
                 }
                 else if (showBoth) {
-                    price = priceWithoutTax + '/' + priceWithTax;
+                    price +=  priceWithoutTax+' лв. (Вкл. данък: '+priceWithTax;
                 }
             }
-            price += ' лв.';
+            if(showBoth){
+                price += ' лв.'+')'
+                }else{
+                price += ' лв.';
+                }
             $j('p#fixed_price_view').show().text('Надбавка "Фиксиран час":' + price)
             $j('#speedy_exact_picking_data input:text').removeAttr('disabled')
         } else {

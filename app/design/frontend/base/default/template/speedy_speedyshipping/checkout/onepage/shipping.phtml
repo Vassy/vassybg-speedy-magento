@@ -68,12 +68,13 @@
                             <?php endif; ?>
                         </div>
                     </li>
-
+                    <li>
                     <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
                         <div id="shipping:speedy_office_address">
                         <?php else: ?>
                             <div id="shipping:speedy_office_address" style="display: none">
                             <?php endif; ?>
+                                <ul>
                             <li class="wide" id="shipping:speedy_office_textbox">
                                 <div class="field">
                                     <label for=""></label>
@@ -93,10 +94,10 @@
 
 
 
-
+                                </ul>
                         </div>
 
-
+                            <li>
                         <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
 
                             <div id="shipping:speedy_normal_address" style="display: none">
@@ -104,7 +105,7 @@
                                 <div id="shipping:speedy_normal_address">    
 
                                 <?php endif; ?>
-                                
+                                    <ul>
                                 <li class="wide">
                                     <div class="field">
 
@@ -172,7 +173,7 @@
                                         </div>
                                     </div>
                                 </li>
-
+                                <ul>
                             </div>
                             <?php if ($this->helper('customer/address')->isVatAttributeVisible()) : ?>
                                 <li class="wide">
@@ -239,7 +240,7 @@
                             <li class="control" id="sameBillingBox">
                                 <input type="checkbox" name="shipping[same_as_billing]" id="shipping:same_as_billing" value="1"<?php if ($this->getAddress()->getSameAsBilling()): ?> checked="checked"<?php endif; ?> title="<?php echo $this->__('Use Billing Address') ?>" onclick="shipping.setSameAsBilling(this.checked)" class="checkbox" /><label for="shipping:same_as_billing"><?php echo $this->__('Use Billing Address') ?></label>
                             </li>
-                            
+                            <li>
                             <div class="buttons-set" id="shipping-buttons-container">
                                 <p class="required"><?php echo $this->__('* Required Fields') ?></p>
                                 <p class="back-link"><a href="#" onclick="checkout.back();
@@ -249,6 +250,7 @@
                                     <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
                                 </span>
                             </div>
+                            </li>
                             </ul>
                             </form>
                             <script type="text/javascript">

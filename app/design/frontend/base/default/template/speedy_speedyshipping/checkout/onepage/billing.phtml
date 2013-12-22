@@ -69,12 +69,17 @@
                                 <?php endif; ?>
                             </div>
                         </li>
+                        <li>
                         <input type="hidden" name="billing[speedy_site_id]" id="billing:speedy_site_id" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedySiteId()) ?>" />
-                        <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
+                        </li>
+                        <li>
+                            
+                            <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
                             <div id="billing:speedy_office_address">
                             <?php else: ?>
                                 <div id="billing:speedy_office_address" style="display: none">
                                 <?php endif; ?>
+                                    <ul>
                                 <li class="wide" id="billing:speedy_office_textbox">
                                     <div class="field">
                                         <label for=""></label>
@@ -92,12 +97,12 @@
                                     </div>
                                 </li>
 
+                                    </ul>
 
-
-
+                                
                             </div>
-
-
+                            </li>
+                            <li>
                             <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
 
                                 <div id="billing:speedy_normal_address" style="display: none">
@@ -105,6 +110,7 @@
                                     <div id="billing:speedy_normal_address">    
 
                                     <?php endif; ?>
+                                        <ul>
                                     <li class="wide">
                                         <div class="field">
 
@@ -173,7 +179,7 @@
                                             </div>
                                         </div>
                                     </li>
-
+                                        </ul>
                                 </div>
                                 <li class="fields">
                                     <div class="field">

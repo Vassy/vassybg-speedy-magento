@@ -107,9 +107,11 @@ class Speedy_Speedyshipping_Block_Onepage_Paymentinfo extends Mage_Payment_Block
                 $quote = Mage::getModel('checkout/cart')->getQuote();
                 $carrierMethod = $quote->getShippingAddress()->getShippingMethod();
             }
+            
+            if(isset($carrierMethod)){
             $code = explode('_', $carrierMethod);
-
-            if ($code) {
+            }
+            if (isset($code)) {
                 //Is Speedy the choosen courier
                 if ($code[0] == 'speedyshippingmodule') {
 
