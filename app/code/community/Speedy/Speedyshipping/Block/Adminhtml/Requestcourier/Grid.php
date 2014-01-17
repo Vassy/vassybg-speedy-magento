@@ -106,6 +106,15 @@ Mage_Adminhtml_Block_Widget_Grid {
         }
         return $this;
     }
+    
+    
+    protected function _prepareLayout() {
+        parent::_prepareLayout();
+        
+        //Remove unneeded buttons
+        $this->unsetChild('search_button');
+        $this->unsetChild('reset_filter_button');
+    }
 
 }
 

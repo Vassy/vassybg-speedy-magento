@@ -113,8 +113,8 @@ $j('document').ready(function() {
     })
 
 
-  
- 
+
+
 
 
 
@@ -151,18 +151,18 @@ $j('document').ready(function() {
                     price = priceWithoutTax;
                 }
                 else if (showBoth) {
-                     price +=  priceWithoutTax+' лв. (Вкл. данък: '+priceWithTax;
+                    price += priceWithoutTax + ' лв. (Вкл. данък: ' + priceWithTax;
                 }
             } else {
                 price = '0.00';
             }
-            
-             if(showBoth){
-                price += ' лв.'+')'
-                }else{
+
+            if (showBoth && !isFreeMethod.length) {
+                price += ' лв.' + ')'
+            } else {
                 price += ' лв.';
-                }
-            
+            }
+
             $j('p#fixed_price_view').show().text('Надбавка "Фиксиран час":' + price)
 
         } else {
@@ -198,22 +198,25 @@ $j('document').ready(function() {
 
             var priceWithoutTax = $j(finalSelector).find('input:hidden.speedy_exacthour_withouttax').val()
             var price = '';
+
             if (!isFreeMethod.length) {
                 if (includeTax) {
                     price = priceWithTax;
                 }
                 else if (excludeTax) {
-                    price +=  priceWithoutTax;
+                    price += priceWithoutTax;
                 }
                 else if (showBoth) {
-                    price +=  priceWithoutTax+' лв. (Вкл. данък: '+priceWithTax;
+                    price += priceWithoutTax + ' лв. (Вкл. данък: ' + priceWithTax;
                 }
+            } else {
+                price = '0.00';
             }
-            if(showBoth){
-                price += ' лв.'+')'
-                }else{
+            if (showBoth && !isFreeMethod.length) {
+                price += ' лв.' + ')'
+            } else {
                 price += ' лв.';
-                }
+            }
             $j('p#fixed_price_view').show().text('Надбавка "Фиксиран час":' + price)
             $j('#speedy_exact_picking_data input:text').removeAttr('disabled')
         } else {

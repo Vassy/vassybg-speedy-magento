@@ -5,7 +5,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
     protected $_code = 'speedyshippingmodule';
     protected $_request = null;
     protected $_rawRequest = null;
-    
+
     /**
      * A boolean property that indicates whether the current execution context 
      * is the admin area. This is used and set in various methods in this class
@@ -20,8 +20,8 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
      * @var Mage_Shipping_Model_Rate_Result|null
      */
     protected $_result = null;
-    
     protected $_speedyRates = array();
+
     /**
      * A property that holds the picking data about particular Magento order, in
      * format that Speedy expects. This data is extracted mainly in setUpOrderData()
@@ -29,6 +29,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
      * @var type 
      */
     protected $_pickingData;
+
     /**
      * A property that holds data about the sender (the data about the online 
      * shop). This is received after a  successful authentication. The data is 
@@ -36,6 +37,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
      * @var type 
      */
     protected $_senderData;
+
     /**
      * A property that holds data about the receiver (the customer of the online
      * shop).
@@ -48,15 +50,10 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
     protected $_receiverData;
     protected $_orderData;
     protected $_checkoutSession;
-    
     protected $_city_id;
-    
     protected $_codAmount = null;
-    
     protected $_speedyServiceInfo = array();
-    
     protected $_CODPrices = array();
-    
     protected $_doesRequestContainExactHour;
 
     /**
@@ -114,8 +111,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
 
         try {
 
-            $this->_speedyEPSInterfaceImplementaion =
-                    new EPSSOAPInterfaceImpl(Mage::getStoreConfig('carriers/' . $this->_code . '/server'));
+            $this->_speedyEPSInterfaceImplementaion = new EPSSOAPInterfaceImpl(Mage::getStoreConfig('carriers/' . $this->_code . '/server'));
 
             $this->_speedyEPS = new EPSFacade($this->_speedyEPSInterfaceImplementaion, $user, $pass);
 
@@ -620,8 +616,19 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
         // $pickingData->amountCODBase = $this->_request->getBaseSubtotalInclTax() - $sumOfVirtualProducts;
 
 
+
+
         $pickingData->amountCODBase = $this->_request->getBaseSubtotalInclTax();
 
+        $isFixed = $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable');
+
+        //Speedy calculator plus fixed handling charge
+        if ($isFixed == 3) {
+            $taxCalculator = Mage::helper('tax');
+            $chargeAmount = Mage::getStoreConfig('carriers/speedyshippingmodule/handlingCharge');
+            $chargeWithTaxApplied = $taxCalculator->getShippingPrice($chargeAmount, true);
+            $pickingData->amountCODBase += $chargeWithTaxApplied;
+        }
 
         $isEnabled = Mage::getStoreConfig('carriers/speedyshippingmodule/free_shipping_enable');
 
@@ -752,7 +759,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
          * 
          */
         //$allowedMethods = $this->_filterShippingMethods($methods);
-         $allowedMethods = $methods;
+        $allowedMethods = $methods;
         if (isset($allowedMethods)) {
 
             $priceForMethod = $this->_calculatePrices($allowedMethods);
@@ -901,170 +908,166 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
     protected function _filterShippingMethods($arrAvailableServices) {
 
 
-                //GET CONFIG OPTIONS
+        //GET CONFIG OPTIONS
 
-                $isFixedHourAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/add_fixed_hour');
-                $isBackDocumentsAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/back_documents');
-                $isBackReceiptAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/back_receipt');
-                $isInsuranceAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/add_insurance');
-
-
-                //CHECK IF DELIVERY ADDRESS IS AN OFFICE
-                $isCurrentAddressOffice = $this->_pickingData->takeFromOfficeId;
+        $isFixedHourAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/add_fixed_hour');
+        $isBackDocumentsAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/back_documents');
+        $isBackReceiptAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/back_receipt');
+        $isInsuranceAllowed = Mage::getStoreConfig('carriers/speedyshippingmodule/add_insurance');
 
 
-                //Check if Speedy COD is available as a payment method
-                $isSpeedyCODAvailable = null;
-                $_speedy_payment_code = 'cashondelivery';
-
-                $allActivePaymentMethods = Mage::getModel('payment/config')->getActiveMethods();
-
-                foreach ($allActivePaymentMethods as $method) {
-
-                    if ($method->getId() == $_speedy_payment_code) {
-
-                        $isSpeedyCODAvailable = true;
-                        break;
-                    }
-                }
+        //CHECK IF DELIVERY ADDRESS IS AN OFFICE
+        $isCurrentAddressOffice = $this->_pickingData->takeFromOfficeId;
 
 
+        //Check if Speedy COD is available as a payment method
+        $isSpeedyCODAvailable = null;
+        $_speedy_payment_code = 'cashondelivery';
 
-                $counter = 0;
+        $allActivePaymentMethods = Mage::getModel('payment/config')->getActiveMethods();
 
-                foreach ($arrAvailableServices as $service) {
-                    
-                    if($service->getErrorDescription()){
-                        unset($arrAvailableServices[$counter]);
-                        $counter++;
-                        continue;
-                    }else{
-                        $counter++;
-                    }
-                }
-/*
-                    $serviceId = $service->getTypeId();
-                    $this->_speedyServiceInfo[$serviceId] = array();
+        foreach ($allActivePaymentMethods as $method) {
+
+            if ($method->getId() == $_speedy_payment_code) {
+
+                $isSpeedyCODAvailable = true;
+                break;
+            }
+        }
 
 
-                    $this->_speedyServiceInfo[$serviceId]['fixed_hour'] =
-                            $service->getAllowanceFixedTimeDelivery()->getValue();
 
-                    $this->_speedyServiceInfo[$serviceId]['cod'] =
-                            $service->getAllowanceCashOnDelivery()->getValue();
+        $counter = 0;
 
-                    $this->_speedyServiceInfo[$serviceId]['insurance'] =
-                            $service->getAllowanceInsurance()->getValue();
+        foreach ($arrAvailableServices as $service) {
 
-                    $this->_speedyServiceInfo[$serviceId]['to_be_called'] =
-                            $service->getAllowanceToBeCalled()->getValue();
-
-
-                    $this->_speedyServiceInfo[$serviceId]['back_receipt'] =
-                            $service->getAllowanceBackReceiptRequest();
-
-                    $this->_speedyServiceInfo[$serviceId]['back_documents'] =
-                            $service->getAllowanceBackDocumentsRequest();
+            if ($service->getErrorDescription()) {
+                unset($arrAvailableServices[$counter]);
+                $counter++;
+                continue;
+            } else {
+                $counter++;
+            }
+        }
+        /*
+          $serviceId = $service->getTypeId();
+          $this->_speedyServiceInfo[$serviceId] = array();
 
 
-                    $removeServiceFromList = FALSE;
+          $this->_speedyServiceInfo[$serviceId]['fixed_hour'] =
+          $service->getAllowanceFixedTimeDelivery()->getValue();
 
-                    if ((!$isFixedHourAllowed || !isset($this->_pickingData->fixedTimeDelivery)) &&
-                            ($this->_speedyServiceInfo[$serviceId]['fixed_hour'] == 'REQUIRED')) {
+          $this->_speedyServiceInfo[$serviceId]['cod'] =
+          $service->getAllowanceCashOnDelivery()->getValue();
 
+          $this->_speedyServiceInfo[$serviceId]['insurance'] =
+          $service->getAllowanceInsurance()->getValue();
 
-                        $removeServiceFromList = TRUE;
-                    }
-
-                    if (!empty($this->_pickingData->fixedTimeDelivery) &&
-                            $this->_speedyServiceInfo[$serviceId]['fixed_hour'] == 'BANNED') {
-
-                        $removeServiceFromList = TRUE;
-                    }
-
-                    if ($isBackDocumentsAllowed &&
-                            ($this->_speedyServiceInfo[$serviceId]['back_documents'] == 'BANNED')) {
-
-                        $removeServiceFromList = TRUE;
-                    } else if (!$isBackDocumentsAllowed &&
-                            ($this->_speedyServiceInfo[$serviceId]['back_documents'] == 'REQUIRED')) {
-
-                        $removeServiceFromList = TRUE;
-                    }
+          $this->_speedyServiceInfo[$serviceId]['to_be_called'] =
+          $service->getAllowanceToBeCalled()->getValue();
 
 
-                    if ($isBackReceiptAllowed &&
-                            $this->_speedyServiceInfo[$serviceId]['back_documents'] == 'BANNED') {
+          $this->_speedyServiceInfo[$serviceId]['back_receipt'] =
+          $service->getAllowanceBackReceiptRequest();
 
-                        $removeServiceFromList = TRUE;
-                    } else if (!$isBackReceiptAllowed &&
-                            $this->_speedyServiceInfo[$serviceId]['back_documents'] == 'REQUIRED') {
-
-                        $removeServiceFromList = TRUE;
-                    }
+          $this->_speedyServiceInfo[$serviceId]['back_documents'] =
+          $service->getAllowanceBackDocumentsRequest();
 
 
-                    if (!$isInsuranceAllowed &&
-                            ($this->_speedyServiceInfo[$serviceId]['insurance'] == 'REQUIRED')) {
+          $removeServiceFromList = FALSE;
 
-                        $removeServiceFromList = TRUE;
-                    } else if ($isInsuranceAllowed &&
-                            ($this->_speedyServiceInfo[$serviceId]['insurance'] == 'BANNED')) {
-
-                        $removeServiceFromList = TRUE;
-                    }
-
-                    if (!$isSpeedyCODAvailable &&
-                            ($this->_speedyServiceInfo[$serviceId]['cod'] == 'REQUIRED')) {
-
-                        $removeServiceFromList = TRUE;
-                    }
-
-                    if (!$this->_pickingData->takeFromOfficeId &&
-                            ($this->_speedyServiceInfo[$serviceId]['to_be_called'] == 'REQUIRED')) {
-
-                        $removeServiceFromList = TRUE;
-                    } else if ($this->_pickingData->takeFromOfficeId &&
-                            ($this->_speedyServiceInfo[$serviceId]['to_be_called'] == 'BANNED')) {
-                        $removeServiceFromList = TRUE;
-                    }
-                    
-                    
-                    if ($removeServiceFromList) {
-                        unset($arrAvailableServices[$counter]);
-                    }
-                    $counter++;
-                }
-*/
-                
-                //reindex $arrAvailableServices
-
-                $arrAvailableServices = array_values($arrAvailableServices);
-                
-                return $arrAvailableServices;
-
-               
-
-                // Определеляне на сечението между възможните услуги и конфигурираните за клиента услуги (списъка с услуги, с които клиента работи)
-                //$arrSelectedServices = Util::serviceIntersection($arrAvailableServices, $methods);
-
-                /*
-                $availableDates = array();
-                //Retrieve the list of available days for picking
-                foreach ($arrSelectedServices as $service) {
-                    $availableDates[$service] = $this->_speedyEPS->getAllowedDaysForTaking(
-                            $service, !isset($this->_pickingData->bringToOfficeId) ? $this->_senderData->address->siteID : null, $this->_pickingData->bringToOfficeId, null
-                    );
-                }
-*/
-                //Get the first available date for picking
-                //$firstAvailableDate = array_shift($availableDates);
-                //$this->_pickingData->takingDate = $firstAvailableDate[0];
+          if ((!$isFixedHourAllowed || !isset($this->_pickingData->fixedTimeDelivery)) &&
+          ($this->_speedyServiceInfo[$serviceId]['fixed_hour'] == 'REQUIRED')) {
 
 
-                // Филтриране на списъка от възможни услуги според възможните стойности за тегло
-           
-       
+          $removeServiceFromList = TRUE;
+          }
+
+          if (!empty($this->_pickingData->fixedTimeDelivery) &&
+          $this->_speedyServiceInfo[$serviceId]['fixed_hour'] == 'BANNED') {
+
+          $removeServiceFromList = TRUE;
+          }
+
+          if ($isBackDocumentsAllowed &&
+          ($this->_speedyServiceInfo[$serviceId]['back_documents'] == 'BANNED')) {
+
+          $removeServiceFromList = TRUE;
+          } else if (!$isBackDocumentsAllowed &&
+          ($this->_speedyServiceInfo[$serviceId]['back_documents'] == 'REQUIRED')) {
+
+          $removeServiceFromList = TRUE;
+          }
+
+
+          if ($isBackReceiptAllowed &&
+          $this->_speedyServiceInfo[$serviceId]['back_documents'] == 'BANNED') {
+
+          $removeServiceFromList = TRUE;
+          } else if (!$isBackReceiptAllowed &&
+          $this->_speedyServiceInfo[$serviceId]['back_documents'] == 'REQUIRED') {
+
+          $removeServiceFromList = TRUE;
+          }
+
+
+          if (!$isInsuranceAllowed &&
+          ($this->_speedyServiceInfo[$serviceId]['insurance'] == 'REQUIRED')) {
+
+          $removeServiceFromList = TRUE;
+          } else if ($isInsuranceAllowed &&
+          ($this->_speedyServiceInfo[$serviceId]['insurance'] == 'BANNED')) {
+
+          $removeServiceFromList = TRUE;
+          }
+
+          if (!$isSpeedyCODAvailable &&
+          ($this->_speedyServiceInfo[$serviceId]['cod'] == 'REQUIRED')) {
+
+          $removeServiceFromList = TRUE;
+          }
+
+          if (!$this->_pickingData->takeFromOfficeId &&
+          ($this->_speedyServiceInfo[$serviceId]['to_be_called'] == 'REQUIRED')) {
+
+          $removeServiceFromList = TRUE;
+          } else if ($this->_pickingData->takeFromOfficeId &&
+          ($this->_speedyServiceInfo[$serviceId]['to_be_called'] == 'BANNED')) {
+          $removeServiceFromList = TRUE;
+          }
+
+
+          if ($removeServiceFromList) {
+          unset($arrAvailableServices[$counter]);
+          }
+          $counter++;
+          }
+         */
+
+        //reindex $arrAvailableServices
+
+        $arrAvailableServices = array_values($arrAvailableServices);
+
+        return $arrAvailableServices;
+
+
+
+        // Определеляне на сечението между възможните услуги и конфигурираните за клиента услуги (списъка с услуги, с които клиента работи)
+        //$arrSelectedServices = Util::serviceIntersection($arrAvailableServices, $methods);
+
+        /*
+          $availableDates = array();
+          //Retrieve the list of available days for picking
+          foreach ($arrSelectedServices as $service) {
+          $availableDates[$service] = $this->_speedyEPS->getAllowedDaysForTaking(
+          $service, !isset($this->_pickingData->bringToOfficeId) ? $this->_senderData->address->siteID : null, $this->_pickingData->bringToOfficeId, null
+          );
+          }
+         */
+        //Get the first available date for picking
+        //$firstAvailableDate = array_shift($availableDates);
+        //$this->_pickingData->takingDate = $firstAvailableDate[0];
+        // Филтриране на списъка от възможни услуги според възможните стойности за тегло
     }
 
     /**
@@ -1085,12 +1088,12 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
         $paramCalculation->setBroughtToOffice($this->_pickingData->bringToOfficeId);
 
         $paramCalculation->setAutoAdjustTakingDate(1);
-        
-        if(Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays')){
+
+        if (Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays')) {
             $paramCalculation->setDeferredDeliveryWorkDays(Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays'));
         }
-        
-        
+
+
         $paramCalculation->setToBeCalled(isset($this->_pickingData->takeFromOfficeId));
 
         $paramCalculation->setParcelsCount($this->_pickingData->parcelsCount);
@@ -1147,8 +1150,6 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
 
             $resultCalculation = $this->_speedyEPS->calculateMultipleServices($paramCalculation, $methods);
             $resultCalculation = $this->_filterShippingMethods($resultCalculation);
-            
-            
         } catch (ServerException $se) {
 
             Mage::log($se->getMessage(), null, 'speedyLog.log');
@@ -1290,9 +1291,9 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
 
                         $this->_CODPrices[$code] = $method->getResultInfo()->getAmounts()->getCodPremium();
 
-                        
+
                         $taxCalculator = Mage::helper('tax');
-                        
+
 
                         $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable');
 
@@ -1302,19 +1303,19 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
 
 
                             $total = $fixedPrice;
-                        }else if($isFixed == 3){
+                        } else if ($isFixed == 3) {
                             $handlingAmount = Mage::getStoreConfig('carriers/speedyshippingmodule/handlingCharge');
                             $total = $total + $taxCalculator->getShippingPrice($handlingAmount, FALSE);
                         }
 
                         //Is fixed hour allowed for this particular service
-                        if(array_key_exists($method->getServiceTypeId(), $this->_speedyServiceInfo)){
-                        $_fixedHour = $this->_speedyServiceInfo[$method->getServiceTypeId()]['fixed_hour'];
-                        //Is cash on delivery allowed for this particular service
-                        $_cod = $this->_speedyServiceInfo[$method->getServiceTypeId()]['cod'];
+                        if (array_key_exists($method->getServiceTypeId(), $this->_speedyServiceInfo)) {
+                            $_fixedHour = $this->_speedyServiceInfo[$method->getServiceTypeId()]['fixed_hour'];
+                            //Is cash on delivery allowed for this particular service
+                            $_cod = $this->_speedyServiceInfo[$method->getServiceTypeId()]['cod'];
                         }
-                        
-                        
+
+
 
                         if (!isset($this->_pickingData->fixedTimeDelivery)) {
 
@@ -1341,7 +1342,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
                                 $methodData = array();
                             }
 
-                            
+
 
                             $fixed_time_amount = $method->getResultInfo()->getAmounts()->getFixedTimeDelivery();
 
@@ -1688,4 +1689,3 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
     }
 
 }
-

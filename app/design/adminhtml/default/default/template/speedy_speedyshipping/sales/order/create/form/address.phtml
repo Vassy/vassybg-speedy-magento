@@ -560,6 +560,9 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
 
         _initListeners(target);
+            if(shippingNomenclature == 'NO'){
+             disableAutocomplete();          
+            }
 
         initOfficeChooser(target);
 
