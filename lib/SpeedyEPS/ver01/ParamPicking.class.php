@@ -946,7 +946,7 @@ class ParamPicking {
         $stdClass->backDocumentsRequest         = $this->_backDocumentsRequest;
         $stdClass->backReceiptRequest           = $this->_backReceiptRequest;
         $stdClass->willBringToOffice            = $this->_willBringToOffice;
-        $stdClass->willBringToOfficeId           = $this->_willBringToOfficeId;
+        $stdClass->willBringToOfficeId          = $this->_willBringToOfficeId;
         $stdClass->amountInsuranceBase          = $this->_amountInsuranceBase;
         $stdClass->amountCodBase                = $this->_amountCodBase;
         $stdClass->payCodToThirdParty           = $this->_payCodToThirdParty;

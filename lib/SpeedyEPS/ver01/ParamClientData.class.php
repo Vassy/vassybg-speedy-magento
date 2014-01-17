@@ -56,6 +56,16 @@ class ParamClientData {
      * @var array List of ParamPhoneNumber
      */
     private $_phones;
+    
+    /**
+     * Email
+     * Maximum size is 256 symbols.
+     * MANDATORY: NO
+     * @var string
+     * 
+     * @since 2.1.0
+     */
+    private $_email;
 
     /**
      * Set client/partner ID
@@ -157,6 +167,24 @@ class ParamClientData {
     public function getPhones() {
         return $this->_phones;
     }
+    
+    /**
+     * Set email
+     * @param string $email Email address to set
+     * @since 2.1.0
+     */
+    public function setEmail($email) {
+    	$this->_email = $email;
+    }
+    
+    /**
+     * Get email
+     * @return string Email address
+     * @since 2.1.0
+     */
+    public function getEmail() {
+    	return $this->_email;
+    }
 
     /**
      * Return standard class from this class
@@ -182,6 +210,7 @@ class ParamClientData {
             }
         }
         $stdClass->phones = $arrStdClassParamPhoneNumber;
+        $stdClass->email = $this->_email;
         return $stdClass;
     }
 }

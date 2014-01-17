@@ -958,7 +958,6 @@ class EPSSOAPInterfaceImpl extends SoapClient implements EPSInterface {
      */
     public function searchClients($sessionId, $clientQuery) {
         try {
-            
             $searchClientsStdObject = new stdClass();
             $searchClientsStdObject->sessionId   = $sessionId;
             $searchClientsStdObject->clientQuery = $clientQuery->toStdClass();
@@ -980,5 +979,100 @@ class EPSSOAPInterfaceImpl extends SoapClient implements EPSInterface {
             throw new ServerException($sf);
         }
     }
+    
+    /**
+     * @see EPSInterface::listSpecialDeliveryRequirements()
+     */
+    public function listSpecialDeliveryRequirements($sessionId) {
+    	try {    
+    		$listSpecialDeliveryRequirementsStdObject = new stdClass();
+            $listSpecialDeliveryRequirementsStdObject->sessionId = $sessionId;
+            $response = parent::listSpecialDeliveryRequirements($listSpecialDeliveryRequirementsStdObject);
+            $arrResultSpecialDeliveryRequirement = array();
+        
+            if (isset($response->return)) {
+                $arrStdResultSpecialDeliveryRequirement = $response->return;
+                if (is_array($arrStdResultSpecialDeliveryRequirement)) {
+                    for($i = 0; $i < count($arrStdResultSpecialDeliveryRequirement); $i++) {
+                        $arrResultSpecialDeliveryRequirement[$i] = new ResultSpecialDeliveryRequirement($arrStdResultSpecialDeliveryRequirement[$i]);
+                    }
+                } else {
+                    $arrResultSpecialDeliveryRequirement[0] = new ResultSpecialDeliveryRequirement($arrStdResultSpecialDeliveryRequirement);
+                }
+            }
+            return $arrResultSpecialDeliveryRequirement;
+        } catch (SoapFault $sf) {
+            throw new ServerException($sf);
+        }
+       }
+       
+       /**
+        * @see EPSInterface::validateAddress()
+        */
+       public function validateAddress($sessionId, $address, $validationMode) {
+       	try {
+       		$validateAddressStdObject = new stdClass();
+       		$validateAddressStdObject->sessionId = $sessionId;
+       		$validateAddressStdObject->address   = $address->toStdClass();
+       		$validateAddressStdObject->validationMode = $validationMode;
+       		$response = parent::validateAddress($validateAddressStdObject);
+            return $response->return;
+       	} catch (SoapFault $sf) {
+       		throw new ServerException($sf);
+       	}
+       }
+       
+       /**
+        * @see EPSInterface::listContractClients()
+        */
+       public function listContractClients($sessionId) {
+       	try {
+       		$listContractClientsStdObject = new stdClass();
+       		$listContractClientsStdObject->sessionId = $sessionId;
+       		$response = parent::listContractClients($listContractClientsStdObject);
+       		$arrResultContractClients = array();
+       
+       		if (isset($response->return)) {
+       			$arrStdResultContractClients = $response->return;
+       			if (is_array($arrStdResultContractClients)) {
+       				for($i = 0; $i < count($arrStdResultContractClients); $i++) {
+       					$arrResultContractClients[$i] = new ResultClientData($arrStdResultContractClients[$i]);
+       				}
+       			} else {
+       				$arrResultContractClients[0] = new ResultClientData($arrStdResultContractClients);
+       			}
+       		}
+       		return $arrResultContractClients;
+       	} catch (SoapFault $sf) {
+       		throw new ServerException($sf);
+       	}
+       }
+       
+       /**
+        * @see EPSInterface::listOfficesEx()
+        */
+       public function listOfficesEx($sessionId, $name, $siteId) {
+       	try {
+       		$listOfficesExStdObject = new stdClass();
+       		$listOfficesExStdObject->sessionId = $sessionId;
+       		$listOfficesExStdObject->name      = $name;
+       		$listOfficesExStdObject->siteId    = $siteId;
+       		$response = parent::listOfficesEx($listOfficesExStdObject);
+       		$arrListOfficesEx = array();
+       		if (isset($response->return)) {
+       			$arrStdListOfficesEx = $response->return;
+       			if (is_array($arrStdListOfficesEx)) {
+       				for($i = 0; $i < count($arrStdListOfficesEx); $i++) {
+       					$arrListOfficesEx[$i] = new ResultOfficeEx($arrStdListOfficesEx[$i]);
+       				}
+       			} else {
+       				$arrListOfficesEx[0] = new ResultOfficeEx($arrStdListOfficesEx);
+       			}
+       		}
+       		return $arrListOfficesEx;
+       	} catch (SoapFault $sf) {
+       		throw new ServerException($sf);
+       	}
+       }
 }
 ?>

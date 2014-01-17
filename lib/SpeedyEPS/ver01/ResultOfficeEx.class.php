@@ -1,11 +1,11 @@
 <?php
 
-require_once 'ValueAddress.class.php';
+require_once 'ResultAddressEx.class.php';
 
 /**
  * Instances of this class are returned as a result of Speedy web service queries for offices
  */
-class ResultOffice {
+class ResultOfficeEx {
 
     /**
      * Office ID
@@ -27,7 +27,7 @@ class ResultOffice {
 
     /**
      * Office address
-     * @var ValueAddress
+     * @var ResultAddressEx
      */
     private $_address;
 
@@ -60,14 +60,14 @@ class ResultOffice {
      * @param stdClass $stdClassResultStreet
      */
     function __construct($stdClassResultOffice) {
-        $this->_id                  = isset($stdClassResultOffice->id)                  ? $stdClassResultOffice->id                        : null;
-        $this->_name                = isset($stdClassResultOffice->name)                ? $stdClassResultOffice->name                      : null;
-        $this->_siteId              = isset($stdClassResultOffice->siteId)              ? $stdClassResultOffice->siteId                    : null;
-        $this->_address             = isset($stdClassResultOffice->address)             ? new ValueAddress($stdClassResultOffice->address) : null;
-        $this->_workingTimeFrom     = isset($stdClassResultOffice->workingTimeFrom)     ? $stdClassResultOffice->workingTimeFrom           : null;
-        $this->_workingTimeTo       = isset($stdClassResultOffice->workingTimeTo)       ? $stdClassResultOffice->workingTimeTo             : null;
-        $this->_workingTimeHalfFrom = isset($stdClassResultOffice->workingTimeHalfFrom) ? $stdClassResultOffice->workingTimeHalfFrom       : null;
-        $this->_workingTimeHalfTo   = isset($stdClassResultOffice->workingTimeHalfTo)   ? $stdClassResultOffice->workingTimeHalfTo         : null;
+        $this->_id                  = isset($stdClassResultOffice->id)                  ? $stdClassResultOffice->id                           : null;
+        $this->_name                = isset($stdClassResultOffice->name)                ? $stdClassResultOffice->name                         : null;
+        $this->_siteId              = isset($stdClassResultOffice->siteId)              ? $stdClassResultOffice->siteId                       : null;
+        $this->_address             = isset($stdClassResultOffice->address)             ? new ResultAddressEx($stdClassResultOffice->address) : null;
+        $this->_workingTimeFrom     = isset($stdClassResultOffice->workingTimeFrom)     ? $stdClassResultOffice->workingTimeFrom              : null;
+        $this->_workingTimeTo       = isset($stdClassResultOffice->workingTimeTo)       ? $stdClassResultOffice->workingTimeTo                : null;
+        $this->_workingTimeHalfFrom = isset($stdClassResultOffice->workingTimeHalfFrom) ? $stdClassResultOffice->workingTimeHalfFrom          : null;
+        $this->_workingTimeHalfTo   = isset($stdClassResultOffice->workingTimeHalfTo)   ? $stdClassResultOffice->workingTimeHalfTo            : null;
     }
 
     /**
@@ -96,7 +96,7 @@ class ResultOffice {
 
     /**
      * Get office address
-     * @return ValueAddress Office address
+     * @return ResultAddressEx Office address
      */
     public function getAddress() {
         return $this->_address;

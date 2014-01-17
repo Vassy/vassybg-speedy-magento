@@ -715,5 +715,60 @@ class EPSFacade {
         $this->checkStateBeforeCall();
         return $this->_epsInterfaceImpl->searchClients($this->getResultLogin(true)->getSessionId(), $clientQuery);
     }
+    
+    
+	/**
+     * Returns list with available special delivery requirements for logged user
+     * @throws ClientException Thrown in case EPS interface implementation is not set
+     * @throws ServerException Thrown in case communication with server has failed
+     * @return array List of ResultSpecialDeliveryRequirement
+     * @since 2.1.0
+     */
+    public function listSpecialDeliveryRequirements() {
+    	$this->checkStateBeforeCall();
+    	return $this->_epsInterfaceImpl->listSpecialDeliveryRequirements($this->getResultLogin(true)->getSessionId());
+    }
+    
+    /**
+     * Validates address and returns validation result
+     *   - validationMode = 0 (default) - Extended validation w/o GIS info (address uniqueness is not verified);
+     *   - validationMode = 1 (NOT IMPLEMENTED YET - reserved for future implementation) Extended validation with GIS info (address uniqueness is verified);
+     *   - validationMode = 2 - basic validation (the same as address validation in createBillOfLading)
+     * @param ParamAddress $address
+     * @param integer $validationMode signed 32 bit
+     * @throws ServerException Thrown in case communication with server has failed
+     * @throws PickingValidationException Thrown in case address validation has failed
+     * @return boolean Validation result flag
+     * @since 2.2.0
+     */
+    public function validateAddress($address, $validationMode) {
+    	$this->checkStateBeforeCall();
+    	return $this->_epsInterfaceImpl->validateAddress($this->getResultLogin(true)->getSessionId(), $address, $validationMode);
+    }
+    
+    /**
+     * Returns all client objects ( including logged user's ) having the same contract as logged client's contract.
+     * @throws ServerException Thrown in case communication with server has failed
+     * @return List of ResultClientData
+     * @since 2.2.0
+    */
+    public function listContractClients() {
+    	$this->checkStateBeforeCall();
+    	return $this->_epsInterfaceImpl->listContractClients($this->getResultLogin(true)->getSessionId());
+    }
+    
+    /**
+     * Returns a list of Speedy offices matching the search criteria
+     * The list is limited to 10 records.
+     * @since 2.2.0
+     * @param string $name Office name (or part of it);
+     * @param integer $siteId Signed 64-bit Site ID
+     * @throws ServerException Thrown in case communication with server has failed
+     * @return array ResultOfficeEx List of offices
+     */
+    public function listOfficesEx($name, $siteId) {
+    	$this->checkStateBeforeCall();
+    	return $this->_epsInterfaceImpl->listOfficesEx($this->getResultLogin(true)->getSessionId(), $name, $siteId);
+    }
 }
 ?>

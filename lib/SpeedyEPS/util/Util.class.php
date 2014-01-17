@@ -81,7 +81,7 @@ class Util {
      * Get library version
      */
     public static function getLibVersion() {
-        return "1.6-ga0";
+        return "@@VERSION";
     }
 }
 ?>
