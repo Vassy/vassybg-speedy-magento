@@ -70,39 +70,39 @@
                             </div>
                         </li>
                         <li>
-                        <input type="hidden" name="billing[speedy_site_id]" id="billing:speedy_site_id" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedySiteId()) ?>" />
+                            <input type="hidden" name="billing[speedy_site_id]" id="billing:speedy_site_id" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedySiteId()) ?>" />
                         </li>
                         <li>
-                            
+
                             <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
-                            <div id="billing:speedy_office_address">
-                            <?php else: ?>
-                                <div id="billing:speedy_office_address" style="display: none">
-                                <?php endif; ?>
+                                <div id="billing:speedy_office_address">
+                                <?php else: ?>
+                                    <div id="billing:speedy_office_address" style="display: none">
+                                    <?php endif; ?>
                                     <ul>
-                                <li class="wide" id="billing:speedy_office_textbox">
-                                    <div class="field">
-                                        <label for=""></label>
-                                        <div class="input-box">
+                                        <li class="wide" id="billing:speedy_office_textbox">
+                                            <div class="field">
+                                                <label for=""></label>
+                                                <div class="input-box">
 
-                                            <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
-                                                <input type="text" name="billing[speedy_office_locator]" id="billing:speedy_office_locator" class="input-text" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet(1)) ?>"/>
-                                                <input type="hidden" name="billing[speedy_office_id]" id="billing:speedy_office_id" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedyOfficeId()) ?>" />
-                                            <?php else: ?>
+                                                    <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
+                                                        <input type="text" name="billing[speedy_office_locator]" id="billing:speedy_office_locator" class="input-text" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet(1)) ?>"/>
+                                                        <input type="hidden" name="billing[speedy_office_id]" id="billing:speedy_office_id" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedyOfficeId()) ?>" />
+                                                    <?php else: ?>
 
-                                                <input type="text" name="billing[speedy_office_locator]" id="billing:speedy_office_locator" class="input-text" />
-                                                <input type="hidden" name="billing[speedy_office_id]" id="billing:speedy_office_id" />
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                                </li>
+                                                        <input type="text" name="billing[speedy_office_locator]" id="billing:speedy_office_locator" class="input-text" />
+                                                        <input type="hidden" name="billing[speedy_office_id]" id="billing:speedy_office_id" />
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </li>
 
                                     </ul>
 
-                                
-                            </div>
-                            </li>
-                            <li>
+
+                                </div>
+                        </li>
+                        <li>
                             <?php if ($this->getAddress()->getSpeedyOfficeId()): ?>
 
                                 <div id="billing:speedy_normal_address" style="display: none">
@@ -110,76 +110,76 @@
                                     <div id="billing:speedy_normal_address">    
 
                                     <?php endif; ?>
-                                        <ul>
-                                    <li class="wide">
-                                        <div class="field">
+                                    <ul>
+                                        <li class="wide">
+                                            <div class="field">
 
-                                            <label class="required"  for="speedy_quarter_name"><?php echo $this->__('Quarter') ?></label>
+                                                <label class="required"  for="speedy_quarter_name"><?php echo $this->__('Quarter') ?></label>
+                                                <div class="input-box">
+                                                    <input type="text" class="input-text" name="billing[speedy_quarter_name]" id="billing:speedy_quarter_name" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyQuarterName()) ?>"/><br />
+                                                    <input type="hidden" name="billing[speedy_quarter_id]" id="billing:speedy_quarter_id" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyQuarterId()) ?>"/></div></div>
+
+
+                                            <input type="hidden" name="billing[speedy_street_id]" id="billing:speedy_street_id" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyStreetId()) ?>" />
+                                        </li>
+                                        <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
+                                        <li class="wide">
+                                            <label for="speedy_street">Улица:</label>
                                             <div class="input-box">
-                                                <input type="text" class="input-text" name="billing[speedy_quarter_name]" id="billing:speedy_quarter_name" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyQuarterName()) ?>"/><br />
-                                                <input type="hidden" name="billing[speedy_quarter_id]" id="billing:speedy_quarter_id" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyQuarterId()) ?>"/></div></div>
-
-
-                                        <input type="hidden" name="billing[speedy_street_id]" id="billing:speedy_street_id" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyStreetId()) ?>" />
-                                    </li>
-                                    <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
-                                    <li class="wide">
-                                        <label for="speedy_street">Улица:</label>
-                                        <div class="input-box">
-                                            <input type="text" name="billing[speedy_street_name]" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedyStreetName()) ?>" id="billing:speedy_street" class="input-text"  />
-                                        </div>
-                                        <div class="street_holder" style="display: none">
-                                            <label for="billing:street1" class="required"><em>*</em><?php echo $this->__('Address') ?></label>
-                                            <div class="input-box">
-                                                <input type="text" title="<?php echo $this->__('Street Address') ?>" name="billing[street][]" id="billing:street1" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet(1)) ?>" class="input-text <?php echo $_streetValidationClass ?>" />
+                                                <input type="text" name="billing[speedy_street_name]" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedyStreetName()) ?>" id="billing:speedy_street" class="input-text"  />
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li class="fields">
-
-                                        <div class="field">
-                                            <label class="required"  for="speedy_street_number"><?php echo $this->__('Street Number') ?></label>
-                                            <div class="input-box">
-
-                                                <input type="text" class="input-text" name="billing[speedy_street_number]" id="billing:speedy_street_number" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyStreetNumber()) ?>" /></div>
-                                        </div>
-                                        <div class="field">
-                                            <label  class="required" for="speedy_block_number"><?php echo $this->__('Blok') ?></label>
-                                            <div class="input-box">
-                                                <input type="text" class="input-text" name="billing[speedy_block_number]" id="billing:speedy_block_number" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyBlockNumber()) ?>" /></div>
-                                        </div>
-                                    </li>
-
-
-
-                                    <li class="fields">
-                                        <div class="field">
-                                            <label for=""><?php echo $this->__("Entrance") ?></label>
-                                            <div class="input-box">
-                                                <input type="text" name="billing[speedy_entrance]" id="billing:speedy_entrance" class="input-text" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyEntrance()) ?>" /></div>
-                                        </div>
-                                        <div class="field">
-                                            <label for=""><?php echo $this->__("Floor") ?></label>
-                                            <div class="input-box">
-                                                <input type="text" name="billing[speedy_floor]" id="billing:speedy_floor" class="input-text" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyFloor()) ?>"/></div>
-                                        </div>
-                                    </li>
-                                    <li class="fields">
-                                        <div class="field">
-                                            <label for=""><?php echo $this->__("Apartment") ?></label>
-                                            <div class="input-box">
-                                                <input type="text" name="billing[speedy_apartment]" id="billing:speedy_apartment" class="input-text" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyApartment()) ?>" /></div>
-                                        </div>
-                                    </li>
-                                    <li class="wide">
-                                        <div class="field">
-                                            <label for=""><?php echo $this->__("Address note") ?></label>
-                                            <div class="input-box">
-                                                <input class="input-text" id="billing:speedy_address_note" type="text" name="billing[speedy_address_note]" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyAddressNote()) ?>" />
+                                            <div class="street_holder" style="display: none">
+                                                <label for="billing:street1" class="required"><em>*</em><?php echo $this->__('Address') ?></label>
+                                                <div class="input-box">
+                                                    <input type="text" title="<?php echo $this->__('Street Address') ?>" name="billing[street][]" id="billing:street1" value="<?php echo $this->escapeHtml($this->getAddress()->getStreet(1)) ?>" class="input-text <?php echo $_streetValidationClass ?>" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                        </ul>
+                                        </li>
+                                        <li class="fields">
+
+                                            <div class="field">
+                                                <label class="required"  for="speedy_street_number"><?php echo $this->__('Street Number') ?></label>
+                                                <div class="input-box">
+
+                                                    <input type="text" class="input-text" name="billing[speedy_street_number]" id="billing:speedy_street_number" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyStreetNumber()) ?>" /></div>
+                                            </div>
+                                            <div class="field">
+                                                <label  class="required" for="speedy_block_number"><?php echo $this->__('Blok') ?></label>
+                                                <div class="input-box">
+                                                    <input type="text" class="input-text" name="billing[speedy_block_number]" id="billing:speedy_block_number" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyBlockNumber()) ?>" /></div>
+                                            </div>
+                                        </li>
+
+
+
+                                        <li class="fields">
+                                            <div class="field">
+                                                <label for=""><?php echo $this->__("Entrance") ?></label>
+                                                <div class="input-box">
+                                                    <input type="text" name="billing[speedy_entrance]" id="billing:speedy_entrance" class="input-text" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyEntrance()) ?>" /></div>
+                                            </div>
+                                            <div class="field">
+                                                <label for=""><?php echo $this->__("Floor") ?></label>
+                                                <div class="input-box">
+                                                    <input type="text" name="billing[speedy_floor]" id="billing:speedy_floor" class="input-text" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyFloor()) ?>"/></div>
+                                            </div>
+                                        </li>
+                                        <li class="fields">
+                                            <div class="field">
+                                                <label for=""><?php echo $this->__("Apartment") ?></label>
+                                                <div class="input-box">
+                                                    <input type="text" name="billing[speedy_apartment]" id="billing:speedy_apartment" class="input-text" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyApartment()) ?>" /></div>
+                                            </div>
+                                        </li>
+                                        <li class="wide">
+                                            <div class="field">
+                                                <label for=""><?php echo $this->__("Address note") ?></label>
+                                                <div class="input-box">
+                                                    <input class="input-text" id="billing:speedy_address_note" type="text" name="billing[speedy_address_note]" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyAddressNote()) ?>" />
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <li class="fields">
                                     <div class="field">
@@ -270,7 +270,7 @@
                                 <?php if ($this->isCustomerLoggedIn() && $this->customerHasAddresses()): ?>
 
                                     <li class="control">
-                                        <input type="checkbox" name="billing[save_in_address_book]" value="1" title="<?php echo $this->__('Save in address book') ?>" id="billing:save_in_address_book" onchange="if(window.shipping)
+                                        <input type="checkbox" name="billing[save_in_address_book]" value="1" title="<?php echo $this->__('Save in address book') ?>" id="billing:save_in_address_book" onchange="if (window.shipping)
                                                         shipping.setSameAsBilling(false);"<?php if ($this->getAddress()->getSaveInAddressBook()): ?> checked="checked"<?php endif; ?> class="checkbox" /><label for="billing:save_in_address_book"><?php echo $this->__('Save in address book') ?></label>
                                     </li>
                                 <?php else: ?>
@@ -301,582 +301,629 @@
                                     </span>
                                 </div>
 
-</ul>
-                    
+                    </ul>
 
-                                </form>
-                                <script type="text/javascript">
-                                                //<![CDATA[
-                                                var billing = new Billing('co-billing-form', '<?php echo $this->getUrl('checkout/onepage/getAddress') ?>address/', '<?php echo $this->getUrl('checkout/onepage/saveBilling') ?>');
-                                                var billingForm = new VarienForm('co-billing-form');
 
-                                                //billingForm.setElementsRelation('billing:country_id', 'billing:region', '<?php echo $this->getUrl('directory/json/childRegion') ?>', '<?php echo $this->__('Select State/Province...') ?>');
-                                                $('billing-address-select') && billing.newAddress(!$('billing-address-select').value);
+                    </form>
+                    <script type="text/javascript">
+                        //<![CDATA[
+                        var billing = new Billing('co-billing-form', '<?php echo $this->getUrl('checkout/onepage/getAddress') ?>address/', '<?php echo $this->getUrl('checkout/onepage/saveBilling') ?>');
+                        var billingForm = new VarienForm('co-billing-form');
 
-                                                var billingRegionUpdater = new RegionUpdater('billing:country_id', 'billing:region', 'billing:region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'billing:postcode');
-                                                //]]>
-                                                var isNewBillingAddress = false;
+                        //billingForm.setElementsRelation('billing:country_id', 'billing:region', '<?php echo $this->getUrl('directory/json/childRegion') ?>', '<?php echo $this->__('Select State/Province...') ?>');
+                        $('billing-address-select') && billing.newAddress(!$('billing-address-select').value);
 
-                                                //This variable is necessary in the adjecent shipping address block
-                                                //var shippingSiteNomenclature = null;
-                                                var isFullNomenclature = 0;
-                                                $j('document').ready(function() {
+                        var billingRegionUpdater = new RegionUpdater('billing:country_id', 'billing:region', 'billing:region_id', <?php echo $this->helper('directory')->getRegionJson() ?>, undefined, 'billing:postcode');
+                        //]]>
+                        var isNewBillingAddress = false;
 
+                        //This variable is necessary in the adjecent shipping address block
+                        //var shippingSiteNomenclature = null;
+                        var isFullNomenclature = 0;
+                        $j('document').ready(function() {
 
 
-                                                    var siteName = '';
-                                                    var quarterName = '';
-                                                    var streetName = '';
-                                                    var blokName = '';
-                                                    var officeName = '';
 
+                            var siteName = '';
+                            var quarterName = '';
+                            var streetName = '';
+                            var blokName = '';
+                            var officeName = '';
 
-                                                    function initFields() {
 
-                                                        if ($j('#billing\\:speedy_quarter_name').val() != '') {
-                                                            quarterName = $j('#billing\\:speedy_quarter_name').val();
-                                                        }
+                            function initFields() {
 
+                                if ($j('#billing\\:speedy_quarter_name').val() != '') {
+                                    quarterName = $j('#billing\\:speedy_quarter_name').val();
+                                }
 
-                                                        if ($j('#billing\\:street_1').val() != '') {
-                                                            streetName = $j('#billing\\:street_1').val();
-                                                        }
 
+                                if ($j('#billing\\:street_1').val() != '') {
+                                    streetName = $j('#billing\\:street_1').val();
+                                }
 
-                                                        if ($j('#billing\\:speedy_block_number').val() != '') {
-                                                            blokName = $j('#billing\\:speedy_block_number').val();
-                                                        }
 
-                                                        if ($j('#billing\\:speedy_office_locator').val() != '') {
-                                                            officeName = $j('#billing\\:speedy_office_locator').val();
-                                                        }
-                                                    }
+                                if ($j('#billing\\:speedy_block_number').val() != '') {
+                                    blokName = $j('#billing\\:speedy_block_number').val();
+                                }
 
+                                if ($j('#billing\\:speedy_office_locator').val() != '') {
+                                    officeName = $j('#billing\\:speedy_office_locator').val();
+                                }
+                            }
 
 
-                                                    initFields();
 
+                            initFields();
 
 
-                                                    function checkFields(evt) {
-                                                        var evtTarget = $j(evt.target);
-                                                        if (evtTarget.attr('id') == 'billing:city') {
 
-                                                            if (siteName != evtTarget.val()) {
+                            function checkFields(evt) {
+                                var evtTarget = $j(evt.target);
+                                if (evtTarget.attr('id') == 'billing:city') {
 
-                                                                evtTarget.val('')
+                                    if (siteName != evtTarget.val()) {
 
-                                                                // $j('#billing\\:speedy_office_chooser').removeAttr('checked');
-                                                                $j('#billing\\:speedy_site_id').val('');
-                                                                $j('#billing\\:postcode').val('');
-                                                                $j('#billing\\:region').val('')
-                                                                updateForm();
-                                                            } else if (evtTarget.val() == "") {
+                                        evtTarget.val('')
 
-                                                                updateForm();
-                                                                $j('#billing\\:speedy_site_id').val('')
-                                                                $j('#zip').val('')
-                                                            } else {
-                                                                // updateForm(true);
-                                                            }
-                                                        }
+                                        // $j('#billing\\:speedy_office_chooser').removeAttr('checked');
+                                        $j('#billing\\:speedy_site_id').val('');
+                                        $j('#billing\\:postcode').val('');
+                                        $j('#billing\\:region').val('')
+                                        updateForm();
+                                    } else if (evtTarget.val() == "") {
 
+                                        updateForm();
+                                        $j('#billing\\:speedy_site_id').val('')
+                                        $j('#zip').val('')
+                                    } else {
+                                        // updateForm(true);
+                                    }
+                                }
 
-                                                        if (evtTarget.attr('id') == 'billing:speedy_street') {
 
-                                                            if (isFullNomenclature == 'FULL' && $j('#billing\\:speedy_street_id').val() == false) {
-                                                                evtTarget.val('')
-                                                                $j('#billing\\:speedy_street_id').val('');
-                                                            }
+                                if (evtTarget.attr('id') == 'billing:speedy_street') {
 
+                                    if (isFullNomenclature == 'FULL' && $j('#billing\\:speedy_street_id').val() == false) {
+                                        evtTarget.val('')
+                                        $j('#billing\\:speedy_street_id').val('');
+                                    }
 
-                                                            else if (evtTarget.val() != streetName && isFullNomenclature == 'FULL') {
-                                                                evtTarget.val('')
-                                                                $j('#billing\\:speedy_street_id').val('');
-                                                            } else if ($j('#billing\\:speedy_street_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != streetName) {
-                                                                evtTarget.val('')
-                                                                $j('#billing\\:speedy_street_id').val('');
-                                                            } else if (isFullNomenclature == 'NO' || isFullNomenclature == 'PARTIAL') {
-                                                                evtTarget.val(evtTarget.val().toUpperCase())
-                                                            }
 
+                                    else if (evtTarget.val() != streetName && isFullNomenclature == 'FULL') {
+                                        evtTarget.val('')
+                                        $j('#billing\\:speedy_street_id').val('');
+                                    } else if ($j('#billing\\:speedy_street_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != streetName) {
+                                        evtTarget.val('')
+                                        $j('#billing\\:speedy_street_id').val('');
+                                    } else if (isFullNomenclature == 'NO' || isFullNomenclature == 'PARTIAL') {
+                                        evtTarget.val(evtTarget.val().toUpperCase())
+                                    }
 
 
-                                                        } else if (evtTarget.attr('id') == 'billing:speedy_quarter_name') {
 
-                                                            if (isFullNomenclature == 'FULL' && $j('#billing\\:speedy_quarter_id').val() == false) {
-                                                                evtTarget.val('')
-                                                                $j('#billing\\:speedy_quarter_id').val('');
-                                                            }
+                                } else if (evtTarget.attr('id') == 'billing:speedy_quarter_name') {
 
+                                    if (isFullNomenclature == 'FULL' && $j('#billing\\:speedy_quarter_id').val() == false) {
+                                        evtTarget.val('')
+                                        $j('#billing\\:speedy_quarter_id').val('');
+                                    }
 
-                                                            else if (evtTarget.val() != quarterName && isFullNomenclature == 'FULL') {
-                                                                evtTarget.val('')
-                                                                $j('#billing\\:speedy_quarter_id').val('');
-                                                            } else if ($j('#billing\\:speedy_quarter_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != quarterName) {
-                                                                evtTarget.val('')
-                                                                $j('#billing\\:speedy_quarter_id').val('');
-                                                            } else if (isFullNomenclature == 'NO' || isFullNomenclature == 'PARTIAL') {
-                                                                evtTarget.val(evtTarget.val().toUpperCase())
-                                                            }
 
+                                    else if (evtTarget.val() != quarterName && isFullNomenclature == 'FULL') {
+                                        evtTarget.val('')
+                                        $j('#billing\\:speedy_quarter_id').val('');
+                                    } else if ($j('#billing\\:speedy_quarter_id').val() != '' && isFullNomenclature != 'FULL' && evtTarget.val() != quarterName) {
+                                        evtTarget.val('')
+                                        $j('#billing\\:speedy_quarter_id').val('');
+                                    } else if (isFullNomenclature == 'NO' || isFullNomenclature == 'PARTIAL') {
+                                        evtTarget.val(evtTarget.val().toUpperCase())
+                                    }
 
-                                                        } else if (evtTarget.attr('id') == 'billing:speedy_office_locator') {
 
+                                } else if (evtTarget.attr('id') == 'billing:speedy_office_locator') {
 
-                                                            if ($j('#billing\\:speedy_office_id').val() == false) {
-                                                                evtTarget.val('')
 
-                                                                $j('#billing\\:speedy_office_id').val('');
-                                                                $j('#billing\\:speedy_street').val('')
-                                                            }
+                                    if ($j('#billing\\:speedy_office_id').val() == false) {
+                                        evtTarget.val('')
 
+                                        $j('#billing\\:speedy_office_id').val('');
+                                        $j('#billing\\:speedy_street').val('')
+                                    }
 
-                                                            else if (evtTarget.val() != officeName) {
-                                                                evtTarget.val('')
-                                                                //$j('#billing\\:speedy_office_chooser').removeAttr('checked')
-                                                                $j('#billing\\:speedy_office_id').val('');
-                                                                $j('#billing\\:speedy_street').val('')
-                                                            } else if ($j('#billing\\:speedy_office_id').val() != '' && evtTarget.val() != officeName) {
-                                                                evtTarget.val('')
-                                                                $j('#billing\\:speedy_office_id').val('');
-                                                                $j('#billing\\:speedy_street').val('')
-                                                            }
 
-                                                        } else if (evtTarget.attr('id') == 'billing:speedy_block_number') {
-                                                            evtTarget.val(evtTarget.val().toUpperCase())
-                                                        } else if (evtTarget.attr('id') == 'billing:speedy_entrance') {
-                                                            evtTarget.val(evtTarget.val().toUpperCase())
-                                                        } else if (evtTarget.attr('id') == 'billing:speedy_floor') {
-                                                            evtTarget.val(evtTarget.val().toUpperCase())
-                                                        } else if (evtTarget.attr('id') == 'billing:speedy_apartment') {
-                                                            evtTarget.val(evtTarget.val().toUpperCase())
-                                                        } else if (evtTarget.attr('id') == 'billing:speedy_address_note') {
-                                                            evtTarget.val(evtTarget.val().toUpperCase())
-                                                        }
+                                    else if (evtTarget.val() != officeName) {
+                                        evtTarget.val('')
+                                        //$j('#billing\\:speedy_office_chooser').removeAttr('checked')
+                                        $j('#billing\\:speedy_office_id').val('');
+                                        $j('#billing\\:speedy_street').val('')
+                                    } else if ($j('#billing\\:speedy_office_id').val() != '' && evtTarget.val() != officeName) {
+                                        evtTarget.val('')
+                                        $j('#billing\\:speedy_office_id').val('');
+                                        $j('#billing\\:speedy_street').val('')
+                                    }
 
-                                                    }
+                                } else if (evtTarget.attr('id') == 'billing:speedy_block_number') {
+                                    evtTarget.val(evtTarget.val().toUpperCase())
+                                } else if (evtTarget.attr('id') == 'billing:speedy_entrance') {
+                                    evtTarget.val(evtTarget.val().toUpperCase())
+                                } else if (evtTarget.attr('id') == 'billing:speedy_floor') {
+                                    evtTarget.val(evtTarget.val().toUpperCase())
+                                } else if (evtTarget.attr('id') == 'billing:speedy_apartment') {
+                                    evtTarget.val(evtTarget.val().toUpperCase())
+                                } else if (evtTarget.attr('id') == 'billing:speedy_address_note') {
+                                    evtTarget.val(evtTarget.val().toUpperCase())
+                                }
 
+                            }
 
-                                                    $j('#billing\\:city,div#billing\\:speedy_normal_address input, div#billing\\:speedy_office_address input').blur(function(evt) {
 
+                            $j('#billing\\:city,div#billing\\:speedy_normal_address input, div#billing\\:speedy_office_address input').blur(function(evt) {
 
-                                                        checkFields(evt)
-                                                    })
 
+                                checkFields(evt)
+                            })
 
 
-                                                    var isValidAddress = $j('#billing-address-select').val();
 
+                            var isValidAddress = $j('#billing-address-select').val();
 
-                                                    checkAddress();
 
-                                                    function checkAddress() {
+                            checkAddress();
 
-                                                        var showError = true;
+                            function checkAddress() {
 
-                                                        for (var i = 0; i < test.length; i++) {
+                                var showError = true;
 
+                                for (var i = 0; i < test.length; i++) {
 
-                                                            if (test[i] == isValidAddress || isValidAddress == "") {
 
-                                                                $j('#speedy_address_error').hide();
-                                                                $j('#speedy_shipping_address_error').hide()
-                                                                showError = false;
-                                                                break;
-                                                            }
+                                    if (test[i] == isValidAddress || isValidAddress == "") {
 
-                                                        }
+                                        $j('#speedy_address_error').hide();
+                                        $j('#speedy_shipping_address_error').hide()
+                                        showError = false;
+                                        break;
+                                    }
 
-                                                        if (showError) {
+                                }
 
-                                                            $j('#speedy_address_error').show();
-                                                            $j('#speedy_shipping_address_error').show()
+                                if (showError) {
 
-                                                        }
+                                    $j('#speedy_address_error').show();
+                                    $j('#speedy_shipping_address_error').show()
 
-                                                    }
+                                }
 
+                            }
 
 
-                                                    $j('#billing\\:speedy_office_chooser').change(function(evt) {
 
+                            $j('#billing\\:speedy_office_chooser').change(function(evt) {
 
-                                                        if ($j(this).is(':checked')) {
-                                                            $j('#billing\\:speedy_normal_address').hide().find('input').val('');
-                                                            $j('#billing\\:speedy_office_address').show().find('input').show();
-                                                        } else {
-                                                            $j('#billing\\:speedy_normal_address').show();
-                                                            $j('#billing\\:speedy_office_address').hide().find('input').val('');
-                                                            $j('#billing\\:speedy_office_id,#billing\\:street_0,#billing\\:speedy_street ,#billing\\:street_1,#billing\\:speedy_office_locator').val('');
 
-                                                        }
-                                                    });
+                                if ($j(this).is(':checked')) {
+                                    $j('#billing\\:speedy_normal_address').hide().find('input').val('');
+                                    $j('#billing\\:speedy_office_address').show().find('input').show();
+                                } else {
+                                    $j('#billing\\:speedy_normal_address').show();
+                                    $j('#billing\\:speedy_office_address').hide().find('input').val('');
+                                    $j('#billing\\:speedy_office_id,#billing\\:street_0,#billing\\:speedy_street ,#billing\\:street_1,#billing\\:speedy_office_locator').val('');
 
+                                }
+                            });
 
-                                                    $j('#billing-address-select').change(function(evt) {
 
-                                                        if (!$j(this).val()) {
+                            $j('#billing-address-select').change(function(evt) {
 
-                                                            isNewBillingAddress = 1;
-                                                            $j('#sameBillingBox').hide();
-                                                        } else {
-                                                            $j('#sameBillingBox').show();
-                                                            isNewBillingAddress = 0;
-                                                        }
+                                if (!$j(this).val()) {
 
-                                                        isValidAddress = $j(this).val();
+                                    isNewBillingAddress = 1;
+                                    $j('#sameBillingBox').hide();
+                                } else {
+                                    $j('#sameBillingBox').show();
+                                    isNewBillingAddress = 0;
+                                }
 
-                                                        checkAddress();
+                                isValidAddress = $j(this).val();
 
-                                                    })
+                                checkAddress();
 
-                                                    _initListeners();
+                            })
 
-                                                    function _initListeners() {
+                            _initListeners();
 
-                                                        $j('#billing\\:city').autocomplete({
-                                                            source: function(request, response) {
+                            function _initListeners() {
 
-                                                                $j.ajax({
-                                                                    url: "<?php echo Mage::getUrl("speedyshippingfront/address/getSite"); ?>",
-                                                                    dataType: "json",
-                                                                    data: {
-                                                                        term: request.term
-                                                                    },
-                                                                    success: function(data) {
+                                $j('#billing\\:city').autocomplete({
+                                    source: function(request, response) {
 
-                                                                        response(data);
-                                                                    }
-                                                                });
-                                                            }
+                                        $j.ajax({
+                                            url: "<?php echo Mage::getUrl("speedyshippingfront/address/getSite"); ?>",
+                                            dataType: "json",
+                                            data: {
+                                                term: request.term
+                                            },
+                                            success: function(data) {
 
-                                                            , minLength: 1
-                                                                    , select: function(event, ui) {
-                                                                updateForm(true);
-                                                                $j(this).val(ui.item.label);
+                                                response(data);
+                                            }
+                                        });
+                                    }
 
-                                                                $j('#billing\\:speedy_site_id').val(ui.item.value)
-                                                                $j('#billing\\:postcode').val(ui.item.post_code)
-                                                                $j('#billing\\:region').val(ui.item.region)
-                                                                $j('#billing\\:country_id').val('BG');
-                                                                siteName = ui.item.label;
-                                                                if (ui.item.is_full_nomenclature == 'NO') {
-                                                                    isFullNomenclature = 'NO';
-                                                                    disableAutocomplete()
-                                                                } else if (ui.item.is_full_nomenclature == 'PARTIAL') {
+                                    , minLength: 1
+                                    , select: function(event, ui) {
+                                        updateForm(true);
+                                        $j(this).val(ui.item.label);
 
-                                                                    isFullNomenclature = 'PARTIAL';
-                                                                    enableAutocomplete();
-                                                                } else {
-                                                                    isFullNomenclature = 'FULL';
-                                                                    enableAutocomplete();
+                                        $j('#billing\\:speedy_site_id').val(ui.item.value)
+                                        $j('#billing\\:postcode').val(ui.item.post_code)
+                                        $j('#billing\\:region').val(ui.item.region)
+                                        $j('#billing\\:country_id').val('BG');
+                                        siteName = ui.item.label;
+                                        if (ui.item.is_full_nomenclature == 'NO') {
+                                            isFullNomenclature = 'NO';
+                                            disableAutocomplete()
+                                        } else if (ui.item.is_full_nomenclature == 'PARTIAL') {
 
-                                                                }
+                                            isFullNomenclature = 'PARTIAL';
+                                            enableAutocomplete();
+                                        } else {
+                                            isFullNomenclature = 'FULL';
+                                            enableAutocomplete();
 
-                                                                // clearForm();
-                                                                // updateForm(true);
-                                                                return false;
-                                                            }});
+                                        }
 
-                                                        $j('#billing\\:speedy_office_locator').autocomplete({
-                                                            source: function(request, response) {
+                                        // clearForm();
+                                        // updateForm(true);
+                                        return false;
+                                    }});
 
-                                                                $j.ajax({
-                                                                    url: "<?php echo Mage::getUrl("speedyshippingfront/address/getOffices"); ?>",
-                                                                    dataType: "json",
-                                                                    data: {
-                                                                        term: request.term,
-                                                                        cityid: $j('#billing\\:speedy_site_id').val()
-                                                                    },
-                                                                    success: function(data) {
+                                $j('#billing\\:speedy_office_locator').autocomplete({
+                                    source: function(request, response) {
 
-                                                                        response(data);
-                                                                    }
-                                                                });
-                                                            }
-                                                            , response: function(event, ui) {
-                                                                $j(this).autocomplete("option", "disabled", false);
+                                        $j.ajax({
+                                            url: "<?php echo Mage::getUrl("speedyshippingfront/address/getOffices"); ?>",
+                                            dataType: "json",
+                                            data: {
+                                                term: request.term,
+                                                cityid: $j('#billing\\:speedy_site_id').val()
+                                            },
+                                            success: function(data) {
+
+                                                response(data);
+                                            }
+                                        });
+                                    }
+                                    , response: function(event, ui) {
+                                        $j(this).autocomplete("option", "disabled", false);
+
+                                    }
+
+                                    , minLength: 0
+                                    , select: function(event, ui) {
+                                        $j(this).val(ui.item.label);
+                                        officeName = ui.item.label;
+                                        $j('#billing\\:speedy_office_id').val(ui.item.value);
+                                        $j('#billing\\:speedy_street').val(ui.item.street_label)
+                                        initSiteData(ui);
+                                        return false;
+                                    }}).focus(function() {
+                                    if ($j('#billing\\:speedy_site_id').val()) {
+                                        //Use the below line instead of triggering keydown
+                                        $j(this).autocomplete("search", '')
+                                        return false;
+                                    }
+                                });
 
-                                                            }
 
-                                                            , minLength: 0
-                                                                    , select: function(event, ui) {
-                                                                $j(this).val(ui.item.label);
-                                                                officeName = ui.item.label;
-                                                                $j('#billing\\:speedy_office_id').val(ui.item.value);
-                                                                $j('#billing\\:speedy_street').val(ui.item.label)
-                                                                return false;
-                                                            }}).focus(function() {
-                                                            if ($j('#billing\\:speedy_site_id').val()) {
-                                                                //Use the below line instead of triggering keydown
-                                                                $j(this).autocomplete("search", '')
-                                                                return false;
-                                                            }
-                                                        });
 
+                                $j('#billing\\:speedy_quarter_name').autocomplete({
+                                    source: function(request, response) {
 
+                                        $j.ajax({
+                                            url: "<?php echo Mage::getUrl("speedyshippingfront/address/getQuarter"); ?>",
+                                            dataType: "json",
+                                            data: {
+                                                term: request.term,
+                                                cityid: $j('#billing\\:speedy_site_id').val()
+                                            },
+                                            success: function(data) {
+                                                response(data);
+                                            }
+                                        });
+                                    }
+                                    , minLength: 1
+                                    , select: function(event, ui) {
+                                        $j(this).val(ui.item.label);
+                                        quarterName = ui.item.label;
+                                        $j('#billing\\:speedy_quarter_id').val(ui.item.value)
+                                        return false;
+                                    }});
 
-                                                        $j('#billing\\:speedy_quarter_name').autocomplete({
-                                                            source: function(request, response) {
+                                $j('#billing\\:speedy_street').autocomplete({
+                                    source: function(request, response) {
 
-                                                                $j.ajax({
-                                                                    url: "<?php echo Mage::getUrl("speedyshippingfront/address/getQuarter"); ?>",
-                                                                    dataType: "json",
-                                                                    data: {
-                                                                        term: request.term,
-                                                                        cityid: $j('#billing\\:speedy_site_id').val()
-                                                                    },
-                                                                    success: function(data) {
-                                                                        response(data);
-                                                                    }
-                                                                });
-                                                            }
-                                                            , minLength: 1
-                                                                    , select: function(event, ui) {
-                                                                $j(this).val(ui.item.label);
-                                                                quarterName = ui.item.label;
-                                                                $j('#billing\\:speedy_quarter_id').val(ui.item.value)
-                                                                return false;
-                                                            }});
+                                        $j.ajax({
+                                            url: "<?php echo Mage::getUrl("speedyshippingfront/address/getStreets"); ?>",
+                                            dataType: "json",
+                                            data: {
+                                                term: request.term,
+                                                cityid: $j('#billing\\:speedy_site_id').val()
+                                            },
+                                            success: function(data) {
+                                                response(data);
+                                            }
+                                        });
+                                    }
+                                    , minLength: 1
+                                    , select: function(event, ui) {
+                                        $j(this).val(ui.item.label);
+                                        streetName = ui.item.label;
+                                        $j('#billing\\:speedy_street_id').val(ui.item.value)
+                                        return false;
+                                    }});
 
-                                                        $j('#billing\\:speedy_street').autocomplete({
-                                                            source: function(request, response) {
 
-                                                                $j.ajax({
-                                                                    url: "<?php echo Mage::getUrl("speedyshippingfront/address/getStreets"); ?>",
-                                                                    dataType: "json",
-                                                                    data: {
-                                                                        term: request.term,
-                                                                        cityid: $j('#billing\\:speedy_site_id').val()
-                                                                    },
-                                                                    success: function(data) {
-                                                                        response(data);
-                                                                    }
-                                                                });
-                                                            }
-                                                            , minLength: 1
-                                                                    , select: function(event, ui) {
-                                                                $j(this).val(ui.item.label);
-                                                                streetName = ui.item.label;
-                                                                $j('#billing\\:speedy_street_id').val(ui.item.value)
-                                                                return false;
-                                                            }});
+                                $j('#billing\\:speedy_block_number').autocomplete({
+                                    source: function(request, response) {
 
-                                                        function updateForm(enable) {
+                                        $j.ajax({
+                                            url: "<?php echo Mage::getUrl("speedyshippingfront/address/getBlock"); ?>",
+                                            dataType: "json",
+                                            data: {
+                                                term: request.term,
+                                                cityid: $j('#billing\\:speedy_site_id').val()
+                                            },
+                                            success: function(data) {
+                                                response(data);
+                                            }
+                                        });
+                                    }
+                                    , minLength: 1
+                                    , select: function(event, ui) {
+                                        $j(this).val(ui.item.label);
 
-                                                            if (enable) {
+                                        return false;
+                                    }});
 
-                                                                $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
-                                                                        .removeAttr('disabled').val('');
+                                function initSiteData(jsonResponse) {
+                                    $j('#billing\\:speedy_site_id').val(jsonResponse.item.site_id)
+                                    $j('#billing\\:postcode').val(jsonResponse.item.post_code)
+                                    $j('#billing\\:region').val(jsonResponse.item.region)
 
-                                                            } else {
-                                                                $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
-                                                                        .attr('disabled', 'disabled').val('');
-                                                            }
+                                    siteName = jsonResponse.item.site_name;
+                                    $j('#billing\\:city').val(siteName);
+                                    if (jsonResponse.item.is_full_nomenclature == 'NO') {
+                                        isFullNomenclature = 'NO';
+                                        disableAutocomplete()
+                                    } else if (jsonResponse.item.is_full_nomenclature == 'PARTIAL') {
 
+                                        isFullNomenclature = 'PARTIAL';
+                                        enableAutocomplete();
+                                    } else {
+                                        isFullNomenclature = 'FULL';
+                                        enableAutocomplete();
 
-                                                        }
+                                    }
+                                }
 
+                                function updateForm(enable) {
 
-                                                    }
+                                    if (enable) {
 
+                                        $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
+                                                .removeAttr('disabled').val('');
 
+                                    } else {
+                                        $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
+                                                .attr('disabled', 'disabled').val('');
+                                    }
 
-                                                    function validateAddress() {
-                                                        $j('div#speedyBillingError').hide();
-                                                        //evt.preventDefault();
-                                                        // var baseForm = '#co-billing-form';
-                                                        var prefix = ' #billing\\:';
-                                                        var quarter = $j(prefix + 'speedy_quarter_name').val();
-                                                        var quarter_id = $j(prefix + 'speedy_quarter_id').val();
-                                                        var street = $j(prefix + 'speedy_street').val();
-                                                        var street_id = $j(prefix + 'speedy_street_id').val();
-                                                        var number = $j(prefix + 'speedy_street_number').val();
-                                                        var blockNo = $j(prefix + 'speedy_block_number').val();
-                                                        var address_note = $j(prefix + 'speedy_address_note').val();
 
-                                                        var floor_no = $j(prefix + 'speedy_floor').val();
-                                                        var entrance = $j(prefix + 'speedy_entrance').val();
-                                                        var apartment = $j(prefix + 'speedy_apartment').val();
+                                }
 
-                                                        var speedy_pick_from_office = $j(prefix + 'speedy_office_chooser').is(':checked');
-                                                        var speedy_office_name = $j(prefix + 'speedy_office_locator').val();
-                                                        var speedy_office_id = $j(prefix + 'speedy_office_id').val();
 
+                            }
 
-                                                        var isBillingSameAsShipping = $j('#billing\\:use_for_shipping_yes').is(':checked');
-                                                        var isNewAddress = $j('#billing-address-select').val();
+
+
+                            function validateAddress() {
+                                $j('div#speedyBillingError').hide();
+                                //evt.preventDefault();
+                                // var baseForm = '#co-billing-form';
+                                var prefix = ' #billing\\:';
+                                var quarter = $j(prefix + 'speedy_quarter_name').val();
+                                var quarter_id = $j(prefix + 'speedy_quarter_id').val();
+                                var street = $j(prefix + 'speedy_street').val();
+                                var street_id = $j(prefix + 'speedy_street_id').val();
+                                var number = $j(prefix + 'speedy_street_number').val();
+                                var blockNo = $j(prefix + 'speedy_block_number').val();
+                                var address_note = $j(prefix + 'speedy_address_note').val();
+
+                                var floor_no = $j(prefix + 'speedy_floor').val();
+                                var entrance = $j(prefix + 'speedy_entrance').val();
+                                var apartment = $j(prefix + 'speedy_apartment').val();
+
+                                var speedy_pick_from_office = $j(prefix + 'speedy_office_chooser').is(':checked');
+                                var speedy_office_name = $j(prefix + 'speedy_office_locator').val();
+                                var speedy_office_id = $j(prefix + 'speedy_office_id').val();
+
 
-                                                        var isValid = 0;
+                                var isBillingSameAsShipping = $j('#billing\\:use_for_shipping_yes').is(':checked');
+                                var isNewAddress = $j('#billing-address-select').val();
 
-                                                        if (!isNewAddress) {
-                                                            if (quarter || quarter_id) {
-                                                                if ((street || street_id && number) || blockNo) {
-                                                                    isValid = true;
-                                                                }
+                                var isValid = 0;
 
-                                                            } else if (speedy_pick_from_office && speedy_office_name && speedy_office_id) {
-                                                                isValid = true;
-                                                            } else if ((street || street_id)) {
-                                                                if (number || blockNo) {
-                                                                    isValid = true;
-                                                                }
+                                if (!isNewAddress) {
+                                    if (quarter || quarter_id) {
+                                        if ((street && number) || blockNo || number) {
 
-                                                            } else if (address_note && address_note.length > 4) {
-                                                                isValid = true;
-                                                            }
+                                            isValid = true;
+                                        }
 
-                                                            if (isValid) {
-                                                                var streetAddress = '';
+                                    } else if (speedy_pick_from_office && speedy_office_name && speedy_office_id) {
+                                        isValid = true;
+                                    } else if ((street || street_id)) {
+                                        if (number || blockNo) {
 
-                                                                var address = '';
-                                                                var note = '';
+                                            isValid = true;
+                                        }
 
-                                                                var streetAddress = '';
+                                    } else if (address_note && address_note.length > 4) {
+                                        isValid = true;
+                                    }
 
-                                                                if (speedy_office_name.length > 1) {
-                                                                    // address += speedy_office_name;
-                                                                }
+                                    if (isValid) {
+                                        var streetAddress = '';
 
-                                                                if (quarter.length > 1) {
-                                                                    address += ' ' + quarter;
-                                                                }
-                                                                if (street.length > 1) {
-                                                                    address += ' ' + street;
-                                                                }
-                                                                if (number.length >= 1) {
-                                                                    address += " <?php echo $this->__("Street Number") ?>" + number;
-                                                                }
-                                                                if (blockNo.length >= 1) {
-                                                                    address += " <?php echo $this->__("Blok") ?>" + blockNo;
-                                                                }
+                                        var address = '';
+                                        var note = '';
 
-                                                                if (entrance.length >= 1) {
-                                                                    address += " <?php echo $this->__("Entrance") ?>" + entrance;
-                                                                }
-                                                                if (floor_no.length >= 1) {
-                                                                    address += " <?php echo $this->__("Floor") ?>" + floor_no;
-                                                                }
-                                                                if (apartment.length >= 1) {
-                                                                    address += " <?php echo $this->__("Apartment") ?>" + apartment;
-                                                                }
+                                        var streetAddress = '';
 
-                                                                if (address_note.length > 3) {
-                                                                    note += " " + address_note;
-                                                                }
+                                        if (speedy_office_name.length > 1) {
+                                            // address += speedy_office_name;
+                                        }
 
-                                                                streetAddress = address;
+                                        if (quarter.length > 1) {
+                                            address += ' ' + quarter;
+                                        }
+                                        if (street.length > 1) {
+                                            address += ' ' + street;
+                                        }
+                                        if (number.length >= 1) {
+                                            address += " <?php echo $this->__("Street Number") ?>" + number;
+                                        }
+                                        if (blockNo.length >= 1) {
+                                            address += " <?php echo $this->__("Blok") ?>" + blockNo;
+                                        }
 
-                                                                if (note != '') {
-                                                                    streetAddress += ', ' + note;
-                                                                }
-                                                                $j('#billing\\:street1').val(streetAddress);
-                                                                return true;
-                                                            } else {
+                                        if (entrance.length >= 1) {
+                                            address += " <?php echo $this->__("Entrance") ?>" + entrance;
+                                        }
+                                        if (floor_no.length >= 1) {
+                                            address += " <?php echo $this->__("Floor") ?>" + floor_no;
+                                        }
+                                        if (apartment.length >= 1) {
+                                            address += " <?php echo $this->__("Apartment") ?>" + apartment;
+                                        }
 
-                                                                $j('div#speedyBillingError').show();
-                                                                billing.newAddress(true);
-                                                                $j('#billing-new-address-form').show();
-                                                                return false;
-                                                            }
-                                                        } else {
-                                                            $j('#billing\\:street1').val(quarter + street + number + blockNo + entrance + floor_no + apartment + address_note);
-                                                            return true;
+                                        if (address_note.length > 3) {
+                                            note += " " + address_note;
+                                        }
 
-                                                        }
+                                        streetAddress = address;
 
-                                                    }
+                                        if (note != '') {
+                                            streetAddress += ', ' + note;
+                                        }
+                                        $j('#billing\\:street1').val(streetAddress);
+                                        return true;
+                                    } else {
 
-                                                    function enableAutocomplete() {
-                                                        $j("#billing\\:speedy_quarter_name, \n\
-                                #billing\\:speedy_street,\n\
-                                #billing\\:speedy_office_locator ").autocomplete("option", "disabled", false);
-                                                    }
+                                        $j('div#speedyBillingError').show();
+                                        billing.newAddress(true);
+                                        $j('#billing-new-address-form').show();
+                                        return false;
+                                    }
+                                } else {
+                                    $j('#billing\\:street1').val(quarter + street + number + blockNo + entrance + floor_no + apartment + address_note);
+                                    return true;
 
-                                                    function disableAutocomplete() {
-                                                        $j("#billing\\:speedy_quarter_name, \n\
-                                #billing\\:speedy_street,\n\
-                                #billing\\:speedy_office_locator ").autocomplete("option", "disabled", true);
-                                                    }
+                                }
 
-                                                    $j('#billing-buttons-container button.button ').click(function(evt) {
+                            }
 
-                                                        var isBillingSameForShipping = $j('#billing\\:use_for_shipping_yes').is(':checked');
-                                                        
+                            function enableAutocomplete() {
+                                $j("#billing\\:speedy_quarter_name, \n\
+                    #billing\\:speedy_street,\n\
+                    #billing\\:speedy_office_locator ").autocomplete("option", "disabled", false);
+                            }
 
-                                                        if (isNewBillingAddress && isBillingSameForShipping) {
-                                                           
-                                                            isShippingFullNomenclature = isFullNomenclature;
-                                                            freezeShippingForm();
-                                                        } else if (!isBillingSameForShipping) {
-                                                            freezeShippingForm(true);
-                                                        }
+                            function disableAutocomplete() {
+                                $j("#billing\\:speedy_quarter_name, \n\
+                    #billing\\:speedy_street,\n\
+                    #billing\\:speedy_office_locator ").autocomplete("option", "disabled", true);
+                            }
 
+                            $j('#billing-buttons-container button.button ').click(function(evt) {
 
-                                                        $j('div#speedyBillingError').hide();
-                                                        evt.preventDefault();
+                                var isBillingSameForShipping = $j('#billing\\:use_for_shipping_yes').is(':checked');
 
 
-                                                        var isValid = validateAddress();
+                                if (isNewBillingAddress && isBillingSameForShipping) {
 
-                                                        if (isValid) {
-                                                            billing.save();
-                                                        } else {
+                                    isShippingFullNomenclature = isFullNomenclature;
+                                    freezeShippingForm();
+                                } else if (!isBillingSameForShipping) {
+                                    freezeShippingForm(true);
+                                }
 
-                                                        }
 
-                                                    })
+                                $j('div#speedyBillingError').hide();
+                                evt.preventDefault();
 
-                                                    $j('#billing-address-select').change(function(evt) {
-                                                        $j('#billing\\:city').val('');
-                                                        $j('#billing\\:speedy_site_id,#billing\\:postcode, #billing\\:region').val('');
 
-                                                        var isOfficeSelected = $j('#billing\\:speedy_office_chooser').is(':checked');
-                                                        if (isOfficeSelected) {
-                                                            $j('#billing\\:speedy_office_chooser').removeAttr('checked');
-                                                            $j('#billing\\:speedy_normal_address').show();
-                                                            $j('#billing\\:speedy_office_locator').hide();
-                                                        }
+                                var isValid = validateAddress();
 
-                                                        updateForm();
-                                                    })
+                                if (isValid) {
+                                    billing.save();
+                                } else {
 
+                                }
 
-                                                    function updateForm(enable) {
+                            })
 
-                                                        if (enable) {
+                            $j('#billing-address-select').change(function(evt) {
+                                $j('#billing\\:city').val('');
+                                $j('#billing\\:speedy_site_id,#billing\\:postcode, #billing\\:region').val('');
 
-                                                            $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
-                                                                    .removeAttr('disabled').val('');
-                                                            //$j('#billing\\:speedy_office_chooser').removeAttr('disabled')
+                                var isOfficeSelected = $j('#billing\\:speedy_office_chooser').is(':checked');
+                                if (isOfficeSelected) {
+                                    $j('#billing\\:speedy_office_chooser').removeAttr('checked');
+                                    $j('#billing\\:speedy_normal_address').show();
+                                    $j('#billing\\:speedy_office_locator').hide();
+                                }
 
-                                                        } else {
-                                                            $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
-                                                                    .attr('disabled', 'disabled').val('');
+                                updateForm();
+                            })
 
-                                                            //$j('#billing\\:speedy_office_chooser').removeAttr('checked').attr('disabled', 'disabled');
-                                                        }
 
+                            function updateForm(enable) {
 
-                                                    }
+                                if (enable) {
 
+                                    $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
+                                            .removeAttr('disabled').val('');
+                                    //$j('#billing\\:speedy_office_chooser').removeAttr('disabled')
 
-                                                    function freezeShippingForm(enable) {
-                                                        if (enable) {
+                                } else {
+                                    $j('div#billing\\:speedy_normal_address input, #billing\\:speedy_office_address input')
+                                            .attr('disabled', 'disabled').val('');
 
-                                                            $j('div#shipping\\:speedy_normal_address input, #shipping\\:speedy_office_address input,shipping\\:speedy_office_chooser')
-                                                                    .removeAttr('readonly');
-                                                            $j('#shipping\\:speedy_office_chooser').removeAttr('disabled')
+                                    //$j('#billing\\:speedy_office_chooser').removeAttr('checked').attr('disabled', 'disabled');
+                                }
 
-                                                        } else {
-                                                            $j('div#shipping\\:speedy_normal_address input, #shipping\\:speedy_office_address input, shipping\\:speedy_office_chooser')
-                                                                    .attr('readonly', 'readonly')
-                                                            $j('#shipping\\:speedy_office_chooser').attr('disabled', 'disabled')
-                                                        }
-                                                    }
 
+                            }
 
 
-                                                })
-                                </script>
+                            function freezeShippingForm(enable) {
+                                if (enable) {
+
+                                    $j('div#shipping\\:speedy_normal_address input, #shipping\\:speedy_office_address input,shipping\\:speedy_office_chooser')
+                                            .removeAttr('readonly');
+                                    $j('#shipping\\:speedy_office_chooser').removeAttr('disabled')
+
+                                } else {
+                                    $j('div#shipping\\:speedy_normal_address input, #shipping\\:speedy_office_address input, shipping\\:speedy_office_chooser')
+                                            .attr('readonly', 'readonly')
+                                    $j('#shipping\\:speedy_office_chooser').attr('disabled', 'disabled')
+                                }
+                            }
+
+
+
+                        })
+                    </script>

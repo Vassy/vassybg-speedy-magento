@@ -94,7 +94,53 @@ AdminOrder.addMethods({
             this.loadArea(['shipping_method', 'totals', 'billing_method'], true, {collect_shipping_rates: 1});
         }
 
+    },
+    resetShippingMethod : function(data){
+        data['reset_shipping'] = 1;
+        this.isShippingMethodReseted = true;
+        this.loadArea(['shipping_method', 'billing_method', 'shipping_address', 'totals', 'giftmessage', 'items'], true, data);
+    },
+    changeAddressField : function(event){
+        var field = Event.element(event);
+        var re = /[^\[]*\[([^\]]*)_address\]\[([^\]]*)\](\[(\d)\])?/;
+        var matchRes = field.name.match(re);
+
+        if (!matchRes) {
+            return;
+        }
+
+        var type = matchRes[1];
+        var name = matchRes[2];
+        var data;
+
+        if(this.isBillingField(field.id)){
+            data = this.serializeData(this.billingAddressContainer)
+        }
+        else{
+            data = this.serializeData(this.shippingAddressContainer)
+        }
+        data = data.toObject();
+
+        if( (type == 'billing' && this.shippingAsBilling)
+            || (type == 'shipping' && !this.shippingAsBilling) ) {
+            data['reset_shipping'] = true;
+        }
+
+        data['order['+type+'_address][customer_address_id]'] = $('order-'+type+'_address_customer_address_id').value;
+
+        if (data['reset_shipping']) {
+            this.resetShippingMethod(data);
+        }
+        else {
+            this.saveData(data);
+            if (name == 'country_id' || name == 'customer_address_id') {
+                this.loadArea(['shipping_method', 'billing_method', 'totals', 'items'], true, data);
+            }
+            // added for reloading of default sender and default recipient for giftmessages
+            //this.loadArea(['giftmessage'], true, data);
+        }
     }
+    
 });
 
 $j('document').ready(function() {

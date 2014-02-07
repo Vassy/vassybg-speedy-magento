@@ -111,7 +111,7 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
         $officeName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($officeName);
        if($cityId){
         try {
-            $offices = $this->_speedyEPS->listOffices($officeName, $cityId);
+            $offices = $this->_speedyEPS->listOfficesEx($officeName, $cityId);
         } catch (Exception $e) {
             
         }
@@ -121,7 +121,7 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
 
             foreach ($offices as $office) {
 
-
+                
                 $label = '';
 
                 $city = '';
@@ -130,9 +130,10 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
 
                 $label .= $office->getId() . ' ' . $office->getName();
 
+                /*
                 $city .= $office->getAddress()->getSiteType() . ' ' .
                         $office->getAddress()->getSiteName();
-
+*/
                 if ($office->getAddress()->getQuarterType()) {
 
 
@@ -181,12 +182,12 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
 
                     $note .= $office->getAddress()->getAddressNote();
                 }
-
+/*
                 if ($city != '') {
 
                     $label = $label . ', ' . $city;
                 }
-
+*/
                 if ($address != '') {
                     $label = $label . ', ' . $address;
                 }
@@ -194,9 +195,16 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
                     $label = $label . ', ' . $note;
                 }
 
-                $tpl[] = array('label' => $label,
+                $tpl[] = array('label' =>$office->getId().' '.$office->getName().', '. $office->getAddress()->getFullAddressString(),
                     'value' => $office->getId(),
-                    'site_id' => $office->getAddress()->getSiteId());
+                    'street_label'=>$label,
+                    'site_id' => $office->getAddress()->getResultSite()->getId(),
+                    'site_name'=> $office->getAddress()->getResultSite()->getType() . ' ' . $office->getAddress()->getResultSite()->getName() .
+                        ', общ. ' . $office->getAddress()->getResultSite()->getMunicipality() . ', обл. ' . $office->getAddress()->getResultSite()->getRegion(),
+                    'site_municipality'=>$office->getAddress()->getResultSite()->getMunicipality(),
+                    'post_code'=>$office->getAddress()->getPostCode(),
+                    'region'=>$office->getAddress()->getResultSite()->getRegion(),
+                    'is_full_nomenclature' =>$office->getAddress()->getResultSite()->getAddrNomen()->getValue());
             }
 
             $jsonData = json_encode($tpl);

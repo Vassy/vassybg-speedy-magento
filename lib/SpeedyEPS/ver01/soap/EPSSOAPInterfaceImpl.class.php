@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'EPSInterface.class.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'EPSInterface.class.php';
 
 /**
  * Speedy SOAP EPS ver01 Service Interface Implementation

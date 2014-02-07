@@ -378,6 +378,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
     public function saveOrderAfter($evt) {
 
         $order = $evt->getOrder();
+        $shippingAmount = $order->getShippingAmount();
         $address = $order->getShippingAddress();
         $session = Mage::getSingleton('checkout/session');
         $paymentMethod = $order->getPayment()->getMethodInstance()->getInfoInstance()->getMethod();
@@ -468,7 +469,9 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
 
                 $freeInterCityMethod = Mage::getStoreConfig('carriers/speedyshippingmodule/free_method_intercity');
 
-                if (($code[1] == $freeCityMethod) || ($code[1] == $freeInterCityMethod)) {
+                if (($code[1] == $freeCityMethod) ||
+                    ($code[1] == $freeInterCityMethod) || 
+                    ($shippingAmount == 0.000)) {
                     $isFreeShippingChoosen = TRUE;
                 }
             }
@@ -478,7 +481,8 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
 
             //Determine who should pay the price for the shipment
 
-            if ($isEnabled && ($order->getSubtotal() >= (float) $freeMethodSubtotal) && $isFreeShippingChoosen) {
+            if ( ($isEnabled && ($order->getSubtotal() >= (float) $freeMethodSubtotal) && $isFreeShippingChoosen) ||
+                  $shippingAmount == 0.000) {
                 $saveSpeedyData->setPayerType(ParamCalculation::PAYER_TYPE_SENDER);  //SENDER 
             } else {
                 $saveSpeedyData->setPayerType(ParamCalculation::PAYER_TYPE_RECEIVER);  //RECEIVER 
@@ -530,6 +534,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
         }
         $order = $evt->getOrder();
         $address = $order->getShippingAddress();
+        $shippingAmount = $order->getShippingAmount();
         $session = Mage::getSingleton('checkout/session');
         $paymentMethod = $order->getPayment()->getMethodInstance()->getInfoInstance()->getMethod();
         $carrierCode = $order->getShippingCarrier()->getCarrierCode();
@@ -611,7 +616,9 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
 
                 $freeInterCityMethod = Mage::getStoreConfig('carriers/speedyshippingmodule/free_method_intercity');
 
-                if (($code[1] == $freeCityMethod) || ($code[1] == $freeInterCityMethod)) {
+                if (($code[1] == $freeCityMethod) || 
+                    ($code[1] == $freeInterCityMethod) || 
+                    ($shippingAmount == 0.000)) {
                     $isFreeShippingChoosen = TRUE;
                 }
             }
@@ -619,7 +626,8 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
 
 
 
-            if ($isEnabled && ($order->getSubtotal() >= (float) $freeMethodSubtotal) && $isFreeShippingChoosen) {
+            if ( ($isEnabled && ($order->getSubtotal() >= (float) $freeMethodSubtotal) && $isFreeShippingChoosen) ||
+                  $shippingAmount == 0.000) {
                 $saveSpeedyData->setPayerType(ParamCalculation::PAYER_TYPE_SENDER);  //SENDER 
             } else {
                 $saveSpeedyData->setPayerType(ParamCalculation::PAYER_TYPE_RECEIVER);  //RECEIVER 
@@ -709,6 +717,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
             $speedyData->setBolCreatedMonth(null);
             $speedyData->setBolCreatedYear(null);
             $speedyData->setBolCreatedTime(null);
+            $speedyData->setBolDatetime(null);
 
             $transactionSave = Mage::getModel('core/resource_transaction');
 

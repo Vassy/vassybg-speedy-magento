@@ -18,19 +18,43 @@ Mage_Adminhtml_Block_Widget_Grid {
     public function __construct() {
         parent::__construct();
         $this->setId('BolGrid');
-        $this->setDefaultSort('id');
-        $this->setDefaultDir('ASC');
-        $this->setSaveParametersInSession(true);
+        $this->setDefaultSort('bol_id');
+        $this->setDefaultDir('DESC');
+        // $this->setSaveParametersInSession(true);
     }
 
     protected function _prepareCollection() {
 
         $dateInfo = getdate(time());
 
+        $filter = $this->getParam('filter');
+        $filter_data = Mage::helper('adminhtml')->prepareFilterString($filter);
+
+        $skipDefaultFilter = false;
+
+        if (array_key_exists('bol_takingdate', $filter_data)) {
+            if (is_array($filter_data['bol_takingdate'])) {
+                if (array_key_exists('from', $filter_data['bol_takingdate']) ||
+                        array_key_exists('to', $filter_data['bol_takingdate'])) {
+                    $skipDefaultFilter = TRUE;
+                }
+            }
+        }
+
+        if (array_key_exists('bol_id', $filter_data)) {
+            $skipDefaultFilter = TRUE;
+        }
+
         $collection = Mage::getModel('speedyshippingmodule/saveorder')->getCollection();
-        $collection->addFieldToFilter('bol_created_day', $dateInfo['mday']);
-        $collection->addFieldToFilter('bol_created_month', $dateInfo['mon']);
-        $collection->addFieldToFilter('bol_created_year', $dateInfo['year']);
+        /*
+        if (!$skipDefaultFilter) {
+            $collection->addFieldToFilter('bol_created_day', $dateInfo['mday']);
+            $collection->addFieldToFilter('bol_created_month', $dateInfo['mon']);
+            $collection->addFieldToFilter('bol_created_year', $dateInfo['year']);
+        }
+         * 
+         */
+        $collection->addFieldToFilter('bol_id', array("notnull" => true));
         $this->setCollection($collection);
         return parent::_prepareCollection();
     }
@@ -41,50 +65,65 @@ Mage_Adminhtml_Block_Widget_Grid {
 
         $this->addColumn('bol_id', array(
             'header' => $this->__("View Bill of lading number"),
-            'align' => 'right',
+            'align' => 'center',
             'width' => '10px',
             'index' => 'bol_id',
+            'type'=>'number'
         ));
 
         $this->addColumn('bol_created_at', array(
-            'header' => $this->__("Time and creation date"),
-            'align' => 'left',
+            'header' => $this->__("Taking time courier"),
+            'align' => 'center',
             'index' => 'bol_created_at',
             'width' => '50px',
-            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_created'
+            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_created',
+            'filter' => false
+        ));
+
+        $this->addColumn('bol_takingdate', array(
+            'header' => $this->__("Time and creation date"),
+            'align' => 'center',
+            'index' => 'bol_datetime',
+            'type' => 'datetime',
+            'width' => '50px',
+            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_datecreated'
         ));
 
         $this->addColumn('image', array(
             'header' => '',
-            'align' => 'left',
+            'align' => 'center',
             'index' => 'image',
-            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_cancelbutton'
+            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_cancelbutton',
+            'filter' => false
         ));
 
         if (!Mage::getStoreConfig('carriers/speedyshippingmodule/bring_to_office') ||
                 !Mage::getStoreConfig('carriers/speedyshippingmodule/choose_office')) {
             $this->addColumn('images', array(
                 'header' => '',
-                'align' => 'left',
+                'align' => 'center',
                 'index' => 'images',
-                'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_requestbutton'
+                'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_requestbutton',
+                'filter' => false
             ));
         }
 
         $this->addColumn('view_bol', array(
             'header' => '',
-            'align' => 'left',
+            'align' => 'center',
             'index' => 'view_bol',
-            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_viewbol'
+            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_viewbol',
+            'filter' => false
         ));
 
 
 
         $this->addColumn('order', array(
             'header' => '',
-            'align' => 'left',
+            'align' => 'center',
             'index' => 'order',
-            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_vieworder'
+            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_vieworder',
+            'filter' => false
         ));
 
         return parent::_prepareColumns();
@@ -106,13 +145,12 @@ Mage_Adminhtml_Block_Widget_Grid {
         }
         return $this;
     }
-    
-    
+
     protected function _prepareLayout() {
         parent::_prepareLayout();
-        
+
         //Remove unneeded buttons
-        $this->unsetChild('search_button');
+        //$this->unsetChild('search_button');
         $this->unsetChild('reset_filter_button');
     }
 

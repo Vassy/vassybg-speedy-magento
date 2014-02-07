@@ -662,10 +662,9 @@ $successString = '';
         }
 
 
-
-        $this->_codAmount = $order->getBaseSubtotalInclTax();
+        $this->_codAmount = $order->getBaseSubtotalInclTax() - abs($order->getBaseDiscountAmount());
         //Substract the amount of virtual products from insurance premium sum
-        $this->_insuranceAmount = $order->getBaseSubtotalInclTax() - $sumOfVirtualProducts;
+        $this->_insuranceAmount = ($order->getBaseSubtotalInclTax() - abs($order->getBaseDiscountAmount())) - $sumOfVirtualProducts;
 
         $totalWeight = $this->getRealWeight();
         $receiverName = $this->_shippingAddress->getFirstname() . ' ' . $this->_shippingAddress->getLastname();
@@ -734,6 +733,7 @@ $successString = '';
             $this->_speedyData->setBolCreatedDay($dateInfo['mday']);
             $this->_speedyData->setBolCreatedMonth($dateInfo['mon']);
             $this->_speedyData->setBolCreatedYear($dateInfo['year']);
+            $this->_speedyData->setBolDatetime(date("Y-m-d H:i:s"));
             
             
             
@@ -764,8 +764,9 @@ $successString = '';
                 $currentHour = $this->_magentoTime->timestamp(strtotime("now"));
             }
             
-            
+            $this->_speedyData->setBolDatetime(date("Y-m-d H:i:s", $currentHour));
             $currentHour = date('G:i:s', $currentHour);
+            
             
              $this->_speedyData->setBolCreatedTime($currentHour);
             /*
@@ -919,6 +920,7 @@ $successString = '';
                 $speedyData->setBolCreatedMonth(null);
                 $speedyData->setBolCreatedYear(null);
                 $speedyData->setBolCreatedTime(null);
+                $speedyData->setBolDatetime(null);
                 $speedyData->save();
 
                 $this->_speedyEPS->invalidatePicking($bolID);

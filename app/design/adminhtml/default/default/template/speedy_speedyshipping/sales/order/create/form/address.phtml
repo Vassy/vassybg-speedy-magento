@@ -74,10 +74,10 @@ else:
         <?php $hideElement = 'address-' . ($this->getIsShipping() ? 'shipping' : 'billing') . '-overlay'; ?>
         <div style="display:none;" id="<?php echo $hideElement ?>" class="overlay"><span><?php echo $this->__('Shipping address selection is not applicable') ?></span></div>
         <script type="text/javascript">
-        // order.bindAddressFields('<?php echo $_fieldsContainerId ?>');
-        order.bindAddressFields('<?php echo $_addressChoiceContainerId ?>');
+            // order.bindAddressFields('<?php echo $_fieldsContainerId ?>');
+            order.bindAddressFields('<?php echo $_addressChoiceContainerId ?>');
 <?php if ($this->getIsShipping() && $this->getIsAsBilling()): ?>
-            order.disableShippingAddress(true);
+                order.disableShippingAddress(true);
 <?php endif; ?>
         </script>
     </fieldset>
@@ -93,35 +93,87 @@ else:
     var allowForcedOfficeChoice = 0;
 
     $j('document').ready(function() {
-$j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').removeAttr('onclick');  
+
+        //<?php if (Mage::getVersion() == '1.8.0.0' || Mage::getVersion() == '1.8.1.0'): ?>
+
+    //        AdminOrder.addMethods({
+    //            resetShippingMethod : function(data){
+    //        data['reset_shipping'] = 1;
+    //        this.isShippingMethodReseted = true;
+    //        this.loadArea(['shipping_method', 'billing_method', 'shipping_address', 'totals', 'giftmessage', 'items'], true, data);
+    //    },
+    //    changeAddressField : function(event){
+    //        var field = Event.element(event);
+    //        var re = /[^\[]*\[([^\]]*)_address\]\[([^\]]*)\](\[(\d)\])?/;
+    //        var matchRes = field.name.match(re);
+    //
+    //        if (!matchRes) {
+    //            return;
+    //        }
+    //
+    //        var type = matchRes[1];
+    //        var name = matchRes[2];
+    //        var data;
+    //
+    //        if(this.isBillingField(field.id)){
+    //            data = this.serializeData(this.billingAddressContainer)
+    //        }
+    //        else{
+    //            data = this.serializeData(this.shippingAddressContainer)
+    //        }
+    //        data = data.toObject();
+    //
+    //        if( (type == 'billing' && this.shippingAsBilling)
+    //            || (type == 'shipping' && !this.shippingAsBilling) ) {
+    //            data['reset_shipping'] = true;
+    //        }
+    //
+    //        data['order['+type+'_address][customer_address_id]'] = $('order-'+type+'_address_customer_address_id').value;
+    //
+    //        if (data['reset_shipping']) {
+    //            this.resetShippingMethod(data);
+    //        }
+    //        else {
+    //            this.saveData(data);
+    //            if (name == 'country_id' || name == 'customer_address_id') {
+    //                this.loadArea(['shipping_method', 'billing_method', 'totals', 'items'], true, data);
+    //            }
+    //            // added for reloading of default sender and default recipient for giftmessages
+    //            //this.loadArea(['giftmessage'], true, data);
+    //        }
+    //    }
+    //        });
+            //<?php endif; ?>
+
+        $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').removeAttr('onclick');
 
 <?php if ($this->getIsShipping()): ?>
             var target = 'shipping';
 
-        if(isFirstPageLoad <=1){
-            var billingAddressId = $j('#order-billing_address_customer_address_id').val()
-            $j('#order-shipping_address_customer_address_id').val(billingAddressId);
-            isFirstPageLoad++;
-        }
+            if (isFirstPageLoad <= 1) {
+                var billingAddressId = $j('#order-billing_address_customer_address_id').val()
+                $j('#order-shipping_address_customer_address_id').val(billingAddressId);
+                isFirstPageLoad++;
+            }
 
-        
+
     <?php $reqData = Mage::app()->getRequest()->getPost('order'); ?>
 
     <?php $currentAction = Mage::app()->getRequest()->getActionName(); ?>
-    <?php if (isset($reqData['shipping_address']['speedy_office_chooser']) 
-            && $reqData['shipping_address']['speedy_office_chooser']  == 0 && $currentAction == 'loadBlock' && !$this->getIsAsBilling()): ?>
+    <?php if (isset($reqData['shipping_address']['speedy_office_chooser']) && $reqData['shipping_address']['speedy_office_chooser'] == 0 && $currentAction == 'loadBlock' && !$this->getIsAsBilling()):
+        ?>
 
                 //document.getElementById('order-shipping_address_speedy_office_id').value = '';
 
-    <?php elseif (isset($reqData['shipping_address']['speedy_office_chooser']) 
-            &&$reqData['shipping_address']['speedy_office_chooser'] == 1): ?>
-                    
-                <?php if(array_key_exists('customer_address_id',$reqData['shipping_address'])): ?>
-                        <?php if(!$reqData['shipping_address']['customer_address_id']): ?>
-                             allowForcedOfficeChoice = 1;
-                        <?php endif; ?>
-                
-                <?php endif; ?>
+    <?php elseif (isset($reqData['shipping_address']['speedy_office_chooser']) && $reqData['shipping_address']['speedy_office_chooser'] == 1):
+        ?>
+
+        <?php if (array_key_exists('customer_address_id', $reqData['shipping_address'])): ?>
+            <?php if (!$reqData['shipping_address']['customer_address_id']): ?>
+                        allowForcedOfficeChoice = 1;
+            <?php endif; ?>
+
+        <?php endif; ?>
     <?php endif; ?>
 
 <?php else: ?>
@@ -130,13 +182,13 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
             var shippingSiteNomenclature = null;
 <?php endif; ?>
 
-        $j('#order-'+target+'_address_street0').parentsUntil('tr').parent().hide()
+        $j('#order-' + target + '_address_street0').parentsUntil('tr').parent().hide()
         var isFullNomenclature = 0;
 
         var isShippingSameAsBilling = $j('#order-shipping_same_as_billing').is(':checked');
-        
-        $j('#order-shipping_same_as_billing').change(function(evt){
-            if(isFirstPageLoad == 0){
+
+        $j('#order-shipping_same_as_billing').change(function(evt) {
+            if (isFirstPageLoad == 0) {
                 isFirstPageLoad = 2;
             }
         })
@@ -144,19 +196,19 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
         var shouldAddressBeDisabled = $j('#order-' + target + '_address_customer_address_id').val();
         if (shouldAddressBeDisabled) {
             updateForm(target, null, true);
-           
-            $j('#order-'+target+'_address_city').attr('readonly','readonly');
-            $j('#order-'+target+'_address_speedy_office_chooser').attr('disabled','disabled')
-        }else{
-            if(target== 'shipping' && !isShippingSameAsBilling){
-            
-            updateForm(target, true);
-            $j('#order-'+target+'_address_city').removeAttr('readonly');
-            }else{
+
+            $j('#order-' + target + '_address_city').attr('readonly', 'readonly');
+            $j('#order-' + target + '_address_speedy_office_chooser').attr('disabled', 'disabled')
+        } else {
+            if (target == 'shipping' && !isShippingSameAsBilling) {
+
+                updateForm(target, true);
+                $j('#order-' + target + '_address_city').removeAttr('readonly');
+            } else {
                 updateForm(target, null, true);
             }
         }
-        
+
         /*
          if(isShippingSameAsBilling){
          updateForm(target,true)
@@ -168,10 +220,10 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
 
         function checkIsOffice() {
-            
-            
+
+
             if ($j('#' + baseFieldSelector + 'speedy_office_id').val() != false) {
-             
+
                 $j('#' + baseFieldSelector + 'speedy_office_chooser').val(1)
                 officeName = $j('#' + baseFieldSelector + 'speedy_street_name').val();
                 $j('#' + baseFieldSelector + 'speedy_office_name').val($j('#' + baseFieldSelector + 'speedy_street_name').val())
@@ -229,7 +281,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
         $j('#order-' + target + '_address_customer_address_id').change(function(evt) {
 
-            if(this.id == 'order-billing_address_customer_address_id' && isFirstPageLoad == 0){
+            if (this.id == 'order-billing_address_customer_address_id' && isFirstPageLoad == 0) {
                 isFirstPageLoad = 1;
             }
 
@@ -255,11 +307,11 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
             } else {
                 hideSpeedyAddressFields();
             }
-            
-            if(!$j(this).val()){
-                $j('#order-'+target+'_address_city').removeAttr('readonly');
-            }else{
-                $j('#order-'+target+'_address_city').attr('readonly','readonly');
+
+            if (!$j(this).val()) {
+                $j('#order-' + target + '_address_city').removeAttr('readonly');
+            } else {
+                $j('#order-' + target + '_address_city').attr('readonly', 'readonly');
             }
 
 
@@ -278,8 +330,8 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
 
             var evtTarget = $j(evt.target);
-            
-        
+
+
 
             if (target == 'shipping') {
                 isFullNomenclature = shippingNomenclature;
@@ -308,6 +360,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
+
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
                         var event = {type: 'change', target: this, srcElement: evt.target}
@@ -382,8 +435,17 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     }
 
                 } else if (evtTarget.attr('id') != baseFieldSelector + 'city' && evtTarget.attr('id') != baseFieldSelector + 'speedy_office_chooser') {
+
+                     var skipElements = ['order-shipping_address_firstname',
+                        'order-shipping_address_lastname',
+                        'order-shipping_address_middlename',
+                        'order-shipping_address_company'];
                     
-                    evtTarget.val(evtTarget.val().toUpperCase())
+                    
+                   
+                    if (skipElements.indexOf(evt.target.id) == -1) {
+                        evtTarget.val(evtTarget.val().toUpperCase())
+                    }
                     var event = {type: 'change', target: this, srcElement: evt.target}
                     order.changeAddressField(event)
                 }
@@ -397,7 +459,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         evtTarget.val('')
                         $j('#' + baseFieldSelector + 'speedy_street_id').val('');
                         concatenateStreetAddress();
-                       var event = {type: 'change', target: this, srcElement: evt.target}
+                        var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     }
 
@@ -482,6 +544,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                         var event = {type: 'change', target: this, srcElement: evt.target}
                         order.changeAddressField(event)
                     } else {
+
                         evtTarget.val(evtTarget.val().toUpperCase())
                         concatenateStreetAddress();
                         var event = {type: 'change', target: this, srcElement: evt.target}
@@ -489,7 +552,16 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     }
 
                 } else if (evtTarget.attr('id') != baseFieldSelector + 'city' && evtTarget.attr('id') != baseFieldSelector + 'speedy_office_chooser') {
-                    evtTarget.val(evtTarget.val().toUpperCase())
+                    var skipElements = ['order-billing_address_firstname',
+                        'order-billing_address_lastname',
+                        'order-billing_address_middlename',
+                        'order-billing_address_company'];
+                    
+                    
+                   
+                    if (skipElements.indexOf(evt.target.id) == -1) {
+                        evtTarget.val(evtTarget.val().toUpperCase())
+                    }
                     var event = {type: 'change', target: this, srcElement: evt.target}
                     order.changeAddressField(event)
                 }
@@ -560,9 +632,9 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
 
 
         _initListeners(target);
-            if(shippingNomenclature == 'NO'){
-             disableAutocomplete();          
-            }
+        if (shippingNomenclature == 'NO') {
+            disableAutocomplete();
+        }
 
         initOfficeChooser(target);
 
@@ -597,14 +669,14 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                 if ($j(this).val() != false) {
 
                     hideSpeedyAddressFields()
-                    
-                    var zipCode = $j('#order-'+target+'_address_postcode').val();
-                    var regionCode = $j('#order-'+target+'_address_region').val();
-                    
+
+                    var zipCode = $j('#order-' + target + '_address_postcode').val();
+                    var regionCode = $j('#order-' + target + '_address_region').val();
+
                     updateForm(target)
-                    $j('#order-'+target+'_address_postcode').val(zipCode)
-                    $j('#order-'+target+'_address_region').val(regionCode);
-                    
+                    $j('#order-' + target + '_address_postcode').val(zipCode)
+                    $j('#order-' + target + '_address_region').val(regionCode);
+
                     $j(this).removeAttr('disabled')
                     $j('#order-' + target + '_address_speedy_office_name').removeAttr('readonly')
 
@@ -613,23 +685,23 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     $j('#order-' + target + '_address_speedy_street_name').val('');
                     $j('#order-' + target + '_address_speedy_office_name').val('')
                     $j('#order-' + target + '_address_speedy_office_id').val('');
-                    
-                     var zipCode = $j('#order-'+target+'_address_postcode').val();
-                    var regionCode = $j('#order-'+target+'_address_region').val();
-                    
-                    updateForm(target,true);
-                    $j('#order-'+target+'_address_postcode').val(zipCode)
-                    $j('#order-'+target+'_address_region').val(regionCode);
-                    
+
+                    var zipCode = $j('#order-' + target + '_address_postcode').val();
+                    var regionCode = $j('#order-' + target + '_address_region').val();
+
+                    updateForm(target, true);
+                    $j('#order-' + target + '_address_postcode').val(zipCode)
+                    $j('#order-' + target + '_address_region').val(regionCode);
+
                     showSpeedyAddressFields();
                     concatenateStreetAddress();
-                    
-                    
+
+
 
                 }
 
-               var event = {type: 'change', target: this, srcElement: evt.target}
-                    order.changeAddressField(event)
+                var event = {type: 'change', target: this, srcElement: evt.target}
+                order.changeAddressField(event)
 
             });
         }
@@ -653,7 +725,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
             $j('#order-' + activeTarget + '_address_customer_address_id').change(function(evt) {
                 isValidAddress = $j(this).val();
                 if (isValidAddress) {
-                    
+
                     updateForm(activeTarget, null, true)
                 } else {
                     updateForm(activeTarget, true)
@@ -679,8 +751,8 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     });
                 }
                 , minLength: 1
-                        , select: function(event, ui) {
-                        
+                , select: function(event, ui) {
+
                     updateForm(activeTarget)
                     updateForm(activeTarget, true);
                     // clearForm();
@@ -702,7 +774,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     if (ui.item.is_full_nomenclature == 'NO') {
                         if (target == 'shipping') {
 
-                            shippingNomenclature  = 'NO';
+                            shippingNomenclature = 'NO';
                         }
                         isFullNomenclature = 'NO';
                         disableAutocomplete()
@@ -739,25 +811,26 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                             cityid: $j('#order-' + activeTarget + '_address_speedy_site_id').val()
                         },
                         success: function(data) {
-                            
 
-                        
+
+
                             response(data);
                         }
                     });
                 }
-                ,response: function(event, ui){
-                        $j(this).autocomplete("option", "disabled", false);
+                , response: function(event, ui) {
+                    $j(this).autocomplete("option", "disabled", false);
 
                 }
                 , minLength: 0
-                        , select: function(event, ui) {
+                , select: function(event, ui) {
                     $j(this).val(ui.item.label);
                     officeName = ui.item.label;
                     concatenateStreetAddress();
                     $j('#order-' + activeTarget + '_address_speedy_office_id').val(ui.item.value);
                     $j('#order-' + activeTarget + '_address_speedy_street_name').val(ui.item.label).attr('readonly', 'readonly');
                     $j('#order-' + activeTarget + '_address_street0').val(ui.item.label)
+                    initSiteData(ui, activeTarget);
                     // concatenateStreetAddress();
 
                     //do not delete this
@@ -793,7 +866,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     });
                 }
                 , minLength: 1
-                        , select: function(event, ui) {
+                , select: function(event, ui) {
                     $j(this).val(ui.item.label);
                     concatenateStreetAddress();
                     quarterName = ui.item.label;
@@ -819,7 +892,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     });
                 }
                 , minLength: 1
-                        , select: function(event, ui) {
+                , select: function(event, ui) {
                     $j(this).val(ui.item.label);
                     concatenateStreetAddress();
                     streetName = ui.item.label;
@@ -849,7 +922,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                     });
                 }
                 , minLength: 1
-                        , select: function(event, ui) {
+                , select: function(event, ui) {
                     $j(this).val(ui.item.label);
                     concatenateStreetAddress();
                     // $j('#order-' + activeTarget + '_address_speedy_street_id').val(ui.item.value)
@@ -871,6 +944,35 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
             })
 
         }
+
+        function initSiteData(jsonResponse, target) {
+            $j('#order-' + target + '_address_speedy_site_id').val(jsonResponse.item.site_id)
+
+            $j('#order-' + target + '_address_postcode').val(jsonResponse.item.post_code)
+
+            //$j('#order-' + target + '_address_country_id').val('BG');
+            $j('#order-' + target + '_address_city').val(jsonResponse.item.site_name);
+            $j('#order-' + target + '_address_region_id').removeClass('required-entry validate-select validation-failed').hide();
+
+            $j('#order-' + target + '_address_region').show().val(jsonResponse.item.region)
+
+
+            siteName = jsonResponse.item.site_name;
+            $j('#city').val(siteName);
+            if (jsonResponse.item.is_full_nomenclature == 'NO') {
+                isFullNomenclature = 'NO';
+                disableAutocomplete()
+            } else if (jsonResponse.item.is_full_nomenclature == 'PARTIAL') {
+
+                isFullNomenclature = 'PARTIAL';
+                enableAutocomplete();
+            } else {
+                isFullNomenclature = 'FULL';
+                enableAutocomplete();
+
+            }
+        }
+
 
 
         $j('#order-' + target + '_address_speedy_office_chooser').change(function(evt) {
@@ -985,7 +1087,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                    #order-' + activeTarget + '_address_speedy_office_name,\n\
                    #order-' + activeTarget + '_address_speedy_office_id')
                         .removeAttr('readonly');
-                $j('#order-'+activeTarget+'_address_speedy_office_chooser').removeAttr('disabled')
+                $j('#order-' + activeTarget + '_address_speedy_office_chooser').removeAttr('disabled')
             } else if (clear) {
                 $j('#order-' + activeTarget + '_address_speedy_street_name,#order-' + activeTarget + '_address_street1,\n\
                     #order-' + activeTarget + '_address_speedy_street_id,#order-' + activeTarget + '_address_speedy_quarter_name,\n\
@@ -1002,7 +1104,7 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                    #order-' + activeTarget + '_address_speedy_office_name,\n\
                    #order-' + activeTarget + '_address_speedy_office_id')
                         .attr('readonly', 'readonly');
-                $j('#order-'+activeTarget+'_address_speedy_office_chooser').attr('disabled','disabled')
+                $j('#order-' + activeTarget + '_address_speedy_office_chooser').attr('disabled', 'disabled')
             }
             else {
 
@@ -1021,8 +1123,8 @@ $j('button#submit_order_top_button,button.save[id!="submit_order_top_button"]').
                    #order-' + activeTarget + '_address_speedy_office_name,\n\
                    #order-' + activeTarget + '_address_speedy_office_id')
                         .attr('readonly', 'readonly').val('');
-                $j('#order-'+activeTarget+'_address_speedy_office_chooser').attr('disabled','disabled')
-                
+                $j('#order-' + activeTarget + '_address_speedy_office_chooser').attr('disabled', 'disabled')
+
             }
 
         }

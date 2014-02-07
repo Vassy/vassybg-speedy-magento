@@ -18,13 +18,8 @@ extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract
     public function render(Varien_Object $row)
     {
         //if($row->getBolCreatedTime()){
-            return $row->getBolCreatedDay().
-                    '/'.
-                    $row->getBolCreatedMonth().
-                    '/'.
-                    $row->getBolCreatedYear().
-                    '/'.
-                    $row->getBolCreatedTime();
+            $generatedTimestamp = mktime(0, 0, 0, $row->getBolCreatedMonth(), $row->getBolCreatedDay(), $row->getBolCreatedYear());
+            return date('d-m-Y', $generatedTimestamp );
        // }
     }
 }

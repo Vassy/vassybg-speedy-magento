@@ -528,7 +528,8 @@
                                     $j(this).val(ui.item.label);
                                     officeName = ui.item.label;
                                     $j('#speedy_office_id').val(ui.item.value);
-                                    $j('#speedy_street').val(ui.item.label)
+                                    $j('#speedy_street').val(ui.item.label);
+                                    initSiteData(ui);
                                     return false;
                                 }}).focus(function() {
                                 if ($j('#speedy_site_id').val()) {
@@ -606,10 +607,31 @@
                             , minLength: 1
                                     , select: function(event, ui) {
                                 $j(this).val(ui.item.label);
-                                $j('#speedy_block_id').val(ui.item.value)
 
                                 return false;
                             }});
+
+
+                        function initSiteData(jsonResponse){
+                                $j('#speedy_site_id').val(jsonResponse.item.site_id)
+                                $j('#zip').val(jsonResponse.item.post_code)
+                                $j('#region').val(jsonResponse.item.region)
+
+                                siteName = jsonResponse.item.site_name;
+                                $j('#city').val(siteName);
+                                if (jsonResponse.item.is_full_nomenclature == 'NO') {
+                                    isFullNomenclature = 'NO';
+                                    disableAutocomplete()
+                                } else if (jsonResponse.item.is_full_nomenclature == 'PARTIAL') {
+
+                                    isFullNomenclature = 'PARTIAL';
+                                    enableAutocomplete();
+                                } else {
+                                    isFullNomenclature = 'FULL';
+                                    enableAutocomplete();
+
+                                }
+                        }
 
 
                         function updateForm(enable) {
@@ -672,7 +694,7 @@
                             }
 
                             if (quarter || quarter_id) {
-                                if ((street || street_id && number) || blockNo) {
+                                if ((street && number) || blockNo || number) {
                                     isValid = 1;
                                 }
 

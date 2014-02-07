@@ -567,6 +567,20 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
         $pickingData->documents = Mage::getStoreConfig('carriers/speedyshippingmodule/isDocuments');
         $pickingData->palletized = false; // Флаг дали пратката се състои от палети
 
+
+        if (Mage::app()->getStore()->isAdmin() && Mage::getDesign()->getArea() == 'adminhtml') {
+
+            $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+        } else {
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+        }
+
+        $totals = $quote->getTotals();
+        $discount = null;
+        if (!is_null($totals) && array_key_exists('discount', $totals)) {
+            $discount = $totals["discount"]->getValue();
+        }
+
         if (Mage::getStoreConfig('carriers/speedyshippingmodule/add_insurance')) {
 
 
@@ -579,7 +593,10 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
             }
 
 
-            $pickingData->amountInsuranceBase = $this->_request->getBaseSubtotalInclTax() - $sumOfVirtualProducts;
+
+
+
+            $pickingData->amountInsuranceBase = ($this->_request->getBaseSubtotalInclTax() - abs($discount)) - $sumOfVirtualProducts;
 
 
             $pickingData->payerTypeInsurance = ParamCalculation::PAYER_TYPE_RECEIVER;
@@ -617,9 +634,11 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
 
 
 
-
-        $pickingData->amountCODBase = $this->_request->getBaseSubtotalInclTax();
-
+        if (!is_null($discount)) {
+            $pickingData->amountCODBase = $this->_request->getBaseSubtotalInclTax() - abs($discount);
+        } else {
+            $pickingData->amountCODBase = $this->_request->getBaseSubtotalInclTax();
+        }
         $isFixed = $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable');
 
         //Speedy calculator plus fixed handling charge
@@ -1390,7 +1409,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
 
         $isEnabled = Mage::getStoreConfig('carriers/speedyshippingmodule/free_shipping_enable');
 
-        if (!(boolean) $isEnabled) {
+        if (!(boolean) $isEnabled && !$request->getFreeShipping()) {
 
             return;
         }
@@ -1408,13 +1427,29 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
             $freeMethod = 'speedy_fixed_price';
         }
 
+        if (Mage::app()->getStore()->isAdmin() && Mage::getDesign()->getArea() == 'adminhtml') {
+
+            $quote = Mage::getSingleton('adminhtml/session_quote')->getQuote();
+        } else {
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+        }
+
+        $totals = $quote->getTotals();
+        $discount = null;
+        if (!is_null($totals) && array_key_exists('discount', $totals)) {
+            $discount = $totals["discount"]->getValue();
+        }
+
         $freeMethodSubtotal = Mage::getStoreConfig('carriers/speedyshippingmodule/free_shipping_subtotal');
 
-        $orderValue = $request->getBaseSubtotalInclTax();
+        if (!is_null($discount)) {
+            $orderValue = $request->getBaseSubtotalInclTax() - abs($discount);
+        } else {
+            $orderValue = $request->getBaseSubtotalInclTax();
+        }
 
 
-
-        if ($orderValue >= $freeMethodSubtotal) {
+        if ($orderValue >= $freeMethodSubtotal || $request->getFreeShipping()) {
 
             $request->setFreeShipping(1);
         }

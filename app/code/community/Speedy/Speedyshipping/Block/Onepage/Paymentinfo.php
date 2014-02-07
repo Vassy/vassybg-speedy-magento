@@ -132,6 +132,19 @@ class Speedy_Speedyshipping_Block_Onepage_Paymentinfo extends Mage_Payment_Block
                 }
             }
         }
+        
+        if (!$isAdmin) {
+            $shippingAmount = Mage::getSingleton('checkout/session')
+                              ->getQuote()
+                              ->getShippingAddress()
+                              ->getShippingAmount();
+        } else {
+            $shippingAmount = Mage::getSingleton('adminhtml/session_quote')
+                              ->getQuote()
+                              ->getShippingAddress()
+                              ->getShippingAmount();
+        }
+        
         //Is free shipping enabled
         if (Mage::getStoreConfig('carriers/speedyshippingmodule/free_shipping_enable')) {
 
@@ -147,6 +160,8 @@ class Speedy_Speedyshipping_Block_Onepage_Paymentinfo extends Mage_Payment_Block
                     }
                 }
             }
+        }else if($shippingAmount == 0.000){
+              $this->_isFreeMethod = TRUE;
         }
 
         if (Mage::app()->getStore()->isAdmin() && Mage::getDesign()->getArea() == 'adminhtml') {

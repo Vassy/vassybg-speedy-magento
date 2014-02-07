@@ -255,7 +255,7 @@ Mage::getSingleton('eav/config')
 
 
 
-$order_address_table = $this->getTable('sales/order_address');;
+$order_address_table = $this->getTable('sales/order_address');
 $quote_address_table = $this->getTable('sales/quote_address');
 
 
