@@ -44,10 +44,7 @@
                         <li class="wide">
                             <div class="field" style="width: 100%">
                                 <div id="speedyBillingError" style="display: none" class="validation-failed">
-                                    <p>Моля, въведете една от следните комбинации:
-                                        квартал/номер на блок или номер на улица</p>
-                                    <p>улица/номер на улица или номер на блок</p>
-                                    <p>забележка към поръчката</p>
+                                    <?php echo $this->__("valid_address_desc") ?>
                                 </div>
                             </div>
                         </li>
@@ -124,7 +121,7 @@
                                         </li>
                                         <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
                                         <li class="wide">
-                                            <label for="speedy_street">Улица:</label>
+                                            <label for="speedy_street"><?php echo $this->__('speedy street name');  ?></label>
                                             <div class="input-box">
                                                 <input type="text" name="billing[speedy_street_name]" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedyStreetName()) ?>" id="billing:speedy_street" class="input-text"  />
                                             </div>
@@ -815,8 +812,10 @@
 
                                         streetAddress = address;
 
-                                        if (note != '') {
+                                        if (note != '' && streetAddress.length > 0) {
                                             streetAddress += ', ' + note;
+                                        } else {
+                                            streetAddress += note;
                                         }
                                         $j('#billing\\:street1').val(streetAddress);
                                         return true;

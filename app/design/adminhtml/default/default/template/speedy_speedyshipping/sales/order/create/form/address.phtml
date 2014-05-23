@@ -1048,9 +1048,11 @@ else:
 
             streetAddress = address;
 
-            if (note != '') {
+            if (note != '' && streetAddress.length > 0) {
                 streetAddress += ', ' + note;
-            }
+            }else{
+                streetAddress +=  note;
+                }
 
             var isShippingSameAsBilling = $j('#order-shipping_same_as_billing').is(':checked')
 

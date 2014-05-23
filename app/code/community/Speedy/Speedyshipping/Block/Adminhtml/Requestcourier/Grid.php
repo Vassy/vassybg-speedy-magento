@@ -46,12 +46,15 @@ Mage_Adminhtml_Block_Widget_Grid {
         }
 
         $collection = Mage::getModel('speedyshippingmodule/saveorder')->getCollection();
+
+        
+
         /*
-        if (!$skipDefaultFilter) {
-            $collection->addFieldToFilter('bol_created_day', $dateInfo['mday']);
-            $collection->addFieldToFilter('bol_created_month', $dateInfo['mon']);
-            $collection->addFieldToFilter('bol_created_year', $dateInfo['year']);
-        }
+          if (!$skipDefaultFilter) {
+          $collection->addFieldToFilter('bol_created_day', $dateInfo['mday']);
+          $collection->addFieldToFilter('bol_created_month', $dateInfo['mon']);
+          $collection->addFieldToFilter('bol_created_year', $dateInfo['year']);
+          }
          * 
          */
         $collection->addFieldToFilter('bol_id', array("notnull" => true));
@@ -68,7 +71,7 @@ Mage_Adminhtml_Block_Widget_Grid {
             'align' => 'center',
             'width' => '10px',
             'index' => 'bol_id',
-            'type'=>'number'
+            'type' => 'number'
         ));
 
         $this->addColumn('bol_created_at', array(
@@ -76,8 +79,9 @@ Mage_Adminhtml_Block_Widget_Grid {
             'align' => 'center',
             'index' => 'bol_created_at',
             'width' => '50px',
-            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_created',
-            'filter' => false
+            'type' => 'date',
+            'filter' => false,
+            'renderer' => 'speedyshippingmodule/adminhtml_requestcourier_renderer_created'
         ));
 
         $this->addColumn('bol_takingdate', array(
@@ -151,7 +155,24 @@ Mage_Adminhtml_Block_Widget_Grid {
 
         //Remove unneeded buttons
         //$this->unsetChild('search_button');
-        $this->unsetChild('reset_filter_button');
+        // $this->unsetChild('reset_filter_button');
+    }
+
+    protected function _filterCategoriesCondition($collection, $column) {
+        if (!$value = $column->getFilter()->getValue()) {
+            return;
+        }
+
+        $dateParts = explode('.', $value['orig_from']);
+        //UNIX_TIMESTAMP(CONCAT(`bol_created_year`,'-',LPAD(`bol_created_month`,2,'00'),'-',LPAD(`bol_created_day`,2,'00')))
+       // $this->getCollection()->addFieldToFilter('categories', array('finset' => $value));
+        $this->getCollection()->addExpressionAttributeToSelect('bol_created_at', 
+                'UNIX_TIMESTAMP(CONCAT(`bol_created_year`,'-',`bol_created_month`,'-',`bol_created_day`)) as bol_created_at'
+                , array('bol_created_day','bol_created_month','bol_created_year'));
+        
+         // $this->getCollection()->addFieldToFilter('bol_created_day', $dateParts[0]);
+          //$this->getCollection()->addFieldToFilter('bol_created_month', $dateParts[1]);
+          //$this->getCollection()->addFieldToFilter('bol_created_year', $dateParts[2]);
     }
 
 }

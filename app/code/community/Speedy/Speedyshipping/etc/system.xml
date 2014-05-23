@@ -40,7 +40,7 @@
                             <validate>required-entry</validate>
                         </username>
                         <password translate="label">
-                            <label>Password</label>
+                            <label>Password_speedy</label>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>6</sort_order>
@@ -49,8 +49,8 @@
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
                         </password>
-                        <contact_name>
-                                <label>Лице за контакти:</label>
+                        <contact_name translate="label">
+                                <label>Contact person</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
@@ -58,8 +58,8 @@
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
                         </contact_name>
-                        <contact_telephone>
-                                <label>Телефон:</label>
+                        <contact_telephone translate="label">
+                                <label>Phone:</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
@@ -67,8 +67,8 @@
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
                         </contact_telephone>
-                        <end_of_workingtime>
-                                <label>Край на работното време:</label>
+                        <end_of_workingtime translate="label">
+                                <label>End of working time:</label>
                             <frontend_type>time</frontend_type>
                             <sort_order>7</sort_order>
                             <show_in_default>1</show_in_default>
@@ -88,17 +88,17 @@
                         </allowed_methods>
                         
                         <fixed_pricing_enable translate="label">
-                            <label>Ценообразуване на услутите.:</label>
+                            <label>Service pricing:</label>
                             <frontend_type>select</frontend_type>
                             <source_model>speedyshippingmodule/carrier_source_calculation</source_model>
                             <sort_order>10</sort_order>
-                            <comment>Ценообразуване на услутите. </comment>
+                            <!--<comment>price_calculation_label</comment>-->
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </fixed_pricing_enable>
                         <fixedPrice translate="label">
-                            <label>Фиксирана цена за доставка(без ДДС):</label>
+                            <label>fixed_price_for_shipping_exclvat</label>
                             <sort_order></sort_order>
                             <depends>
                                 <fixed_pricing_enable>2</fixed_pricing_enable> 
@@ -110,7 +110,7 @@
                             <show_in_store>0</show_in_store>
                         </fixedPrice>
                         <handlingCharge translate="label">
-                            <label>Стойност на надбавката (без ДДС):</label>
+                            <label>handling_charge_value</label>
                             <sort_order></sort_order>
                             <depends>
                                 <fixed_pricing_enable>3</fixed_pricing_enable> 
@@ -121,8 +121,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </handlingCharge>
-                        <deferredDays translate="label">
-                            <label>Брой дни за отместване на датата на товарителницата</label>
+                        <!---<deferredDays translate="label">
+                            <label>Брой дни за отместване на датата на доставка</label>
                             <sort_order></sort_order>
                             <frontend_type>select</frontend_type>
                             <source_model>speedyshippingmodule/carrier_source_deferreddays</source_model>
@@ -131,7 +131,18 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </deferredDays>
+                        </deferredDays>-->
+                        <speedyTakingtimeOffset translate="label">
+                            <label>postpone_taking_date</label>
+                            <sort_order></sort_order>
+                            <frontend_type>select</frontend_type>
+                            <source_model>speedyshippingmodule/carrier_source_takingoffset</source_model>
+                            <validate>validate-number</validate>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </speedyTakingtimeOffset>
                         <!--<istest translate="label">
                             <label>Sandbox</label>
                             <frontend_type>select</frontend_type>
@@ -142,8 +153,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </istest>-->
-                        <default_packing>
-                            <label>Опаковка по подразбиране:</label>
+                        <default_packing translate="label">
+                            <label>default_packing</label>
                             <comment></comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>16</sort_order>
@@ -151,8 +162,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </default_packing>
-                        <back_documents>
-                            <label>Заявка за обратни документи:</label>
+                        <back_documents translate="label">
+                            <label>back_document_request</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>13</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
@@ -161,8 +172,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </back_documents>
-                        <back_receipt>
-                            <label>Заявка за обратна разписка:</label>
+                        <back_receipt translate="label">
+                            <label>back_receipt_request</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>14</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
@@ -191,7 +202,7 @@
                             <show_in_store>0</show_in_store>
                         </handling_fee>-->
                         <default_weight translate="label">
-                            <label>Тегло по подразбиране:</label>
+                            <label>default_weight_per_item</label>
                             <comment></comment>
                             <frontend_type>text</frontend_type>
                             <validate>validate-number validate-zero-or-greater</validate>
@@ -201,19 +212,19 @@
                             <show_in_store>0</show_in_store>
                             <validate>required-entry</validate>
                         </default_weight>
-                        <has_label_printer>
-                            <label>Принтер за етикети</label>
+                        <has_label_printer translate="label comment">
+                            <label>label_printer</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>17</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment>Изберете "Да", ако имате принтер за етикети. </comment>
+                            <comment>has_printer_comment</comment>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </has_label_printer>
-                        <add_insurance>
-                            <label>Добави застраховка</label>
+                        <add_insurance translate="label">
+                            <label>add_insurance_label</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>18</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
@@ -222,23 +233,23 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </add_insurance>
-                        <is_fragile>
-                            <label>Чупливи стоки</label>
+                        <is_fragile translate="label">
+                            <label>has_fragile_items</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>19</sort_order>
                             <depends>
                                 <add_insurance>1</add_insurance>
                             </depends>
-                            <comment>"Чупливо" може да бъде избрано, само ако е избрана и застраховка. </comment>
+                            <comment>fragile_label_comment</comment>
                             <frontend_class>shipping-skip-hide</frontend_class>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </is_fragile>
-                        <bring_to_office>
-                            <label>Изпрати от офис:</label>
-                            <comment>Изберете "Да", ако Вие ще доставите пратката до офис на Спиди и така да получите отстъпка от цената за доставката.</comment>
+                        <bring_to_office translate="label comment">
+                            <label>send_from_speedy_office</label>
+                            <comment>speedy_send_from_office_comment</comment>
                             <frontend_type>select</frontend_type>
                             <sort_order>20</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
@@ -247,8 +258,8 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </bring_to_office>
-                        <choose_office>
-                            <label>Избери офис:</label>
+                        <choose_office translate="label">
+                            <label>choose_sending_office</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>21</sort_order>
                             <depends>
@@ -263,7 +274,7 @@
                         </choose_office>
                         
                         <free_shipping_enable translate="label">
-                            <label>Активирай безплатна доставка</label>
+                            <label>activate_free_shipping</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_enabledisable</source_model>
                             <sort_order>22</sort_order>
@@ -272,7 +283,7 @@
                             <show_in_store>0</show_in_store>
                         </free_shipping_enable>
                         <free_shipping_subtotal translate="label">
-                            <label>Праг на стойност на поръчката за безплатна доставка</label>
+                            <label>minimum_order_amount_for_freeshipping</label>
                             <frontend_type>text</frontend_type>
                             <validate>validate-number</validate>
                             <depends>
@@ -285,7 +296,7 @@
                             <show_in_store>0</show_in_store>
                         </free_shipping_subtotal>
                         <free_method_city translate="label">
-                            <label>Безплатна градска услуга</label>
+                            <label>free_city_service</label>
                             <frontend_type>select</frontend_type>
                             <frontend_class>free-method</frontend_class>
                             <depends>
@@ -298,7 +309,7 @@
                             <show_in_store>0</show_in_store>
                         </free_method_city>
                         <free_method_intercity translate="label">
-                            <label>Безплатна междуградска услуга</label>
+                            <label>free_interurban_service</label>
                             <frontend_type>select</frontend_type>
                             <frontend_class>free-method</frontend_class>
                             <depends>
@@ -311,7 +322,7 @@
                             <show_in_store>0</show_in_store>
                         </free_method_intercity>
                         <isDocuments translate="label">
-                            <label>Съдържа документи:</label>
+                            <label>does_contain_documents</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>25</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
@@ -320,7 +331,26 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </isDocuments>
-
+                        <add_jquery translate="label">
+                            <label>add_jquery</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>26</sort_order>
+                            <frontend_class>shipping-skip-hide</frontend_class>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </add_jquery>
+                        <add_jquery_ui translate="label">
+                            <label>add_jquery_ui</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>26</sort_order>
+                            <frontend_class>shipping-skip-hide</frontend_class>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </add_jquery_ui>
                         <sallowspecific translate="label">
                             <label>Ship to applicable countries</label>
                             <frontend_type>select</frontend_type>
@@ -348,13 +378,13 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </specificerrmsg>
-                        <add_fixed_hour>
-                            <label>Фиксиран час на доставка:</label>
+                        <add_fixed_hour translate="label">
+                            <label>fixed_hour_delivery</label>
                             <frontend_type>select</frontend_type>
                             <sort_order>30</sort_order>
                             <frontend_class>shipping-skip-hide</frontend_class>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <comment>Активирайте опцията за услугите , които я позволяват</comment>
+                            <comment>fixed_hour_comment_label</comment>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>

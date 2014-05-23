@@ -66,6 +66,12 @@ class Speedy_Speedyshipping_Block_Adminhtml_Billoflading extends Mage_Adminhtml_
      * @var type 
      */
     protected $_isSendForShipping = false;
+    
+    
+    protected $_deferredDays = null;
+    
+    
+    protected $_doesUserHasPermission = true;
 
     /**
      * The purpose of this constructor is to get various request params and 
@@ -74,6 +80,15 @@ class Speedy_Speedyshipping_Block_Adminhtml_Billoflading extends Mage_Adminhtml_
      */
     public function __construct() {
         parent::__construct();
+        
+        
+        if(! Mage::getSingleton('admin/session')
+                                ->isAllowed('speedyshippingmodule/print')){
+                    $this->_doesUserHasPermission = false;
+                    
+        }
+        
+        
         $shipmentId = $this->getRequest()->getParam('shipment_id');
         $shipment = Mage::getModel('sales/order_shipment')->load($shipmentId);
         $orderId = $shipment->getOrderId();
@@ -107,6 +122,11 @@ class Speedy_Speedyshipping_Block_Adminhtml_Billoflading extends Mage_Adminhtml_
         if ($this->_speedyData->getSendForShipping()) {
             $this->_isSendForShipping = 1;
         }
+        
+        
+        if($this->_speedyData->getDeferredDeliveryWorkdays()){
+            $this->_deferredDays = $this->_speedyData->getDeferredDeliveryWorkdays();
+        }
 
         $this->setTemplate('speedy_speedyshipping/billoflading.phtml');
     }
@@ -137,7 +157,7 @@ class Speedy_Speedyshipping_Block_Adminhtml_Billoflading extends Mage_Adminhtml_
                             ->toHtml();
         } else {
             
-            return $this->__("Courer has been requested");
+            return $this->__("Courier has been requested");
         }
     }
 

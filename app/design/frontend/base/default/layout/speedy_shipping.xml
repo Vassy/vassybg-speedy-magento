@@ -6,11 +6,15 @@
             <action method="addCss">
                 <stylesheet>speedy/css/jquery-ui-1.10.3.custom.min.css</stylesheet>
             </action>
-            <action method="addItem">
+            <action method="addItem" ifconfig="carriers/speedyshippingmodule/add_jquery">
                 <type>skin_js</type>
                 <name>speedy/js/jquery-1.9.1.min.js</name>
             </action>
             <action method="addItem">
+                <type>skin_js</type>
+                <name>speedy/js/noconflict.js</name>
+            </action>
+            <action method="addItem" ifconfig="carriers/speedyshippingmodule/add_jquery_ui">
                 <type>skin_js</type>
                 <name>speedy/js/jquery-ui-1.10.3.custom.min.js</name>
             </action>
@@ -57,7 +61,7 @@
             <action method="addCss">
                 <stylesheet>speedy/css/jquery-ui-1.10.3.custom.min.css</stylesheet>
             </action>
-            <action method="addItem">
+            <action method="addItem" ifconfig="carriers/speedyshippingmodule/add_jquery">
                 <type>skin_js</type>
                 <name>speedy/js/jquery-1.9.1.min.js</name>
             </action>
@@ -65,7 +69,7 @@
                 <type>skin_js</type>
                 <name>speedy/js/noconflict.js</name>
             </action>
-            <action method="addItem">
+            <action method="addItem" ifconfig="carriers/speedyshippingmodule/add_jquery_ui">
                 <type>skin_js</type>
                 <name>speedy/js/jquery-ui-1.10.3.custom.min.js</name>
             </action>

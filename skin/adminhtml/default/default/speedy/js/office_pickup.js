@@ -175,13 +175,14 @@ $j('document').ready(function() {
             } else {
                 price = '0.00';
             }
-            price += ' лв.';
-            $j('p#fixed_price_view').show().text('Надбавка "Фиксиран час": ' + price)
+            price += ' '+Translator.translate('Leva');
+            Translator.translate("extra charge")+' "'+Translator.translate("fixed hour")+'"'
+            $j('p#fixed_price_view').show().text(Translator.translate("extra charge")+' "'+Translator.translate("fixed hour")+'"'+': ' + price)
         } else {
 
             $j('#speedy_admin_form input#speedy_exact_hour_enable').attr('disabled', 'disabled').removeAttr('checked');
             $j('#speedy_admin_form input:text').attr('disabled', 'disabled').val('')
-            $j('p#fixed_price_view').text('Надбавка "Фиксиран час": ');
+            $j('p#fixed_price_view').text(Translator.translate("extra charge")+' "'+Translator.translate("fixed hour")+'"'+': ');
 
         }
 
@@ -216,7 +217,7 @@ $j('document').ready(function() {
             } else {
                 price = '0.00';
             }
-            price += ' лв.';
+            price += ' '+Translator.translate('Leva');
 
             //$j('p#fixed_price_view').show().text('Добавка "фиксиран час:"'+price)
             $j('#speedy_admin_form input:text').removeAttr('disabled')

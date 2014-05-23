@@ -31,7 +31,7 @@ extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract{
             ))
             ->toHtml();
         }else{
-           return $this->__("Courer has been requested"); 
+           return $this->__("Courier has been requested"); 
         }
     }
 }

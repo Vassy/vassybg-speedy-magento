@@ -126,7 +126,7 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
      * @var type 
      */
     protected $_bolCreationError;
-    
+
     /**
      * Any error that might occur, while trying to request a courier is stored
      * in this variable for logging and further processing.
@@ -154,13 +154,14 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
      * @var type 
      */
     protected $_takingTime = null;
+    protected $_deferredDays = null;
 
     public function __construct(Zend_Controller_Request_Abstract $request, Zend_Controller_Response_Abstract $response, array $invokeArgs = array()) {
 
         $this->_initSpeedyService();
         $this->_magentoTime = Mage::getModel('core/date');
         //date_default_timezone_set(Util::SPEEDY_TIME_ZONE);
-        
+
         parent::__construct($request, $response, $invokeArgs);
     }
 
@@ -171,6 +172,27 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
     public function indexAction() {
         $this->loadLayout();
         $this->renderLayout();
+    }
+
+    protected function _isAllowed() {
+
+      
+        
+        
+        switch ($this->getRequest()->getActionName()) {
+            case 'cancelBol':
+            case 'checkDate':
+            case 'createLabel':
+            case 'index':
+            case 'massRequest':
+            case 'printLabel':
+            case 'requestCourier':
+                
+
+                return Mage::getSingleton('admin/session')
+                                ->isAllowed('speedyshippingmodule/print');
+                break;
+        }
     }
 
     /**
@@ -287,7 +309,7 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
 
             $errorString = '';
             if (count($errors) > 0) {
-                
+
                 foreach ($errors as $error) {
                     $errorString .= ' ' . $error['main_error'];
                     for ($i = 0; $i < count($error); $i++) {
@@ -298,10 +320,10 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
 
                 throw new Exception("Error while making remote call");
             }
-$successString = '';
+            $successString = '';
             //If there are any error this section never get executed
             if (count($succeededOrders) > 0 && !$shouldFail) {
-                
+
                 foreach ($succeededOrders as $order) {
                     $successString .= $order . '<br />';
                 }
@@ -520,14 +542,29 @@ $successString = '';
 
         $willBringToOffice = false;
 
+
+
         if (Mage::getStoreConfig('carriers/speedyshippingmodule/bring_to_office') &&
                 Mage::getStoreConfig('carriers/speedyshippingmodule/choose_office')) {
             $willBringToOffice = 1;
         }
 
 
-       
-        $takingTime = $this->_speedyEPS->getAllowedDaysForTaking($serviceId, !$willBringToOffice ? $this->_senderData->getAddress()->getSiteId() : null, $willBringToOffice, time());
+        $time = null;
+        $numDays = (int) Mage::getStoreConfig('carriers/speedyshippingmodule/speedyTakingtimeOffset');
+
+        if ($numDays) {
+
+            if (Mage::getStoreConfig('carriers/speedyshippingmodule/speedyTakingtimeOffset') == 1) {
+                $time = strtotime("+1 day");
+            } else {
+                $time = strtotime("+$numDays days");
+            }
+        } else {
+            $time = time();
+        }
+
+        $takingTime = $this->_speedyEPS->getAllowedDaysForTaking($serviceId, !$willBringToOffice ? $this->_senderData->getAddress()->getSiteId() : null, $willBringToOffice, $time);
 
         if ($takingTime) {
 
@@ -550,14 +587,32 @@ $successString = '';
                     ($currentTime['month'] != $firstAvailable['month']) ||
                     ($currentTime['year'] != $firstAvailable['year'])) {
 
-                
-                
-                
-                $this->_firstAvailableDate = $this->_magentoTime->date('d-m-Y',$this->_magentoTime->timestamp(strtotime($this->_firstAvailableDate)));
-                
-                $this->getResponse()->setBody(json_encode(array('error' => 1,
-                    'message' => $this->__('Bol creation date error').
-                    $this->_firstAvailableDate.'. ' . $this->__('Do you want to continue'))));
+
+
+
+                $this->_firstAvailableDate = $this->_magentoTime->date('d-m-Y', $this->_magentoTime->timestamp(strtotime($this->_firstAvailableDate)));
+
+                $numDays = (int) Mage::getStoreConfig('carriers/speedyshippingmodule/speedyTakingtimeOffset');
+
+
+                /* There is a global offset for taking a shipment, 
+                 * configured by the administrator
+                 */
+                if ($numDays) {
+
+                    if (strtotime($this->_firstAvailableDate) > $time) {
+                        $this->getResponse()->setBody(json_encode(array('error' => 1,
+                            'message' => $this->__('Bol creation date error') .
+                            $this->_firstAvailableDate . '. ' . $this->__('Do you want to continue'))));
+                    } else {
+                        $this->getResponse()->setBody(json_encode(array('ok' => 1, 'message' => 'Taking time OK')));
+                    }
+                } else {
+
+                    $this->getResponse()->setBody(json_encode(array('error' => 1,
+                        'message' => $this->__('Bol creation date error') .
+                        $this->_firstAvailableDate . '. ' . $this->__('Do you want to continue'))));
+                }
                 return;
             } else {
                 //Proceed as normal
@@ -606,10 +661,24 @@ $successString = '';
         }
 
 
+        $time = null;
+        $numDays = (int) Mage::getStoreConfig('carriers/speedyshippingmodule/speedyTakingtimeOffset');
+
+        if ($numDays) {
+
+            if (Mage::getStoreConfig('carriers/speedyshippingmodule/speedyTakingtimeOffset') == 1) {
+                $time = strtotime("+1 day");
+            } else {
+                $time = strtotime("+$numDays days");
+            }
+        } else {
+            $time = time();
+        }
+
 
         $takingTime = null;
 
-        $takingTime = $this->_speedyEPS->getAllowedDaysForTaking($serviceId, !$willBringToOffice ? $this->_senderData->getAddress()->getSiteId() : null, $willBringToOffice, time());
+        $takingTime = $this->_speedyEPS->getAllowedDaysForTaking($serviceId, !$willBringToOffice ? $this->_senderData->getAddress()->getSiteId() : null, $willBringToOffice, $time);
 
         if ($takingTime) {
 
@@ -620,7 +689,7 @@ $successString = '';
 
 
             $currentTime = getdate($this->_magentoTime->timestamp());
-           
+
             $firstAvailable = getdate($this->_magentoTime->timestamp($this->_firstAvailableDate));
 
 
@@ -629,11 +698,9 @@ $successString = '';
                     ($currentTime['year'] != $firstAvailable['year'])) {
                 $this->_firstAvailableDate = $this->_magentoTime->timestamp(strtotime($this->_firstAvailableDate));
             } else {
-                
-                
-                $this->_firstAvailableDate = time();
-                
 
+
+                $this->_firstAvailableDate = time();
             }
         }
 
@@ -688,6 +755,8 @@ $successString = '';
 
         $this->_receiverData = $receiver->getReceiverData();
 
+        $this->_deferredDays = (int) $this->getRequest()->getParam('deferred_days');
+
         /**
          * Setup picking data
          */
@@ -711,19 +780,19 @@ $successString = '';
             $this->_speedyData->setBolId($bolID);
 
             $transactionSave = Mage::getModel('core/resource_transaction');
-            
+
             /*
-            $transactionSave->addObject($this->_speedyData);
-            try {
+              $transactionSave->addObject($this->_speedyData);
+              try {
 
-                $transactionSave->save();
-            } catch (Exception $e) {
+              $transactionSave->save();
+              } catch (Exception $e) {
 
-                Mage::log($e->getMessage(), null, 'speedyLog.log');
-                $transactionSave->rollback();
-            }
+              Mage::log($e->getMessage(), null, 'speedyLog.log');
+              $transactionSave->rollback();
+              }
 
-*/
+             */
 
             $dateInfo = getdate($this->_firstAvailableDate);
 
@@ -734,18 +803,25 @@ $successString = '';
             $this->_speedyData->setBolCreatedMonth($dateInfo['mon']);
             $this->_speedyData->setBolCreatedYear($dateInfo['year']);
             $this->_speedyData->setBolDatetime(date("Y-m-d H:i:s"));
-            
-            
-            
-            
+
+
+
+
+
+            $this->_speedyData->setDeferredDeliveryWorkdays($this->_deferredDays);
+
+
+
+
+
             $currentDayOfTheYear = $timeInfo['yday'];
-            
-            $lastSundayOfOctomber = getdate(strtotime($timeInfo['year'].'-11-00 last sunday'));
+
+            $lastSundayOfOctomber = getdate(strtotime($timeInfo['year'] . '-11-00 last sunday'));
             $lastSundayOfOctomber = $lastSundayOfOctomber['yday'];
-            
-            $lastSundayOfMarch = getdate(strtotime($timeInfo['year'].'-04-01 last sunday'));
+
+            $lastSundayOfMarch = getdate(strtotime($timeInfo['year'] . '-04-01 last sunday'));
             $lastSundayOfMarch = $lastSundayOfMarch['yday'];
-            
+
             /**
              * This is neccessary, because of a bug in Magento time handling.
              * (http://magentomadness.wordpress.com/2011/07/10/more-magento-stupidity-dst-not-reflected-in-reports/)
@@ -755,20 +831,20 @@ $successString = '';
              * the range between last Sunday of Octomber and last Sunday of 
              * March, and if it is we need to substract one hour.
              */
-            if($currentDayOfTheYear >= $lastSundayOfOctomber  ||
-               $currentDayOfTheYear <= $lastSundayOfMarch ){
-                
+            if ($currentDayOfTheYear >= $lastSundayOfOctomber ||
+                    $currentDayOfTheYear <= $lastSundayOfMarch) {
+
                 //Substract one hour
                 $currentHour = $this->_magentoTime->timestamp(strtotime("now")) - 3600;
-            }else{
+            } else {
                 $currentHour = $this->_magentoTime->timestamp(strtotime("now"));
             }
-            
+
             $this->_speedyData->setBolDatetime(date("Y-m-d H:i:s", $currentHour));
             $currentHour = date('G:i:s', $currentHour);
-            
-            
-             $this->_speedyData->setBolCreatedTime($currentHour);
+
+
+            $this->_speedyData->setBolCreatedTime($currentHour);
             /*
               $timeParts = $timeInfo ['hours'] .
               ':' .
@@ -777,14 +853,14 @@ $successString = '';
               $timeInfo ['seconds'];
              */
             /*
-             $this->_speedyData->setBolCreatedTime(
-            $this->_speedyData->setBolCreatedTime(
-                    $timeInfo ['hours'] .
-                    ':' .
-                    $timeInfo ['minutes'] .
-                    ':' .
-                    $timeInfo ['seconds']);
-*/
+              $this->_speedyData->setBolCreatedTime(
+              $this->_speedyData->setBolCreatedTime(
+              $timeInfo ['hours'] .
+              ':' .
+              $timeInfo ['minutes'] .
+              ':' .
+              $timeInfo ['seconds']);
+             */
             //$transactionSave = Mage::getModel('core/resource_transaction');
             $transactionSave->addObject($this->_speedyData);
 
@@ -1110,20 +1186,22 @@ $successString = '';
         $picking->setParcelsCount(count($this->_packages));
         $picking->setWeightDeclared($totalWeight);
         $picking->setContents('поръчка: ' . $this->_orderID);
-        
-        if(Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays')){
-            $picking->setDeferredDeliveryWorkDays((int)Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays'));
-        }
-        
-        
-        
-        if(Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing') && 
-           strlen(Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing')) > 1){
+
+        /*
+          if(Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays')){
+          $picking->setDeferredDeliveryWorkDays((int)Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays'));
+          }
+         */
+
+
+
+        if (Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing') &&
+                strlen(Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing')) > 1) {
             $picking->setPacking(Mage::getStoreConfig('carriers/speedyshippingmodule/default_packing'));
-        }else{
-           $picking->setPacking('.'); 
+        } else {
+            $picking->setPacking('.');
         }
-        
+
         $picking->setDocuments(Mage::getStoreConfig('carriers/speedyshippingmodule/isDocuments'));
         $picking->setPalletized(FALSE);
         $picking->setPackId('.');
@@ -1156,6 +1234,8 @@ $successString = '';
             $picking->setNoteClient($this->_orderData->getMessage());
         }
 
+        $picking->setDeferredDeliveryWorkDays($this->_deferredDays);
+
         if ($this->_orderData->getIsCod()) {
             $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable');
             if ($isFixed == 2) {
@@ -1167,7 +1247,7 @@ $successString = '';
                     $taxCalculator = Mage::helper('tax');
                     $picking->setAmountCodBase($this->_codAmount + $this->_shippingAmount);
                 }
-            }else if($isFixed == 3){
+            } else if ($isFixed == 3) {
                 if ($this->_isFreeShipping) {
                     $picking->setAmountCodBase($this->_codAmount);
                 } else {
@@ -1176,8 +1256,7 @@ $successString = '';
                     $chargeWithTaxApplied = $taxCalculator->getShippingPrice($chargeAmount, true);
                     $picking->setAmountCodBase($this->_codAmount + $chargeWithTaxApplied);
                 }
-            } 
-            else {
+            } else {
                 $picking->setAmountCodBase($this->_codAmount);
             }
         } else {
@@ -1280,6 +1359,8 @@ $successString = '';
             $orderData->setIsCod(1);
         }
 
+
+
         //Is fixed prices enabled
         $isFixed = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable');
 
@@ -1326,8 +1407,7 @@ $successString = '';
 
         try {
 
-            $this->_speedyEPSInterfaceImplementaion =
-                    new EPSSOAPInterfaceImpl(Mage::getStoreConfig('carriers/speedyshippingmodule/server'));
+            $this->_speedyEPSInterfaceImplementaion = new EPSSOAPInterfaceImpl(Mage::getStoreConfig('carriers/speedyshippingmodule/server'));
 
             $this->_speedyEPS = new EPSFacade($this->_speedyEPSInterfaceImplementaion, $user, $pass);
             $this->_speedySessionId = $this->_speedyEPS->login();

@@ -19,7 +19,7 @@
 <?php endif; ?>
 </script>
 <?php if (Mage::getSingleton('adminhtml/session')->getSpeedyError()): ?>
-    <p><?php echo $this->__("The following products has no weight assiged"); ?></p>
+    <p><?php echo $this->__("The following products has no weight assigned"); ?></p>
     <h1><?php echo Mage::getSingleton('adminhtml/session')->getSpeedyError() ?></h1>
     <?php Mage::getSingleton('adminhtml/session')->unsSpeedyError() ?>
 <?php endif; ?>
@@ -198,15 +198,15 @@
                         price = priceWithoutTax + '/' + priceWithTax;
                     }
                 }
-                price += ' лв.';
+                price += ' '+"<?php echo $this->__('Leva'); ?>";
 
-                $j('p#fixed_price_view').show().text("<?php echo $this->__("fixed hour extra charge") ?>" + price)
+                $j('p#fixed_price_view').show().text("<?php echo $this->__("extra charge").'\"'.$this->__("fixed hour").'\"'; ?>" + price)
 
             } else {
 
                 $j('#speedy_admin_form input#speedy_exact_hour_enable').attr('disabled', 'disabled').removeAttr('checked');
                 $j('#speedy_admin_form input:text').attr('disabled', 'disabled').val('')
-                $j('p#fixed_price_view').text("<?php echo $this->__("fixed hour extra charge") ?>");
+                $j('p#fixed_price_view').text("<?php echo $this->__("extra charge").'\"'.$this->__("fixed hour").'\"'; ?>");
 
             }
 

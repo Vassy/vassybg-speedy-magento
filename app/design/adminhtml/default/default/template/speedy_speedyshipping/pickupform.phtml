@@ -19,7 +19,7 @@ var showBoth=  null;
 <?php endif; ?>
 </script>
 <script type="text/javascript">
-var fixedHourLabel = "<?php echo $this->__("fixed hour extra charge") ?>";
+var fixedHourLabel = "<?php echo $this->__("extra charge").'\"'.$this->__("fixed hour").'\"'; ?>";
 </script>
 <?php $isFixedPrice = Mage::getStoreConfig('carriers/speedyshippingmodule/fixed_pricing_enable'); ?>
 <?php $isFixedHourEnabled = Mage::getStoreConfig('carriers/speedyshippingmodule/add_fixed_hour'); ?>
@@ -33,7 +33,7 @@ var fixedHourLabel = "<?php echo $this->__("fixed hour extra charge") ?>";
             <tr>
                 <td><label for="speed_exact_hour_enable"><?php echo $this->__("choose fixed hour") ?></label><br />
                     <?php if($isFixedPrice != 2): ?>
-                    <p id="fixed_price_view"><?php echo $this->__("fixed hour extra charge") ?></p>
+                    <p id="fixed_price_view"><?php echo $this->__("extra charge").'"'.$this->__("fixed hour").'"'; ?></p>
                     <?php endif; ?>
                     </td>
             </tr>
@@ -98,12 +98,12 @@ var fixedHourLabel = "<?php echo $this->__("fixed hour extra charge") ?>";
             if (isEnabled) {
 
                 if (isNaN(hour) || isNaN(minutes)) {
-                    alert('Моля, въведете валиден час');
+                    alert(Translator.translate("invalid_hour_warning"));
                     return;
                 }
                 
                 if(hour.toString().length > 2 || minutes.toString().length > 2){
-                  alert('Моля, въведете валиден час');
+                  alert(Translator.translate("invalid_hour_warning"));
                     return;  
                 }
 
@@ -113,12 +113,12 @@ var fixedHourLabel = "<?php echo $this->__("fixed hour extra charge") ?>";
 
                         if (hour == 17 && minutes >= 31) {
 
-                            alert('Моля, въведете валиден час');
+                            alert(Translator.translate("invalid_hour_warning"));
                             return;
                         }
 
                         if (hour == 10 && minutes <= 29) {
-                            alert('Моля, въведете валиден час');
+                            alert(Translator.translate("invalid_hour_warning"));
                             return;
                         }
 
@@ -135,11 +135,11 @@ var fixedHourLabel = "<?php echo $this->__("fixed hour extra charge") ?>";
 
                             order.loadShippingRates(true);
                         }else{
-                           alert('Моля, въведете валиден час');
+                           alert(Translator.translate("invalid_hour_warning"));
                             return; 
                         }
                     }else{
-                        alert('Моля, въведете валиден час');
+                        alert(Translator.translate("invalid_hour_warning"));
                             return; 
                     }
                 }
@@ -178,18 +178,18 @@ var fixedHourLabel = "<?php echo $this->__("fixed hour extra charge") ?>";
            }else{
                price = '0.00';
            }
-                price += ' лв.';
+                price += ' '+"<?php echo $this->__('Leva') ?>";
                 
                 setTimeout(function(){
                     
-                    $j('p#fixed_price_view').text('Надбавка "Фиксиран час": '+price)}, 100)
+                    $j('p#fixed_price_view').text(Translator.translate("extra charge")+'"'+Translator.translate("fixed hour")+'"'+'": '+price)}, 100)
                 
                 
             } else {
 
                 $j('#speedy_exact_picking_data input#speedy_exact_hour_enable').attr('disabled', 'disabled').removeAttr('checked');
                 $j('#speedy_exact_picking_data input:text').attr('disabled', 'disabled').val('')
-                $j('p#fixed_price_view').text('<?php echo $this->__("fixed hour extra charge") ?>');
+                $j('p#fixed_price_view').text('<?php echo $this->__("extra charge").'"'.$this->__("fixed hour").'"'; ?>');
                 isExactHourAllowed = false;
 
             }

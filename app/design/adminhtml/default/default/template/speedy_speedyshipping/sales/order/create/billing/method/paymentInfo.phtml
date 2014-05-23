@@ -6,9 +6,9 @@
         $output = '<p>'.$this->__('Speedy Payment method tax');
          $_excl = $this->_codAmount;
          $_incl = $this->_codAmountWithTaxApplied;
-         $output .= $_excl.' лв.';
+         $output .= $_excl.' '.$this->__('Leva');
          if ($this->helper('tax')->displayShippingBothPrices() && $_incl != $_excl){
-            $output .=' ('.$this->__('Incl. Tax').' '. $_incl.' лв.)';
+            $output .=' ('.$this->__('Incl. Tax').' '. $_incl.' '.$this->__('Leva').')';
          }
         
         $output .= '</p>';

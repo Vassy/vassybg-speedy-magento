@@ -29,7 +29,7 @@ showBoth=  null;
     <div style="width: 350px;position: relative">
         <label for="speed_exact_hour_enable"><?php echo $this->__("choose fixed hour") ?></label><br />
         <?php if($isFixedPrice != 2): ?>
-        <p id="fixed_price_view"><?php echo $this->__("fixed hour extra charge") ?></p>
+        <p id="fixed_price_view"><?php echo $this->__("extra charge").'"'.$this->__("fixed hour").'"' ?></p>
         <?php endif; ?>
         <input type="checkbox" disabled="disabled" name="speed_exact_hour_enable" class="input-box" id="speedy_exact_hour_enable" />
         <label for="speedy_exact_hour"><?php echo $this->__("Hour") ?>:</label>
@@ -79,23 +79,23 @@ showBoth=  null;
                     price +=  priceWithoutTax;
                 }
                 if(showBoth){
-                    price +=  priceWithoutTax+' лв. (<?php echo $this->__("vat_included") ?> '+priceWithTax;
+                    price +=  priceWithoutTax+' '+"<?php echo $this->__("Leva") ?>"+' (<?php echo $this->__("Incl. Tax") ?> '+priceWithTax;
                 }
            }else{
                price = '0.00';
            }
                 if(showBoth){
-                price += ' лв.'+')'
+                price += ' '+"<?php echo $this->__("Leva") ?>"+')'
                 }else{
-                price += ' лв.';
+                price += ' '+"<?php echo $this->__("Leva") ?>";
                 }
-                $j('p#fixed_price_view').show().text('<?php echo $this->__("fixed hour extra charge") ?> '+' ' + price)
+                $j('p#fixed_price_view').show().text('<?php echo $this->__("extra charge").'"'.$this->__("fixed hour").'"' ?> '+' ' + price)
 
             } else {
 
                 $j('#speedy_exact_picking_data input#speedy_exact_hour_enable').attr('disabled', 'disabled').removeAttr('checked');
                 $j('#speedy_exact_picking_data input:text').attr('disabled', 'disabled').val('')
-                $j('p#fixed_price_view').text('<?php echo $this->__("fixed hour extra charge") ?> '+' ');
+                $j('p#fixed_price_view').text('<?php echo $this->__("extra charge").'"'.$this->__("fixed hour").'"' ?> '+' ');
                 isExactHourAllowed = false;
 
             }

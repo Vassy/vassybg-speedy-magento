@@ -457,17 +457,24 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
                             }
                         }
                     } else if ($item->getHasChildren() && $item->getProductType() == 'bundle') {
-                        foreach ($item->getChildren() as $child) {
-                            $childProductId = $child->getProductId();
-                            $_product = Mage::getModel('catalog/product')->load($childProductId);
-                            if (!$_product->getWeight()) {
-                                $totalWeight += Mage::getStoreConfig('carriers/speedyshippingmodule/default_weight') * $item->getQty();
-                                $noWeightProductList .= $item->getName();
-                            } else {
-                                $productWeight = $_product->getWeight();
-                                $totalWeight += $productWeight * $item->getQty();
+
+
+//                        if ($mainProduct->getWeightType()) {
+//                            $totalWeight = $mainProduct->getWeight() * $item->getQty();
+//                        } else {
+
+                            foreach ($item->getChildren() as $child) {
+                                $childProductId = $child->getProductId();
+                                $_product = Mage::getModel('catalog/product')->load($childProductId);
+                                if (!$_product->getWeight()) {
+                                    $totalWeight += Mage::getStoreConfig('carriers/speedyshippingmodule/default_weight') * $item->getQty();
+                                    $noWeightProductList .= $item->getName();
+                                } else {
+                                    $productWeight = $_product->getWeight();
+                                    $totalWeight += $productWeight * $item->getQty();
+                                }
                             }
-                        }
+                        //}
                     } else {
                         $totalWeight += $item->getWeight() * $item->getQty();
                     }
@@ -494,11 +501,12 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
                     if ($item->getHasChildren() && $item->getProductType() == 'configurable') {
 
 
+
                         foreach ($item->getChildren() as $child) {
                             $childProductId = $child->getProductId();
                             $_product = Mage::getModel('catalog/product')->load($childProductId);
 
-                            if (!$_product->getWeight()) {
+                            if (!$_product->getWeight() && !$_product->isVirtual()) {
                                 $totalWeight += Mage::getStoreConfig('carriers/speedyshippingmodule/default_weight') * $item->getQty();
                                 $noWeightProductList .= $item->getName();
                             } else {
@@ -507,17 +515,25 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
                             }
                         }
                     } else if ($item->getHasChildren() && $item->getProductType() == 'bundle') {
-                        foreach ($item->getChildren() as $child) {
-                            $childProductId = $child->getProductId();
-                            $_product = Mage::getModel('catalog/product')->load($childProductId);
-                            if (!$_product->getWeight()) {
-                                $totalWeight += Mage::getStoreConfig('carriers/speedyshippingmodule/default_weight') * $item->getQty();
-                                $noWeightProductList .= $item->getName();
-                            } else {
-                                $productWeight = $_product->getWeight();
-                                $totalWeight += $productWeight * $item->getQty();
+
+                        //$mainProduct = $item->getProduct();
+
+//                        if ($mainProduct->getWeightType()) {
+//                            $totalWeight = $mainProduct->getWeight() * $item->getQty();
+//                        } else {
+
+                            foreach ($item->getChildren() as $child) {
+                                $childProductId = $child->getProductId();
+                                $_product = Mage::getModel('catalog/product')->load($childProductId);
+                                if (!$_product->getWeight() && !$_product->isVirtual()) {
+                                    $totalWeight += Mage::getStoreConfig('carriers/speedyshippingmodule/default_weight') * $item->getQty();
+                                    $noWeightProductList .= $item->getName();
+                                } else {
+                                    $productWeight = $_product->getWeight();
+                                    $totalWeight += $productWeight * $item->getQty();
+                                }
                             }
-                        }
+                        //}
                     } else {
                         if (!$item->getWeight()) {
                             $totalWeight += Mage::getStoreConfig('carriers/speedyshippingmodule/default_weight') * $item->getQty();
@@ -1106,12 +1122,30 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
 
         $paramCalculation->setBroughtToOffice($this->_pickingData->bringToOfficeId);
 
-        $paramCalculation->setAutoAdjustTakingDate(1);
 
-        if (Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays')) {
-            $paramCalculation->setDeferredDeliveryWorkDays(Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays'));
+        $takingDate = null;
+        $numDays = (int) Mage::getStoreConfig('carriers/speedyshippingmodule/speedyTakingtimeOffset');
+
+        if ($numDays) {
+
+            if (Mage::getStoreConfig('carriers/speedyshippingmodule/speedyTakingtimeOffset') == 1) {
+                $takingDate = strtotime("+1 day");
+            } else {
+                $takingDate = strtotime("+$numDays days");
+            }
+        } else {
+            $takingDate = time();
         }
 
+        $paramCalculation->setTakingDate($takingDate);
+
+        $paramCalculation->setAutoAdjustTakingDate(1);
+
+        /*
+          if (Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays')) {
+          $paramCalculation->setDeferredDeliveryWorkDays(Mage::getStoreConfig('carriers/speedyshippingmodule/deferredDays'));
+          }
+         */
 
         $paramCalculation->setToBeCalled(isset($this->_pickingData->takeFromOfficeId));
 
@@ -1673,7 +1707,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
                 if ($offices) {
                     $officeList = array();
                     foreach ($offices as $office) {
-                        $officeList[$office->getId()] = $office->getName();
+                        $officeList[$office->getId()] = $office->getId() . ' - ' . $office->getName();
                     }
                     return $officeList;
                 }

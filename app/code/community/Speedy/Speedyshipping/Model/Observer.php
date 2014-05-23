@@ -121,7 +121,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
                             !$controller->getRequest()->getParam('speedy_exact_minutes')) {
                         $result = array();
                         $result['error'] = 1;
-                        $result['message'] = $controller->__("Моля, въведете валиден час");
+                        $result['message'] = $controller->__("invalid_hour_warning");
                         $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                         $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                         return;
@@ -133,7 +133,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
                     if (strlen($hour) > 2 || strlen($minutes) > 2) {
                         $result = array();
                         $result['error'] = 1;
-                        $result['message'] = $controller->__("Моля, въведете валиден час");
+                        $result['message'] = $controller->__("invalid_hour_warning");
                         $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                         $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                     }
@@ -143,7 +143,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
 
                         $result = array();
                         $result['error'] = 1;
-                        $result['message'] = $controller->__("Моля, въведете валиден час");
+                        $result['message'] = $controller->__("invalid_hour_warning");
                         $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                         $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                     }
@@ -156,7 +156,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
                     if (!is_integer($hour) || !is_integer($minutes)) {
                         $result = array();
                         $result['error'] = 1;
-                        $result['message'] = $controller->__("Моля, въведете валиден час");
+                        $result['message'] = $controller->__("invalid_hour_warning");
                         $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                         $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                     }
@@ -169,7 +169,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
 
                             $result = array();
                             $result['error'] = 1;
-                            $result['message'] = $controller->__("Моля, въведете валиден час");
+                            $result['message'] = $controller->__("invalid_hour_warning");
                             $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                             $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                         }
@@ -177,7 +177,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
                         if ($hour == 10 && $minutes <= 29) {
                             $result = array();
                             $result['error'] = 1;
-                            $result['message'] = $controller->__("Моля, въведете валиден час");
+                            $result['message'] = $controller->__("invalid_hour_warning");
                             $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                             $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                         }
@@ -191,14 +191,14 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
                         } else {
                             $result = array();
                             $result['error'] = 1;
-                            $result['message'] = $controller->__("Моля, въведете валиден час");
+                            $result['message'] = $controller->__("invalid_hour_warning");
                             $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                             $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                         }
                     } else {
                         $result = array();
                         $result['error'] = 1;
-                        $result['message'] = $controller->__("Моля, въведете валиден час");
+                        $result['message'] = $controller->__("invalid_hour_warning");
                         $action->setFlag('', Mage_Core_Controller_Varien_Action::FLAG_NO_DISPATCH, true);
                         $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
                     }
@@ -705,7 +705,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
             } catch (ServerException $se) {
                 Mage::log($se->getMessage(), null, 'speedyLog.log');
 
-                Mage::log($this->__("Bol with ID:") . htmlentities($bolID, 'UTF-8', ENT_QUOTES) . $this->__("cannot be cancelled"), null, 'speedyLog.log');
+                Mage::log("Bol with ID:" . htmlentities($bolID, 'UTF-8', ENT_QUOTES) . "cannot be cancelled", null, 'speedyLog.log');
             } catch (ClientException $ce) {
                 Mage::log($ce->getMessage(), null, 'speedyLog.log');
             }
@@ -811,9 +811,9 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
 
                 $hour = substr($fixedHour, 0, 2);
                 $minutes = substr($fixedHour, 2);
-
+                $trans = 
                 // Add fixed hour to the existing description
-                $shippingDescription = $shippingDescription . ' (Фиксиран час: ' . $hour . ':' . $minutes . ')';
+                $shippingDescription = $shippingDescription . ' ('.$block->__('fixed hour').': ' . $hour . ':' . $minutes . ')';
                 $order->setShippingDescription($shippingDescription);
             }
         }
@@ -839,7 +839,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
                 $minutes = substr($fixedHour, 2);
 
                 // Add fixed hour to the existing description
-                $shippingDescription = $shippingDescription . ' (Фиксиран час: ' . $hour . ':' . $minutes . ')';
+                $shippingDescription = $shippingDescription . ' ('.$block->__('fixed hour').': ' . $hour . ':' . $minutes . ')';
                 $order->setShippingDescription($shippingDescription);
             }
         }
@@ -864,7 +864,7 @@ class Speedy_Speedyshipping_Model_Observer extends Varien_Object {
                 $hour = substr($fixedHour, 0, 2);
                 $minutes = substr($fixedHour, 2);
 
-                $shippingDescription = $shippingDescription . ' (Фиксиран час: ' . $hour . ':' . $minutes . ')';
+                $shippingDescription = $shippingDescription . ' ('.$block->__('fixed hour').': ' . $hour . ':' . $minutes . ')';
                 $order->setShippingDescription($shippingDescription);
             }
         }

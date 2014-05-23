@@ -151,25 +151,25 @@ $j('document').ready(function() {
                     price = priceWithoutTax;
                 }
                 else if (showBoth) {
-                    price += priceWithoutTax + ' лв. (Вкл. данък: ' + priceWithTax;
+                    price += priceWithoutTax + ' '+Translator.translate('Leva')+' ('+Translator.translate('Incl. Tax') + priceWithTax;
                 }
             } else {
                 price = '0.00';
             }
 
             if (showBoth && !isFreeMethod.length) {
-                price += ' лв.' + ')'
+                price += ' '+Translator.translate('Leva') + ')'
             } else {
-                price += ' лв.';
+                price += ' '+Translator.translate('Leva');
             }
 
-            $j('p#fixed_price_view').show().text('Надбавка "Фиксиран час":' + price)
+            $j('p#fixed_price_view').show().text(Translator.translate("extra charge")+'"'+Translator.translate("fixed hour")+'" ' + price)
 
         } else {
 
             $j('#speedy_exact_picking_data input#speedy_exact_hour_enable').attr('disabled', 'disabled').removeAttr('checked');
             $j('#speedy_exact_picking_data input:text').attr('disabled', 'disabled').val('')
-            $j('p#fixed_price_view').text('Надбавка "Фиксиран час":');
+            $j('p#fixed_price_view').text(Translator.translate("extra charge")+'"'+Translator.translate("fixed hour")+'"');
             isExactHourAllowed = false;
 
         }
@@ -207,17 +207,17 @@ $j('document').ready(function() {
                     price += priceWithoutTax;
                 }
                 else if (showBoth) {
-                    price += priceWithoutTax + ' лв. (Вкл. данък: ' + priceWithTax;
+                    price += priceWithoutTax + ' '+Translator.translate('Leva')+' ('+Translator.translate("Incl. Tax")+' ' + priceWithTax;
                 }
             } else {
                 price = '0.00';
             }
             if (showBoth && !isFreeMethod.length) {
-                price += ' лв.' + ')'
+                price += ' '+Translator.translate('Leva') + ')'
             } else {
-                price += ' лв.';
+                price += ' '+Translator.translate('Leva');
             }
-            $j('p#fixed_price_view').show().text('Надбавка "Фиксиран час":' + price)
+            $j('p#fixed_price_view').show().text(Translator.translate("extra charge")+'"'+Translator.translate("fixed hour")+''+'" ' + price)
             $j('#speedy_exact_picking_data input:text').removeAttr('disabled')
         } else {
             $j('#speedy_exact_picking_data input:text').attr('disabled', 'disabled').val('')

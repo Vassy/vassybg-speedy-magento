@@ -35,10 +35,7 @@
                     <li class="wide">
                         <div class="field" style="width: 100%">
                             <div id="speedyShippingError" style="display: none" class="validation-failed">
-                                <p>Моля, въведете една от следните комбинации:
-                                    квартал/номер на блок или номер на улица</p>
-                                <p>улица/номер на улица или номер на блок</p>
-                                <p>забележка към поръчката</p>
+                               <?php echo $this->__("valid_address_desc") ?>
                             </div>
                         </div>
                     </li>
@@ -118,7 +115,7 @@
                                             </li>
                                             <?php $_streetValidationClass = $this->helper('customer/address')->getAttributeValidationClass('street'); ?>
                                             <li class="wide">
-                                                <label for="speedy_street">Улица:</label>
+                                                <label for="speedy_street"><?php echo $this->__('speedy street name');  ?></label>
                                                 <div class="input-box">
                                                     <input type="text" name="shipping[speedy_street_name]" value="<?php echo $this->escapeHtml($this->getAddress()->getSpeedyStreetName()) ?>" id="shipping:speedy_street" class="input-text"  />
                                                 </div>
@@ -244,7 +241,7 @@
                                                     <div class="buttons-set" id="shipping-buttons-container">
                                                         <p class="required"><?php echo $this->__('* Required Fields') ?></p>
                                                         <p class="back-link"><a href="#" onclick="checkout.back();
-                                        return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+                                                                return false;"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
                                                         <button type="button" class="button" title="<?php echo $this->__('Continue') ?>" ><span><span><?php echo $this->__('Continue') ?></span></span></button>
                                                         <span id="shipping-please-wait" class="please-wait" style="display:none;">
                                                             <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" alt="<?php echo $this->__('Loading next step...') ?>" title="<?php echo $this->__('Loading next step...') ?>" class="v-middle" /> <?php echo $this->__('Loading next step...') ?>
@@ -765,8 +762,10 @@
 
                                                             streetAddress = address;
 
-                                                            if (note != '') {
+                                                            if (note != '' && streetAddress.length > 0) {
                                                                 streetAddress += ', ' + note;
+                                                            } else {
+                                                                streetAddress += note;
                                                             }
                                                             $j('#shipping\\:street1').val(streetAddress);
 

@@ -25,7 +25,7 @@ $j(document).ready(function(evt){
             var isHourValid = validateHour();
             
             if(!isHourValid){
-                alert("Моля, въведете валиден час");
+                alert(Translator.translate("invalid_hour_warning"));
                 return;
             }
             
@@ -106,7 +106,7 @@ $j(document).ready(function(evt){
       
                                 order.submit();
                             }else{
-                             alert('Моля,въведете валиден Спиди адрес.') 
+                             alert(Translator.translate("Please enter a valid address")) 
                             }
 
         }

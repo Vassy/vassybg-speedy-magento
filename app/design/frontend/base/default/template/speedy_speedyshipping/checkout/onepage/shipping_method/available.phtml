@@ -1,5 +1,5 @@
  <?php if( Mage::getSingleton('checkout/session')->getSpeedyError()): ?>
-    <p><?php echo $this->__("The following products has no weight assiged");  ?></p>
+    <p><?php echo $this->__("The following products has no weight assigned");  ?></p>
     <h1><?php echo Mage::getSingleton('checkout/session')->getSpeedyError() ?></h1>
     <?php Mage::getSingleton('checkout/session')->unsSpeedyError() ?>
     <?php endif; ?>
