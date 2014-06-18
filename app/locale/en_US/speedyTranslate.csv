@@ -120,3 +120,8 @@
 "price_calculation_label","Price calculation type"
 "fixed_hour_comment_label","Show 'Fixed hour' option, for the applicable services"
 "add_jquery_ui","Add jQuery UI library"
+"correct_user_and_pass"," Your Speedy API username and password are correct."
+"incorrect_user_and_pass","Error occured: Could not authenticate to Speedy."
+"check_credentials_btn_label","Test account"
+"enter_password_reminder","Please, enter your password."
+"enter_username_reminder","Please, enter your username"

@@ -106,7 +106,7 @@
                                             <li class="wide">
                                                 <div class="field">
 
-                                                    <label class="required"  for="shipping:speedy_quarter_name"><?php echo $this->__('Quarter') ?></label>
+                                                    <label for="shipping:speedy_quarter_name"><?php echo $this->__('Quarter') ?></label>
                                                     <div class="input-box">
                                                         <input type="text" class="input-text" name="shipping[speedy_quarter_name]" id="shipping:speedy_quarter_name" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyQuarterName()) ?>"/><br />
                                                         <input type="hidden" name="shipping[speedy_quarter_id]" id="shipping:speedy_quarter_id" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyQuarterId()) ?>"/></div></div>
@@ -130,13 +130,13 @@
 
                                             <li class="fields">
                                                 <div class="field">
-                                                    <label class="required"  for="speedy_street_number"><?php echo $this->__('Street Number') ?></label>
+                                                    <label for="speedy_street_number"><?php echo $this->__('Street Number') ?></label>
                                                     <div class="input-box">
 
                                                         <input type="text" class="input-text" name="shipping[speedy_street_number]" id="shipping:speedy_street_number" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyStreetNumber()) ?>" /></div>
                                                 </div>
                                                 <div class="field">
-                                                    <label  class="required" for="speedy_block_number"><?php echo $this->__('Blok') ?></label>
+                                                    <label for="speedy_block_number"><?php echo $this->__('Blok') ?></label>
                                                     <div class="input-box">
                                                         <input type="text" class="input-text" name="shipping[speedy_block_number]" id="shipping:speedy_block_number" value="<?php echo $this->htmlEscape($this->getAddress()->getSpeedyBlockNumber()) ?>" /></div>
                                                 </div>

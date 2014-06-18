@@ -723,16 +723,15 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
 
             if ($item->getProduct()->isVirtual()) {
                 $qty = $item->getQtyOrdered();
-                $price = $item->getPrice();
+                $price = $item->getPriceInclTax();
                 $sumOfVirtualProducts += $qty * $price;
             }
         }
 
-
         $this->_codAmount = $order->getBaseSubtotalInclTax() - abs($order->getBaseDiscountAmount());
         //Substract the amount of virtual products from insurance premium sum
         $this->_insuranceAmount = ($order->getBaseSubtotalInclTax() - abs($order->getBaseDiscountAmount())) - $sumOfVirtualProducts;
-
+        
         $totalWeight = $this->getRealWeight();
         $receiverName = $this->_shippingAddress->getFirstname() . ' ' . $this->_shippingAddress->getLastname();
         $receiverPhone = $this->_shippingAddress->getTelephone();
@@ -1018,6 +1017,7 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
                 } else {
                     Mage::getSingleton('adminhtml/session')->addError($this->__("An error has occured trying to cancel bol") . $bolID);
                     $this->_redirect('*/*/');
+                    return;
                 }
             } catch (ClientException $ce) {
                 Mage::log($ce->getMessage(), null, 'speedyLog.log');
@@ -1030,6 +1030,7 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
                     Mage::getSingleton('adminhtml/session')->addError($this->__("An error has occured trying to cancel bol") . $bolID);
                     $this->_redirect('*/*/');
                 }
+                return;
             }
         }
 

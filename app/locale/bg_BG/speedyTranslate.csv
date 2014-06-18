@@ -121,3 +121,8 @@
 "price_calculation_label","Ценообразуване на услутите"
 "fixed_hour_comment_label","Показване на опция за избор на фиксиран час на доставка за услугите, които го позволяват"
 "add_jquery_ui","Добави jQuery UI"
+"correct_user_and_pass","Потребителското име и парола са коректни"
+"incorrect_user_and_pass","Невалидни потребителското име и/или парола"
+"check_credentials_btn_label","Тест на настройките"
+"enter_password_reminder","Моля, въведете парола"
+"enter_username_reminder","Моля, въведете потребителско име"

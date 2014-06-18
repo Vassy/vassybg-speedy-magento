@@ -429,7 +429,8 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
                 foreach ($allProducts as $item) {
 
                     if ($item->getProduct()->isVirtual()) {
-                        $sumOfVirtualProducts +=$item->getQty() * $item->getPrice();
+                        $sumOfVirtualProducts +=$item->getQty() * $item->getPriceInclTax();
+                        
                         continue;
                     }
 
@@ -486,7 +487,7 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
                 foreach ($allProducts as $item) {
 
                     if ($item->getProduct()->isVirtual()) {
-                        $sumOfVirtualProducts +=$item->getQty() * $item->getPrice();
+                        $sumOfVirtualProducts +=$item->getQty() * $item->getPriceInclTax();
                         continue;
                     }
 
@@ -685,7 +686,6 @@ class Speedy_Speedyshipping_Model_Carrier_Shippingmethod extends Mage_Shipping_M
         // $pickingData->contents = '.'; // Съдържание на пратката
         $pickingData->packing = '.'; // Опаковка на пратката
         $pickingData->takingDate = time();
-
 
         return $pickingData;
     }
