@@ -22,7 +22,7 @@ extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract{
         $targetUrl = $this->getUrl('speedyshipping/print/cancelBol',
                                          array(
                                              'order_id'=>(int)$row->getOrderId()));
-        $funcName = "setLocation('".$targetUrl."')";
+        $funcName = "setLocation('".$targetUrl."');this.setAttribute('disabled','disabled');this.addClassName('disabled')";
          return $this->getLayout()
             ->createBlock('adminhtml/widget_button')
             ->setData(array(

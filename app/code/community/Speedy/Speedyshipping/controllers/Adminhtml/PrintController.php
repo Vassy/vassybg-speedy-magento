@@ -1138,14 +1138,17 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
         if ($this->_receiverData->address->speedyAddressNote) {
             $receiverAddress->setAddressNote($this->_receiverData->address->speedyAddressNote);
         }
-
+        
         $receiver = new ParamClientData();
 
         $receiver->setPartnerName($this->_receiverData->partnerName);
         $receiverPhone = new ParamPhoneNumber();
         $receiverPhone->setNumber($this->_receiverData->contactPhone);
         $receiver->setPhones(array(0 => $receiverPhone));
-
+        
+        if($this->_shippingAddress->getEmail()){
+            $receiver->setEmail($this->_shippingAddress->getEmail());
+        }
 
         $picking = new ParamPicking();
 
@@ -1359,7 +1362,7 @@ class Speedy_Speedyshipping_Adminhtml_PrintController extends Mage_Adminhtml_Con
         if ($speedyData->getIsCod()) {
             $orderData->setIsCod(1);
         }
-
+        
 
 
         //Is fixed prices enabled

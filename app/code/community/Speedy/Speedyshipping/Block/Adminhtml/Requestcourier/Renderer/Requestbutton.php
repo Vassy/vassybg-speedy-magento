@@ -23,7 +23,7 @@ extends Mage_Adminhtml_Block_Widget_Grid_Column_Renderer_Abstract{
         $targetUrl = $this->getUrl('speedyshipping/print/requestCourier',
                                          array(
                                              'bol_id'=> (int)$row->getBolId()));
-        $funcName = "setLocation('".$targetUrl."')";
+        $funcName = "setLocation('".$targetUrl."');this.setAttribute('disabled','disabled');this.addClassName('disabled')";
          return $this->getLayout()
             ->createBlock('adminhtml/widget_button')
             ->setData(array(
