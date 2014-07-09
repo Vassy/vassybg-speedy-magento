@@ -35,14 +35,15 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
     public function getSite($siteID = null) {
         $session = Mage::getSingleton('checkout/session');
         $cityName = $this->_request->getParam('term');
-        $cityName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($cityName);
+        //$cityName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($cityName);
+        $lang = Mage::helper('speedyshippingmodule/transliterate')->getLanguage($cityName);
         //$city = strtoupper($address->getCity());
         try {
             //Customer is editing an existing address
             if (!is_null($siteID)) {
                 $sites = $this->_speedyEPS->getSiteById($siteID);
             } else {
-                $sites = $this->_speedyEPS->listSites(null, $cityName);
+                $sites = $this->_speedyEPS->listSites(null, $cityName, $lang);
             }
         } catch (ServerException $se) {
             Mage::log($se->getMessage(),null,'speedyLog.log');
@@ -108,10 +109,11 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
         $cityId = (int) $this->_request->getParam('cityid', null);
         $officeName = $this->_request->getParam('term');
 
-        $officeName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($officeName);
+        //$officeName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($officeName);
+        $lang = Mage::helper('speedyshippingmodule/transliterate')->getLanguage($officeName);
        if($cityId){
         try {
-            $offices = $this->_speedyEPS->listOfficesEx($officeName, $cityId);
+            $offices = $this->_speedyEPS->listOfficesEx($officeName, $cityId, $lang);
         } catch (Exception $e) {
             
         }
@@ -225,11 +227,12 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
         $session = Mage::getSingleton('checkout/session');
         $cityId = (int) $this->_request->getParam('cityid');
         $quarterName = $this->_request->getParam('term');
-        $quarterName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($quarterName);
+        //$quarterName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($quarterName);
+        $lang = Mage::helper('speedyshippingmodule/transliterate')->getLanguage($quarterName);
         $currentSpeedyAddress = $session->getSpeedyAddress();
         //$city = strtoupper($address->getCity());
         try {
-            $quarters = $this->_speedyEPS->listQuarters($quarterName, $cityId);
+            $quarters = $this->_speedyEPS->listQuarters($quarterName, $cityId, $lang);
         } catch (ServerException $se) {
             Mage::log($se->getMessage(),null,'speedyLog.log');
         }
@@ -265,11 +268,12 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
     public function getStreets() {
         $cityId = (int) $this->_request->getParam('cityid');
         $streetName = $this->_request->getParam('term');
-        $streetName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($streetName);
+        //$streetName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($streetName);
+        $lang = Mage::helper('speedyshippingmodule/transliterate')->getLanguage($streetName);
         //Initialize empty array
         $streets = array();
         try {
-            $streets = $this->_speedyEPS->listStreets($streetName, $cityId);
+            $streets = $this->_speedyEPS->listStreets($streetName, $cityId, $lang);
         } catch (Exception $e) {
             
         }
@@ -297,10 +301,10 @@ class Speedy_Speedyshipping_Model_Autocomplete_Address extends Mage_Core_Model_A
     public function getBlock() {
         $cityId = (int) $this->_request->getParam('cityid');
         $blockName = $this->_request->getParam('term');
-
+        $lang = Mage::helper('speedyshippingmodule/transliterate')->getLanguage($blockName);
         // $streetName = Mage::helper('speedyshippingmodule/transliterate')->transliterate($streetName);
         try {
-            $blocks = $this->_speedyEPS->listBlocks($blockName, $cityId);
+            $blocks = $this->_speedyEPS->listBlocks($blockName, $cityId, $lang);
         } catch (Exception $e) {
             
         }

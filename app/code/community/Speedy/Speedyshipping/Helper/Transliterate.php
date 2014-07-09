@@ -51,6 +51,16 @@ class Speedy_Speedyshipping_Helper_Transliterate extends Mage_Core_Helper_Abstra
         }
     }
 
+    public function getLanguage($word){
+        if(!$this->isCyrillic($word)){
+            return 'BG';
+        }else{
+            return 'EN';
+        }
+    }
+    
+    
+    
     /**
      * This method detects whether the input is cyrillic or not 
      * @param type $word
@@ -58,10 +68,10 @@ class Speedy_Speedyshipping_Helper_Transliterate extends Mage_Core_Helper_Abstra
      */
     protected function isCyrillic($word) {
         if (preg_match('/[A-Za-z]/ui', $word)) {
-            return TRUE;
+            return FALSE;
         }
 
-        return FALSE;
+        return TRUE;
     }
 
 }
